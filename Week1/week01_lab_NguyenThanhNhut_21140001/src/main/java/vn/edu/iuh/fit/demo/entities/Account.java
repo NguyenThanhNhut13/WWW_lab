@@ -6,9 +6,11 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "account", schema = "week1")
 @NamedQueries({
-        @NamedQuery(name = "Account.findByAccountId", query = "select a from Account a where a.accountId = :accountId"),
-        @NamedQuery(name = "Account.updateByAccountId", query = "update Account a set  where a.accountId = :accountId")
+        @NamedQuery(name = "Account.findByAccountId", query = "select a from Account a where upper(a.accountId) = upper(:accountId)"),
+        @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
+        @NamedQuery(name = "Account.existsByAccountId", query = "select (count(a) > 0) from Account a where a.accountId = :accountId"),
 })
+
 public class Account {
     @Id
     @Column(name = "account_id", nullable = false, length = 50)
@@ -29,6 +31,18 @@ public class Account {
     @ColumnDefault("1")
     @Column(name = "status", nullable = false)
     private Byte status;
+
+    public Account() {
+    }
+
+    public Account(String accountId, String fullName, String password, String email, String phone, Byte status) {
+        this.accountId = accountId;
+        this.fullName = fullName;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.status = status;
+    }
 
     public String getAccountId() {
         return accountId;
