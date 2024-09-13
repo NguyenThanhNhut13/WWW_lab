@@ -18,15 +18,18 @@
     String error = request.getAttribute("error") == null ? "" : request.getAttribute("error").toString();
 
     AccountServices accountServices = new AccountServices();
-    Account account = accountServices.findAccountById(accountId);
-    if (account != null && action.equals("update")) {
-        accountId = account.getAccountId();
-        fullName = account.getFullName();
-        password = account.getPassword();
-        phone = account.getPhone();
-        email = account.getEmail();
-        status = String.valueOf(account.getStatus());
+    if (!accountId.equals("")){
+        Account account = accountServices.findAccountById(accountId);
+        if (account != null && action.equals("update")) {
+            accountId = account.getAccountId();
+            fullName = account.getFullName();
+            password = account.getPassword();
+            phone = account.getPhone();
+            email = account.getEmail();
+            status = String.valueOf(account.getStatus());
+        }
     }
+
 %>
 <div class="container w-50" >
     <h2>Add New Account</h2>
@@ -65,7 +68,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
-    <a href="index.jsp" class="btn btn-secondary">Cancel</a>
+    <a href="dashboard.jsp" class="btn btn-secondary">Cancel</a>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

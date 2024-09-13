@@ -10,7 +10,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @NamedQueries({
         @NamedQuery(name = "GrantAccess.findAccountByRoleId", query = "select g from GrantAccess g where g.id.roleId = :roleId order by g.id.roleId"),
         @NamedQuery(name = "GrantAccess.findRoleByAccountId", query = "select g from GrantAccess g where g.id.accountId = :accountId order by g.id.accountId"),
-        @NamedQuery(name = "GrantAccess.deleteById_AccountId", query = "delete from GrantAccess g where g.id.accountId = :accountId")
+        @NamedQuery(name = "GrantAccess.deleteById_AccountId", query = "delete from GrantAccess g where g.id.accountId = :accountId"),
+        @NamedQuery(name = "GrantAccess.exists", query = "select (count(g) > 0) from GrantAccess g where g.id.roleId = :roleId and g.id.accountId = :accountId")
 })
 public class GrantAccess {
     @EmbeddedId

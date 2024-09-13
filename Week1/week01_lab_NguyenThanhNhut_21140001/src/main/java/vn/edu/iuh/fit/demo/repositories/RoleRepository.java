@@ -23,4 +23,5 @@ public interface RoleRepository {
     public void save(Role role);
     public Role update(Role role);
     public boolean delete(Role role);
+    public boolean isAdministrator(String accountId);
 }

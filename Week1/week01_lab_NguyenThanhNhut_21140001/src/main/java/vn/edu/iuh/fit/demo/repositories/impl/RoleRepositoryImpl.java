@@ -46,7 +46,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public void save(Role role) {
         em.getTransaction().begin();
-        em.persist(role);
+        em.merge(role);
         em.getTransaction().commit();
     }
 
@@ -70,5 +70,10 @@ public class RoleRepositoryImpl implements RoleRepository {
         int a = em.createNamedQuery("Role.deleteByRoleId").setParameter("roleId", role.getRoleId()).executeUpdate();
         em.getTransaction().commit();
         return a != 0;
+    }
+
+    @Override
+    public boolean isAdministrator(String accountId) {
+        return em.createNamedQuery("Role.isAdministrator", Boolean.class).setParameter("accountId", accountId).getSingleResult();
     }
 }

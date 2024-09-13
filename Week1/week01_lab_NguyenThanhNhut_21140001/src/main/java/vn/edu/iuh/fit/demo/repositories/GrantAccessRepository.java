@@ -21,5 +21,6 @@ public interface GrantAccessRepository {
     public List<GrantAccess> findRoleByAccountId(String accountId);
     public boolean save(GrantAccess grantAccess);
     public boolean delete(GrantAccess grantAccess);
+    public boolean exists(String accountId, String roleId);
 
 }

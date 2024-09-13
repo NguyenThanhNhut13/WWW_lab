@@ -16,6 +16,14 @@ public class GrantAccessId implements Serializable {
     @Column(name = "account_id", nullable = false, length = 50)
     private String accountId;
 
+    public GrantAccessId() {
+    }
+
+    public GrantAccessId(String roleId, String accountId) {
+        this.roleId = roleId;
+        this.accountId = accountId;
+    }
+
     public String getRoleId() {
         return roleId;
     }

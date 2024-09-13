@@ -39,7 +39,7 @@ public class GrantAccessRepositoryImpl implements GrantAccessRepository {
     @Override
     public boolean save(GrantAccess grantAccess) {
         em.getTransaction().begin();
-        em.persist(grantAccess);
+        em.merge(grantAccess);
         em.getTransaction().commit();
         return true;
     }
@@ -50,5 +50,10 @@ public class GrantAccessRepositoryImpl implements GrantAccessRepository {
         em.remove(grantAccess);
         em.getTransaction().commit();
         return true;
+    }
+
+    @Override
+    public boolean exists(String accountId, String roleId) {
+        return em.createNamedQuery("GrantAccess.exists", Boolean.class).setParameter("accountId", accountId).setParameter("roleId", roleId).getSingleResult();
     }
 }

@@ -12,7 +12,8 @@ import java.util.Set;
         @NamedQuery(name = "Role.findByRoleId", query = "select r from Role r where r.roleId = :roleId"),
         @NamedQuery(name = "Role.existsByRoleId", query = "select (count(r) > 0) from Role r where r.roleId = :roleId"),
         @NamedQuery(name = "Role.updateRoleByRoleId", query = "update Role r set r.roleName = :roleName, r.description = :description, r.status = :status where r.roleId = :roleId"),
-        @NamedQuery(name = "Role.deleteByRoleId", query = "delete from Role r where r.roleId = :roleId")
+        @NamedQuery(name = "Role.deleteByRoleId", query = "delete from Role r where r.roleId = :roleId"),
+        @NamedQuery(name = "Role.isAdministrator", query = "select (count(r) > 0) from Role r inner join GrantAccess ga on r.roleId = ga.role.roleId inner join Account a on ga.account.accountId = a.accountId where a.accountId = :accountId and r.roleName = 'administrator'")
 })
 public class Role {
     @Id

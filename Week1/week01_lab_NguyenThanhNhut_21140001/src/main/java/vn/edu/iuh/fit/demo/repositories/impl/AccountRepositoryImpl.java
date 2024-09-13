@@ -35,7 +35,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void save(Account account) {
         em.getTransaction().begin();
-        em.persist(account);
+        em.merge(account);
         em.getTransaction().commit();
     }
 
@@ -69,6 +69,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     public boolean delete(Account account) {
         em.getTransaction().begin();
         int a = em.createNamedQuery("Account.deleteByAccountId").setParameter("accountId", account.getAccountId()).executeUpdate();
+        em.flush();
+        em.clear();
         em.getTransaction().commit();
         return a > 0;
     }
