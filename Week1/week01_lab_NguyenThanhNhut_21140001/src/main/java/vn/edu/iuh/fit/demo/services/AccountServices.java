@@ -23,6 +23,8 @@ import vn.edu.iuh.fit.demo.repositories.impl.AccountRepositoryImpl;
 import vn.edu.iuh.fit.demo.repositories.impl.GrantAccessRepositoryImpl;
 import vn.edu.iuh.fit.demo.repositories.impl.RoleRepositoryImpl;
 
+import java.util.List;
+
 public class AccountServices {
     private AccountRepository accountRepository;
     private GrantAccessRepository grantAccessRepository;
@@ -60,8 +62,20 @@ public class AccountServices {
         return accountRepository.exists(account.getAccountId());
     }
 
+    public List<Account> findAll() {
+        return accountRepository.findAll();
+    }
+
     public Account findAccountById(String id) {
         return accountRepository.findById(id);
+    }
+
+    public List<Account> findAccountByRoleName(String roleName) {
+        return accountRepository.findAccountByRoleName(roleName);
+    }
+
+    public List<Account> findAccountByRoleId(String roleId) {
+        return accountRepository.findAccountByRoleId(roleId);
     }
 
     public Account updateAccount(Account account) {
@@ -71,4 +85,6 @@ public class AccountServices {
     public boolean deleteAccount(Account account) {
         return accountRepository.delete(account);
     }
+
+
 }

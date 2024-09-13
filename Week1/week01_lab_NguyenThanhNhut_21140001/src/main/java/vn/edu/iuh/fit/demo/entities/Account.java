@@ -8,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 @NamedQueries({
         @NamedQuery(name = "Account.findByAccountId", query = "select a from Account a where upper(a.accountId) = upper(:accountId)"),
         @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
+        @NamedQuery(name = "Account.findByRoleName", query = "select a from Account a inner join GrantAccess ga on a.accountId = ga.account.accountId inner join Role r on ga.role.roleId = r.roleId where r.roleName = :roleName"),
+        @NamedQuery(name = "Account.findByRoleId", query = "select a from Account a inner join GrantAccess ga on a.accountId = ga.account.accountId inner join Role r on ga.role.roleId = r.roleId where r.roleId = :roleId"),
         @NamedQuery(name = "Account.existsByAccountId", query = "select (count(a) > 0) from Account a where a.accountId = :accountId"),
         @NamedQuery(name = "Account.updateAccountByAccountId", query = "update Account a set a.fullName = :fullName, a.password = :password, a.email = :email, a.phone = :phone, a.status = :status where a.accountId = :accountId"),
         @NamedQuery(name = "Account.deleteByAccountId", query = "delete from Account a where a.accountId = :accountId")

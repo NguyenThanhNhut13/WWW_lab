@@ -35,6 +35,15 @@ public class Log {
     @Column(name = "notes", nullable = false, length = 250)
     private String notes;
 
+    public Log() {
+    }
+
+    public Log(String accountId, Instant loginTime, String notes) {
+        this.accountId = accountId;
+        this.loginTime = loginTime;
+        this.notes = notes;
+    }
+
     public Long getId() {
         return id;
     }

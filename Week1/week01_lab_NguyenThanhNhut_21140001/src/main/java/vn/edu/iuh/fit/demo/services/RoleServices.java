@@ -65,5 +65,14 @@ public class RoleServices {
         return grantAccessRepository.save(grantAccess);
     }
 
+    public List<String> findAll() {
+        List<Role> roles = roleRepository.findAll();
+        List<String> roleNames = new ArrayList<>();
+        for (Role role : roles) {
+            roleNames.add(role.getRoleName());
+        }
+        return roleNames;
+    }
+
 
 }

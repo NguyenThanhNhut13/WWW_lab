@@ -7,6 +7,8 @@ import java.util.List;
 public interface AccountRepository {
     public List<Account> findAll();
     public Account findById(String id);
+    public List<Account> findAccountByRoleName(String roleName);
+    public List<Account> findAccountByRoleId(String roleName);
     public boolean exists(String id);
     public void save(Account account);
     public Account update(Account account);

@@ -3,7 +3,9 @@
 <%@ page import="vn.edu.iuh.fit.demo.entities.Account" %>
 <%@ page import="java.util.List" %>
 <%@ page import="vn.edu.iuh.fit.demo.entities.Role" %>
-<%@ page import="vn.edu.iuh.fit.demo.services.RoleServices" %><%--
+<%@ page import="vn.edu.iuh.fit.demo.services.RoleServices" %>
+<%@ page import="vn.edu.iuh.fit.demo.services.AccountServices" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: pc
   Date: 13/09/2024
@@ -19,10 +21,12 @@
 <body>
 <%
     RoleServices roleServices = new RoleServices();
-    AccountRepository accountRepository = new AccountRepositoryImpl();
-    List<Account> accounts = accountRepository.findAll();
+    AccountServices accountServices = new AccountServices();
     String error = request.getAttribute("error") == null ? "" : request.getAttribute("error").toString();
     String success = request.getAttribute("success") == null ? "" : request.getAttribute("success").toString();
+    String accountId = session.getAttribute("accountId").toString();
+    String user = accountServices.findAccountById(accountId).getFullName();
+    boolean isAdministrator = roleServices.isAdministrator(accountId);
     if (error != null && !error.isEmpty()) {
 %>
 <div class="alert alert-danger" role="alert">
@@ -39,8 +43,39 @@
     }
 %>
 <div class="container">
+    <h1>Dashboard</h1>
+    <div class="d-flex justify-content-between mb-2">
+        <h4>Welcome, <%= user %></h4>
+        <a href="controller?action=logout" class="btn btn-primary">Logout</a>
+    </div>
+    <%
+        if (isAdministrator) {
+    %>
+
     <h2>Account List</h2>
     <a href="controller?action=add" class="btn btn-primary mb-2">Add New</a>
+
+    <form action="controller" method="get">
+        <input type="hidden" name="action" value="filterByRole">
+        <div class="form-group">
+            <label for="roleSelect">Filter by Role:</label>
+            <select id="roleSelect" name="roleId" class="form-control" onchange="this.form.submit()">
+                <option value="">Select Role</option>
+                <%-- Fetch roles and populate dropdown --%>
+                <%
+                    List<String> roles = roleServices.findAll();
+                    for (String role : roles) {
+                %>
+                <option value="<%= role %>" <%= request.getParameter("roleId") != null && request.getParameter("roleId").equals(role) ? "selected" : "" %>><%= role %></option>
+                <%
+                    }
+                %>
+            </select>
+        </div>
+    </form>
+    <%
+        }
+    %>
     <table class="table table-striped">
         <tr>
             <th>Id</th>
@@ -53,6 +88,14 @@
             <th colspan="2">Action</th>
         </tr>
         <%
+            String selectedRole = request.getParameter("roleId");
+            List<Account> accounts = (selectedRole == null || selectedRole.isEmpty())
+                    ? accountServices.findAll()
+                    : accountServices.findAccountByRoleName(selectedRole);
+            if (!isAdministrator) {
+                accounts = new ArrayList<>();
+                accounts.add(accountServices.findAccountById(accountId));
+            }
             for (Account account : accounts) {
         %>
         <tr>
@@ -72,9 +115,15 @@
                 %>
             <td>
                 <a href="controller?action=update&accountId=<%= account.getAccountId() %>" class="btn btn-warning">Edit</a>
+                <%
+                    if (isAdministrator) {
+                %>
                 <a href="javascript:void(0);" class="btn btn-danger" onclick="deleteAccount(<%=account.getAccountId()%>);">Delete</a>
                 <a href="controller?action=grantRole&accountId=<%= account.getAccountId() %>" class="btn btn-success">Grant Role</a>
-            </td>
+                <%
+                    }
+                %>
+        </td>
         </tr>
         <%
             }

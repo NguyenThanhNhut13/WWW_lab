@@ -23,8 +23,12 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Account findById(String id) {
-        Account account = em.createNamedQuery("Account.findByAccountId", Account.class).setParameter("accountId", id).getSingleResult();
-        return account;
+       try {
+           return em.createNamedQuery("Account.findByAccountId", Account.class).setParameter("accountId", id).getSingleResult();
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
     }
 
     @Override
@@ -75,6 +79,15 @@ public class AccountRepositoryImpl implements AccountRepository {
         return a > 0;
     }
 
+    @Override
+    public List<Account> findAccountByRoleName(String roleName) {
+        List<Account> accounts = em.createNamedQuery("Account.findByRoleName", Account.class).setParameter("roleName", roleName).getResultList();
+        return accounts;
+    }
 
-
+    @Override
+    public List<Account>  findAccountByRoleId(String roleId) {
+        List<Account> accounts = em.createNamedQuery("Account.findByRoleId", Account.class).setParameter("roleId", roleId).getResultList();
+        return accounts;
+    }
 }
