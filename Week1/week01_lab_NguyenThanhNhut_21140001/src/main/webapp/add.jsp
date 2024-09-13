@@ -1,3 +1,4 @@
+<%@ page import="vn.edu.iuh.fit.demo.entities.Account" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,6 +15,16 @@
     String email = request.getParameter("email") == null ? "" : request.getParameter("email");
     String status = request.getParameter("status") == null ? "" : request.getParameter("status");
     String error = request.getAttribute("error") == null ? "" : request.getAttribute("error").toString();
+
+    Account account = (Account) request.getAttribute("account");
+    if (account != null) {
+        id = account.getAccountId();
+        fullName = account.getFullName();
+        password = account.getPassword();
+        phone = account.getPhone();
+        email = account.getEmail();
+        status = String.valueOf(account.getStatus());
+    }
 %>
 <div class="container w-50" >
     <h2>Add New Account</h2>
@@ -21,7 +32,7 @@
         <input type="hidden" name="action" value="<%=action%>">
         <div class="mb-3">
             <label for="accountId" class="form-label">Id</label>
-            <input type="text" class="form-control" id="accountId" name="accountId" value="<%= id %>" required>
+            <input type="text" class="form-control" id="accountId" name="accountId" value="<%= id %>" required <%= action.equals("update") ? "readonly" : "" %>>
         </div>
         <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
@@ -44,6 +55,7 @@
             <select class="form-select" id="status" name="status">
                 <option value="1" <%= status.equals("1") ? "selected" : "" %>>Active</option>
                 <option value="0" <%= status.equals("0") ? "selected" : "" %>>Inactive</option>
+                <option value="-1" <%= status.equals("-1") ? "selected" : "" %>>Deleted</option>
             </select>
         </div>
         <div class="mb-3 text-danger">

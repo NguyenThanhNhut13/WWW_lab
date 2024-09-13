@@ -13,27 +13,39 @@ package vn.edu.iuh.fit.demo.services;
  */
 
 import vn.edu.iuh.fit.demo.entities.Account;
-import vn.edu.iuh.fit.demo.repositories.AccountDAO;
-import vn.edu.iuh.fit.demo.repositories.impl.AccountDAOImpl;
+import vn.edu.iuh.fit.demo.repositories.AccountRepository;
+import vn.edu.iuh.fit.demo.repositories.impl.AccountRepositoryImpl;
 
 public class AccountServices {
-    private AccountDAO accountDAO;
+    private AccountRepository accountRepository;
 
     public AccountServices() {
-        this.accountDAO = new AccountDAOImpl();
+        this.accountRepository = new AccountRepositoryImpl();
     }
 
     public boolean addAccount(Account account) {
         if (check(account)) {
             return false;
         } else {
-            accountDAO.save(account);
+            accountRepository.save(account);
             return true;
         }
     }
 
     private boolean check(Account account) {
-        AccountDAO accountDAO = new AccountDAOImpl();
-        return accountDAO.exists(account.getAccountId());
+        AccountRepository accountRepository = new AccountRepositoryImpl();
+        return accountRepository.exists(account.getAccountId());
+    }
+
+    public Account findAccountById(String id) {
+        return accountRepository.findById(id);
+    }
+
+    public Account updateAccount(Account account) {
+        return accountRepository.update(account);
+    }
+
+    public boolean deleteAccount(Account account) {
+        return accountRepository.delete(account);
     }
 }

@@ -7,6 +7,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role", schema = "week1")
+@NamedQueries({
+        @NamedQuery(name = "Role.findAll", query = "select r from Role r"),
+        @NamedQuery(name = "Role.findByRoleId", query = "select r from Role r where r.roleId = :roleId"),
+        @NamedQuery(name = "Role.existsByRoleId", query = "select (count(r) > 0) from Role r where r.roleId = :roleId"),
+        @NamedQuery(name = "Role.updateRoleByRoleId", query = "update Role r set r.roleName = :roleName, r.description = :description, r.status = :status where r.roleId = :roleId"),
+        @NamedQuery(name = "Role.deleteByRoleId", query = "delete from Role r where r.roleId = :roleId")
+})
 public class Role {
     @Id
     @Column(name = "role_id", nullable = false, length = 50)

@@ -7,6 +7,13 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "log", schema = "week1")
+@NamedQueries({
+        @NamedQuery(name = "Log.findAll", query = "select l from Log l"),
+        @NamedQuery(name = "Log.findById", query = "select l from Log l where l.id = :id"),
+        @NamedQuery(name = "Log.updateById", query = "update Log l set l.accountId = :accountId, l.loginTime = :loginTime, l.logoutTime = :logoutTime, l.notes = :notes where l.id = :id"),
+        @NamedQuery(name = "Log.existsById", query = "select (count(l) > 0) from Log l where l.id = :id"),
+
+})
 public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
