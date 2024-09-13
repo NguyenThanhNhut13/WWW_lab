@@ -19,4 +19,7 @@ import java.util.List;
 public interface GrantAccessRepository {
     public List<GrantAccess> findAccountByRoleId(String roleId);
     public List<GrantAccess> findRoleByAccountId(String accountId);
+    public boolean save(GrantAccess grantAccess);
+    public boolean delete(GrantAccess grantAccess);
+
 }

@@ -54,7 +54,7 @@ public class ControllerServlet extends HttpServlet {
                 request.getRequestDispatcher("add.jsp").forward(request, response);
             }
         } else if (action.equals("delete")) {
-            String id = request.getParameter("id");
+            String id = request.getParameter("accountId");
             Account account = accountServices.findAccountById(id);
             if (accountServices.deleteAccount(account)) {
                 request.setAttribute("success", "Delete account successfully");
@@ -72,9 +72,7 @@ public class ControllerServlet extends HttpServlet {
         if (action.equals("add")) {
             request.getRequestDispatcher("add.jsp").forward(request, response);
         } else if (action.equals("update")) {
-            String id = request.getParameter("id");
-            Account account = accountServices.findAccountById(id);
-            request.setAttribute("account", account);
+            String id = request.getParameter("accountId");
             request.getRequestDispatcher("add.jsp").forward(request, response);
         }
     }

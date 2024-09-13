@@ -55,7 +55,7 @@
             <td><%= account.getEmail() %></td>
             <td><%= account.getStatus() == 1 ? "Active" : account.getStatus() == 0 ? "Inactive" : "Deleted" %></td>
             <td>
-                <a href="controller?action=update&id=<%= account.getAccountId() %>" class="btn btn-warning">Edit</a>
+                <a href="controller?action=update&accountId=<%= account.getAccountId() %>" class="btn btn-warning">Edit</a>
             </td>
             <td>
                 <a href="javascript:void(0);" class="btn btn-danger" onclick="deleteAccount(<%=account.getAccountId()%>);">Delete</a>
@@ -75,7 +75,7 @@
 
             const action = document.createElement("input");
             action.type = "hidden";
-            action.name = "id";
+            action.name = "accountId";
             action.value = id;
             form.appendChild(action);
 

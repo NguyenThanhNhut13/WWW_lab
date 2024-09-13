@@ -1,4 +1,5 @@
 <%@ page import="vn.edu.iuh.fit.demo.entities.Account" %>
+<%@ page import="vn.edu.iuh.fit.demo.services.AccountServices" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,7 +9,7 @@
 <body>
 <%
     String action = request.getParameter("action");
-    String id = request.getParameter("id") == null ? "" : request.getParameter("id");
+    String accountId = request.getParameter("accountId") == null ? "" : request.getParameter("accountId");
     String fullName = request.getParameter("fullName") == null ? "" : request.getParameter("fullName");
     String password = request.getParameter("password") == null ? "" : request.getParameter("password");
     String phone = request.getParameter("phone") == null ? "" : request.getParameter("phone");
@@ -16,9 +17,10 @@
     String status = request.getParameter("status") == null ? "" : request.getParameter("status");
     String error = request.getAttribute("error") == null ? "" : request.getAttribute("error").toString();
 
-    Account account = (Account) request.getAttribute("account");
-    if (account != null) {
-        id = account.getAccountId();
+    AccountServices accountServices = new AccountServices();
+    Account account = accountServices.findAccountById(accountId);
+    if (account != null && action.equals("update")) {
+        accountId = account.getAccountId();
         fullName = account.getFullName();
         password = account.getPassword();
         phone = account.getPhone();
@@ -32,7 +34,7 @@
         <input type="hidden" name="action" value="<%=action%>">
         <div class="mb-3">
             <label for="accountId" class="form-label">Id</label>
-            <input type="text" class="form-control" id="accountId" name="accountId" value="<%= id %>" required <%= action.equals("update") ? "readonly" : "" %>>
+            <input type="text" class="form-control" id="accountId" name="accountId" value="<%= accountId %>" required <%= action.equals("update") ? "readonly" : "" %>>
         </div>
         <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>

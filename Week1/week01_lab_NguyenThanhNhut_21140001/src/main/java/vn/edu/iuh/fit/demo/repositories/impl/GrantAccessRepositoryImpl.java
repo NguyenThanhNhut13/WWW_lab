@@ -35,4 +35,20 @@ public class GrantAccessRepositoryImpl implements GrantAccessRepository {
     public List<GrantAccess> findRoleByAccountId(String accountId) {
         return em.createNamedQuery("GrantAccess.findRoleByAccountId", GrantAccess.class).setParameter("accountId", accountId).getResultList();
     }
+
+    @Override
+    public boolean save(GrantAccess grantAccess) {
+        em.getTransaction().begin();
+        em.persist(grantAccess);
+        em.getTransaction().commit();
+        return true;
+    }
+
+    @Override
+    public boolean delete(GrantAccess grantAccess) {
+        em.getTransaction().begin();
+        em.remove(grantAccess);
+        em.getTransaction().commit();
+        return true;
+    }
 }

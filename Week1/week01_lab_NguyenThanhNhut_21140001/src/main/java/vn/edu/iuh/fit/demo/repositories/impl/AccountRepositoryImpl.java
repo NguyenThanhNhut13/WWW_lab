@@ -41,19 +41,27 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Account update(Account account) {
-        em.getTransaction().begin();
-        int a = em.createNamedQuery("Account.updateAccountByAccountId").setParameter("accountId", account.getAccountId())
-                .setParameter("fullName", account.getFullName())
-                .setParameter("password", account.getPassword())
-                .setParameter("email", account.getEmail())
-                .setParameter("phone", account.getPhone())
-                .setParameter("status", account.getStatus())
-                .executeUpdate();
-        em.getTransaction().commit();
-        if (a == 0) {
+        try {
+            em.getTransaction().begin();
+            int a = em.createNamedQuery("Account.updateAccountByAccountId").setParameter("accountId", account.getAccountId())
+                    .setParameter("fullName", account.getFullName())
+                    .setParameter("password", account.getPassword())
+                    .setParameter("email", account.getEmail())
+                    .setParameter("phone", account.getPhone())
+                    .setParameter("status", account.getStatus())
+                    .executeUpdate();
+            em.getTransaction().commit();
+            if (a == 0) {
+                return null;
+            } else {
+                return em.find(Account.class, account.getAccountId());
+            }
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
             return null;
-        } else {
-            return em.find(Account.class, account.getAccountId());
         }
     }
 
