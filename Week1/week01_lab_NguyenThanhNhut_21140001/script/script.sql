@@ -61,4 +61,3 @@ INSERT INTO `grant_access` (`role_id`, `account_id`, `is_grant`, `note`)
 VALUES
 ('admin', 'teo', b'1', ''),
 ('user', 'met', b'1', '');
-

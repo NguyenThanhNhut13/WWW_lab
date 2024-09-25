@@ -1,5 +1,5 @@
 /*
- * @ (#) Produce.java       1.0     21/09/2024
+ * @ (#) Product.java       1.0     21/09/2024
  *
  * Copyright (c) 2024 IUH. All rights reserved.
  */
@@ -16,6 +16,9 @@ import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.edu.iuh.fit.enums.ProductStatus;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -91,5 +94,6 @@ public class Product {
                 ", productPrices=" + productPrices +
                 '}';
     }
+
 }
 
