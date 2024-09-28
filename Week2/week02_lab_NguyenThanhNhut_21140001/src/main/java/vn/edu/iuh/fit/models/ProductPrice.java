@@ -1,31 +1,33 @@
 /*
- * @ (#) ProductPrice.java       1.0     21/09/2024
- * 
+ * @ (#) ProductPrice.java       1.0     26/09/2024
+ *
  * Copyright (c) 2024 IUH. All rights reserved.
  */
- 
+
 package vn.edu.iuh.fit.models;
 /*
  * @description:
  * @author: Nguyen Thanh Nhut
- * @date: 21/09/2024
+ * @date: 26/09/2024
  * @version:    1.0
  */
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "product_price")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductPrice {
+
     @Id
     @Column(nullable = false, name = "price_date_time")
     private LocalDateTime priceDateTime;

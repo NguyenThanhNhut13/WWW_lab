@@ -1,27 +1,26 @@
+/*
+ * @ (#) EmployeeStatus.java       1.0     26/09/2024
+ *
+ * Copyright (c) 2024 IUH. All rights reserved.
+ */
+
 package vn.edu.iuh.fit.enums;
+/*
+ * @description:
+ * @author: Nguyen Thanh Nhut
+ * @date: 26/09/2024
+ * @version:    1.0
+ */
 
+import lombok.Getter;
+
+@Getter
 public enum EmployeeStatus {
-    WORKING(1), ON_LEAVE(0), RESIGNED(-1);
-    private final int value;
+    ACTIVE(1), INACTIVE(0), TERMINATED(-1);
+    private int value;
 
-    EmployeeStatus(int value) {
+    private EmployeeStatus(int value) {
         this.value = value;
     }
-    public int getValue(){
-        return value;
-    }
 
-    /**
-     * Convert int value to enum
-     * @param value
-     * @return
-     */
-    public static EmployeeStatus convertEnum(int value) {
-        for (EmployeeStatus status : EmployeeStatus.values()) {
-            if (status.getValue() == value) {
-                return status;
-            }
-        }
-        throw new IllegalArgumentException("No enum constant for value: " + value);
-    }
 }

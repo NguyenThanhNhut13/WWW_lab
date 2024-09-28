@@ -11,26 +11,31 @@ repositories {
 }
 
 ext {
-  junitVersion = '5.10.2'
+  junitVersion = '5.11.0-M2'
 }
 
-sourceCompatibility = '21'
-targetCompatibility = '21'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
 }
 
 dependencies {
-  compileOnly('jakarta.platform:jakarta.jakartaee-api:10.0.0')
-  implementation('org.hibernate:hibernate-core:6.4.5.Final')
+  compileOnly('jakarta.platform:jakarta.jakartaee-api:11.0.0-M3')
+  implementation('org.hibernate:hibernate-core:7.0.0.Alpha3')
   implementation('org.glassfish.jaxb:jaxb-runtime:4.0.5')
 
   // https://mvnrepository.com/artifact/org.projectlombok/lombok
-  compileOnly 'org.projectlombok:lombok:1.18.34'
+  compileOnly 'org.projectlombok:lombok:1.18.30'
+  annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
   // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
   implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
+
+  // for convert type in rest
+  // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
 
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

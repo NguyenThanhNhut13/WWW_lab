@@ -1,75 +1,49 @@
 /*
- * @ (#) Customer.java       1.0     21/09/2024
- * 
+ * @ (#) Customer.java       1.0     26/09/2024
+ *
  * Copyright (c) 2024 IUH. All rights reserved.
  */
- 
+
 package vn.edu.iuh.fit.models;
 /*
  * @description:
  * @author: Nguyen Thanh Nhut
- * @date: 21/09/2024
+ * @date: 26/09/2024
  * @version:    1.0
  */
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "customer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cust_id")
-    private long id;
+    private Long id;
 
-    @Column(length = 140, nullable = false)
+    @Column(name = "address", length = 250)
     private String address;
 
-    @Column(name = "cust_name", length = 150, nullable = false)
+    @Column(name = "cust_name", length = 150)
     private String name;
 
-    @Column(length = 150, nullable = false)
+    @Column(name = "email", length = 150)
     private String email;
 
-    @Column(length = 15, nullable = false)
+    @Column(name = "phone", length = 15)
     private String phone;
 
-    @JsonbTransient
     @OneToMany(mappedBy = "customer")
-    private List<Order> orderList;
-
-    public Customer(long id, String name, String email, String phone, String address) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-    }
-
-    public Customer(long id, String name, String email, String phone, String address, List<Order> orderList) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.orderList = orderList;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
+    private List<Order> orders;
 }

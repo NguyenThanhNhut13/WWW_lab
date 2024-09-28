@@ -1,14 +1,13 @@
 package vn.edu.iuh.fit.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ProductStatus {
-    ACTIVE(1), PAUSED(0), DISCONTINUED(-1);
-    private final int value;
+    ACTIVE(1), INACTIVE(0), DELETED(-1);
+    private int value;
 
-    ProductStatus(int value) {
+    private ProductStatus(int value) {
         this.value = value;
-    }
-
-    public int getValue() {
-        return value;
     }
 }
