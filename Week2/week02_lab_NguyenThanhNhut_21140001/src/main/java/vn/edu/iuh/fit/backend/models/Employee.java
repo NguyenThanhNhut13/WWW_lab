@@ -4,7 +4,7 @@
  * Copyright (c) 2024 IUH. All rights reserved.
  */
 
-package vn.edu.iuh.fit.models;
+package vn.edu.iuh.fit.backend.models;
 /*
  * @description:
  * @author: Nguyen Thanh Nhut
@@ -24,6 +24,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "employee")
+@NamedQueries({
+        @NamedQuery(name = "Employee.findByStatus", query = "select e from Employee e where e.status = :status")
+})
 @Getter
 @Setter
 @NoArgsConstructor

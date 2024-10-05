@@ -4,14 +4,14 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
              version="3.2">
   <persistence-unit name="week2_21140001">
-      <jta-data-source>jdbc/week2</jta-data-source>
-      <class>vn.edu.iuh.fit.models.Customer</class>
-      <class>vn.edu.iuh.fit.models.Employee</class>
-      <class>vn.edu.iuh.fit.models.Order</class>
-      <class>vn.edu.iuh.fit.models.OrderDetail</class>
-      <class>vn.edu.iuh.fit.models.Product</class>
-      <class>vn.edu.iuh.fit.models.ProductImage</class>
-      <class>vn.edu.iuh.fit.models.ProductPrice</class>
+      <jta-data-source>jdbc/mariadb_ds</jta-data-source>
+      <class>vn.edu.iuh.fit.backend.models.Customer</class>
+      <class>vn.edu.iuh.fit.backend.models.Employee</class>
+      <class>vn.edu.iuh.fit.backend.models.Order</class>
+      <class>vn.edu.iuh.fit.backend.models.OrderDetail</class>
+      <class>vn.edu.iuh.fit.backend.models.Product</class>
+      <class>vn.edu.iuh.fit.backend.models.ProductImage</class>
+      <class>vn.edu.iuh.fit.backend.models.ProductPrice</class>
 
 <!--      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
 <!--      <properties>-->
