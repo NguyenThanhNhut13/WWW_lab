@@ -23,7 +23,7 @@ USE `job_seeking`;
 -- Dumping structure for table job_seeking.candidate
 DROP TABLE IF EXISTS `candidate`;
 CREATE TABLE IF NOT EXISTS `candidate` (
-  `candiate_id` int(11) NOT NULL AUTO_INCREMENT,
+  `candidate_id` int(11) NOT NULL AUTO_INCREMENT,
   `last_name` varchar(255) NOT NULL,
   `middle_name` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS `candidates_skills` (
   PRIMARY KEY (`candidate_id`,`skill_id`),
   KEY `skill_id` (`skill_id`),
   CONSTRAINT `FK_candidate_skill` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`candiate_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `FK_skill_candidate` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`skill_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `FK_skill_candidate` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`skill_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `Check_level` CHECK (`level` BETWEEN 1 AND 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
@@ -69,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `jobs_skills` (
   PRIMARY KEY (`job_id`,`skill_id`),
   KEY `skill_id` (`skill_id`),
   CONSTRAINT `FK_job_skill` FOREIGN KEY (`job_id`) REFERENCES `job` (`job_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `FK_skill_job` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`skill_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `FK_skill_job` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`skill_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `Check_require_level` CHECK (`require_level` BETWEEN 1 AND 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
