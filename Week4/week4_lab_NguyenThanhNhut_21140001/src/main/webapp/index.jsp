@@ -9,10 +9,11 @@
 <html>
 <head>
     <title>Title</title>
-    <a href="products/AddProductView.jsp">Add Product</a> <br/>
-    <a href="products/ProductList.jsp">Product List</a>
+
 </head>
 <body>
+    <a href="products/AddProductView.jsp">Add Product</a> <br/>
+    <a href="products/ProductList.jsp">Product List</a>
 
 </body>
 </html>

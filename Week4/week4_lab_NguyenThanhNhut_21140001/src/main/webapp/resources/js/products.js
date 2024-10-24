@@ -12,7 +12,7 @@ function fetchAllProducts() {
                   productListDiv.innerHTML +=  `
                     <div class="col-md-3">
                       <div class="card mb-3">
-                        <a href="http://localhost:8080/week3_lab-1.0-SNAPSHOT/api/products/${product.productId}">
+                        <a href="http://localhost:8080/week3_lab-1.0-SNAPSHOT/products/${product.productId}">
                             <img src="${product.imgPath}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         </a>
                         <div class="card-body">
@@ -21,7 +21,7 @@ function fetchAllProducts() {
                           <p class="card-text"><strong>Price: </strong>${product.price} VNĐ</p>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                          <a href="/products/${product.id}/addPrice" class="btn btn-success">Add Price</a>
+                          <a href="http://localhost:8080/week3_lab-1.0-SNAPSHOT/controller?action=addPrice&productId=${product.productId}" class="btn btn-success">Add Price</a>
                           <a href="/products/${product.id}/edit" class="btn btn-warning">Edit</a>
                           <a href="/products/${product.id}/delete" class="btn btn-danger">Delete</a>
                         <div>

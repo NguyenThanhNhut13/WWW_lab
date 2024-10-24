@@ -5,13 +5,19 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import vn.edu.iuh.fit.backend.dtos.ProductDTO;
+import vn.edu.iuh.fit.backend.dtos.ProductPriceDTO;
 import vn.edu.iuh.fit.backend.entities.Product;
 import vn.edu.iuh.fit.backend.entities.ProductPrice;
+import vn.edu.iuh.fit.backend.mapper.ProductMapper;
+import vn.edu.iuh.fit.backend.mapper.ProductPriceMapper;
 import vn.edu.iuh.fit.backend.repositories.ProductPriceRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductRepository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class ProductBean implements ProductBeanRemote{
@@ -21,6 +27,12 @@ public class ProductBean implements ProductBeanRemote{
 
     @Inject
     private ProductPriceRepository productPriceRepository;
+
+    @Inject
+    private ProductMapper productMapper;
+
+    @Inject
+    private ProductPriceMapper productPriceMapper;
 
     @Override
     public List<ProductDTO> getAll() {
@@ -58,5 +70,29 @@ public class ProductBean implements ProductBeanRemote{
                 product.getImgPath(),
                 price
         );
+    }
+
+    @Override
+    public ProductDTO addPrice(int productId, ProductPriceDTO productPriceDTO) {
+        Product product = productRepository.getById(productId);
+        System.out.println("Price trươc khi mapper" + productPriceDTO.getValue());
+
+        if (product != null) {
+            ProductPrice productPrice = productPriceMapper.productPriceDTOToProductPrice(productPriceDTO);
+            productPrice.setProduct(product);
+            productPrice.setApplyDate(Timestamp.valueOf(LocalDateTime.now()));
+
+            ProductPrice activePrice = productPriceRepository.findActivePriceByProduct(productId);
+            if (activePrice != null) {
+                activePrice.setStatus(0);
+                productPriceRepository.save(activePrice);
+            }
+            System.out.println("Price sau khi mapper" + productPrice.getValue());
+
+            productPriceRepository.add(productPrice);
+            return productMapper.productToProductDTO(product);
+        } else {
+            return null;
+        }
     }
 }

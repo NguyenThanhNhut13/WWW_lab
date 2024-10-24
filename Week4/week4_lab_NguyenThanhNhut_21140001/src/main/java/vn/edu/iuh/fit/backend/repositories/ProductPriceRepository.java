@@ -16,4 +16,7 @@ import vn.edu.iuh.fit.backend.entities.ProductPrice;
 
 public interface ProductPriceRepository {
     ProductPrice findActivePriceByProduct(int productId);
+    ProductPrice findById(int id);
+    ProductPrice add(ProductPrice productPrice);
+    void save(ProductPrice productPrice);
 }

@@ -31,4 +31,26 @@ public class ProductPriceRepositoryImpl implements ProductPriceRepository {
                 .getResultList();
         return productPrices.isEmpty() ? null : productPrices.get(0);
     }
+
+    @Override
+    public ProductPrice findById(int id) {
+        return entityManager.createNamedQuery("ProductPrice.findById", ProductPrice.class)
+                .setParameter("priceId", id)
+                .getSingleResult();
+    }
+
+    @Override
+    public ProductPrice add(ProductPrice productPrice) {
+        if (productPrice.getPriceId() == null) {
+            entityManager.persist(productPrice);
+        } else {
+            productPrice = entityManager.merge(productPrice);
+        }
+        return productPrice;
+    }
+
+    @Override
+    public void save(ProductPrice productPrice) {
+        entityManager.merge(productPrice);
+    }
 }
