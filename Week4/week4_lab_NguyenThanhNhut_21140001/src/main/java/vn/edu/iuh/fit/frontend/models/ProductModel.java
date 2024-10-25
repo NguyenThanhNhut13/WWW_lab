@@ -17,6 +17,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
+import vn.edu.iuh.fit.backend.dtos.ProductDTO;
 import vn.edu.iuh.fit.backend.dtos.ProductPriceDTO;
 import vn.edu.iuh.fit.backend.entities.Product;
 
@@ -37,12 +38,12 @@ public class ProductModel {
         }
     }
 
-    public Product getProductById(int productId) {
+    public ProductDTO getProductById(int productId) {
         try (Client client = ClientBuilder.newClient()) {
             WebTarget target = client.target(ADD_URL).path(String.valueOf(productId));
             Response response = target.request().get();
             if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-                return response.readEntity(Product.class);
+                return response.readEntity(ProductDTO.class);
             } else {
                 System.out.println("Failed to get product");
             }
@@ -61,6 +62,21 @@ public class ProductModel {
                 System.out.println("Price added successfully");
             } else {
                 System.out.println("Failed to add price");
+            }
+            response.close();
+        } catch (Exception e) {
+            logger.severe("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public void updateProduct(ProductDTO product) {
+        try (Client client = ClientBuilder.newClient()) {
+            WebTarget target = client.target(ADD_URL).path(String.valueOf(product.getProductId()));
+            Response response = target.request().put(Entity.json(product));
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                System.out.println("Product updated successfully");
+            } else {
+                System.out.println("Failed to update product");
             }
             response.close();
         } catch (Exception e) {

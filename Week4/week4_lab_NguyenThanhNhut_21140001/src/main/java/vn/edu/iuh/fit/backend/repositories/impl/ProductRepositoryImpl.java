@@ -44,4 +44,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
         return product;
     }
+
+    @Override
+    public void save(Product product) {
+        entityManager.merge(product);
+    }
 }

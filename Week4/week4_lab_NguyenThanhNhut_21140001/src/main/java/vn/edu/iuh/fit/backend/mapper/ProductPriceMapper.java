@@ -23,6 +23,7 @@ public interface ProductPriceMapper {
     ProductPriceMapper INSTANCE = Mappers.getMapper(ProductPriceMapper.class);
 
     ProductPriceDTO productPriceToProductPriceDTO(ProductPrice productPrice);
+
     @Mapping(source = "value", target = "value")
     ProductPrice productPriceDTOToProductPrice(ProductPriceDTO productPriceDTO);
 }

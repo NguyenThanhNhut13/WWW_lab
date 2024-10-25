@@ -53,4 +53,11 @@ public class ProductPriceRepositoryImpl implements ProductPriceRepository {
     public void save(ProductPrice productPrice) {
         entityManager.merge(productPrice);
     }
+
+    @Override
+    public List<ProductPrice> findAllProductPriceByProductId(int productId) {
+        return entityManager.createNamedQuery("ProductPrice.findAllProductPriceByProductId", ProductPrice.class)
+                .setParameter("productId", productId)
+                .getResultList();
+    }
 }

@@ -24,6 +24,7 @@ import java.util.Objects;
         @NamedQuery(name = "ProductPrice.findAll", query = "select p from ProductPrice p"),
         @NamedQuery(name = "ProductPrice.findById", query = "select p from ProductPrice p where p.priceId = :priceId"),
         @NamedQuery(name = "ProductPrice.findActivePriceByProduct", query = "select p from ProductPrice p where p.product.productId = :productId and p.status = 1"),
+        @NamedQuery(name = "ProductPrice.findAllProductPriceByProductId", query = "select p from ProductPrice p where p.product.productId = :productId")
 })
 public class ProductPrice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-<%@ page import="vn.edu.iuh.fit.backend.entities.Product" %><%--
+<%@ page import="vn.edu.iuh.fit.backend.dtos.ProductDTO" %><%--
   Created by IntelliJ IDEA.
   User: pc
   Date: 23/10/2024
@@ -15,7 +15,7 @@
     <div class="container w-50 mt-5">
         <h1>Add Price</h1>
         <%
-            Product product = (Product) request.getAttribute("product");
+            ProductDTO product = (ProductDTO) request.getAttribute("product");
             if (product != null) {
         %>
         <form action="http://localhost:8080/week3_lab-1.0-SNAPSHOT/controller" method="post">

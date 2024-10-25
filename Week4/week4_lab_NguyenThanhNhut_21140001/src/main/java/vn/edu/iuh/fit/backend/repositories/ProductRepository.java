@@ -20,5 +20,5 @@ public interface ProductRepository {
     List<Product> getAll();
     Product getById(int productId);
     Product add(Product product);
-
+    void save(Product product);
 }

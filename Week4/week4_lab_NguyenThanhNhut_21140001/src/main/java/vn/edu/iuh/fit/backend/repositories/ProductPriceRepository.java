@@ -14,9 +14,12 @@ package vn.edu.iuh.fit.backend.repositories;
 
 import vn.edu.iuh.fit.backend.entities.ProductPrice;
 
+import java.util.List;
+
 public interface ProductPriceRepository {
     ProductPrice findActivePriceByProduct(int productId);
     ProductPrice findById(int id);
     ProductPrice add(ProductPrice productPrice);
     void save(ProductPrice productPrice);
+    List<ProductPrice> findAllProductPriceByProductId(int productId);
 }

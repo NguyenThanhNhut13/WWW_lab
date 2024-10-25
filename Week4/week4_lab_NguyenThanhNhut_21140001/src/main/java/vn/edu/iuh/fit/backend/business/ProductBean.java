@@ -2,8 +2,6 @@ package vn.edu.iuh.fit.backend.business;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import vn.edu.iuh.fit.backend.dtos.ProductDTO;
 import vn.edu.iuh.fit.backend.dtos.ProductPriceDTO;
 import vn.edu.iuh.fit.backend.entities.Product;
@@ -17,7 +15,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Stateless
 public class ProductBean implements ProductBeanRemote{
@@ -91,6 +88,24 @@ public class ProductBean implements ProductBeanRemote{
 
             productPriceRepository.add(productPrice);
             return productMapper.productToProductDTO(product);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public ProductDTO update(int productId, ProductDTO productDTO) {
+        Product product = productRepository.getById(productId);
+        ProductPrice activePriceByProduct = productPriceRepository.findActivePriceByProduct(productId);
+        if (product != null) {
+            product.setName(productDTO.getName());
+            product.setDescription(productDTO.getDescription());
+            product.setImgPath(productDTO.getImgPath());
+            productRepository.save(product);
+
+            activePriceByProduct.setValue(productDTO.getPrice());
+            productPriceRepository.save(activePriceByProduct);
+            return productDTO;
         } else {
             return null;
         }

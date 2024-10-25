@@ -13,4 +13,5 @@ public interface ProductBeanRemote {
     Product add(Product product);
     ProductDTO getById(int productId);
     ProductDTO addPrice(int productId, ProductPriceDTO productPriceDTO);
+    ProductDTO update(int productId, ProductDTO productDTO);
 }

@@ -52,4 +52,18 @@ public class ProductResource {
         }
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes("application/json")
+    @Produces("application/json")
+    @Transactional
+    public Response update(@PathParam("id") int id, ProductDTO productDTO){
+        try {
+            ProductDTO p = productBeanRemote.update(id, productDTO);
+            return Response.status(Response.Status.OK).entity(p).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
 }

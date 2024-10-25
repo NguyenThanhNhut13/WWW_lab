@@ -14,6 +14,7 @@ package vn.edu.iuh.fit.backend.dtos;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
@@ -21,12 +22,14 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-public class ProductPriceDTO {
+public class ProductPriceDTO implements Serializable {
     private Integer priceId;
     private Integer productId;
     private Timestamp applyDate;
     private double value;
     private String note;
     private Integer status;
+
+
 
 }
