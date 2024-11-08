@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home page</title>
+    <link
+            crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            rel="stylesheet">
+</head>
+<body>
+<header class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">World Jobs</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('CANDIDATE')">
+                        <a class="nav-link active" aria-current="page" th:href="@{/static}">Việc làm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Cá nhân</a></li>
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('COMPANY')"><a class="nav-link" href="#">Đăng tuyển</a>
+                    </li>
+                </ul>
+                <form class="d-flex me-5">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <p sec:authorize="isAuthenticated()" style="margin: auto 20px" th:text="${'Hello, ' + #authentication.name}"></p>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-primary me-2">Đăng nhập</a>
+                <a sec:authorize="!isAuthenticated()" href="register.html" class="btn btn-outline-success">Đăng ký</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-primary me-2">Đăng xuất</a>
+
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>All Jobs</h1>
+    <div class="row">
+        <div th:each="job : ${jobs}" class="col-4">
+            <div class="col-12 m-2 py-3 px-4 card">
+                <div class="d-flex align-items-center">
+                    <img th:src="${job.getCompany().getLogo()}" alt="job image" class="img-fluid" style="width: 70px; height: 70px;">
+                    <div class="ms-3">
+                        <div class="text-truncate" style="max-width: 280px;">
+                            <strong class="fs-5" th:text="${job.jobName}"></strong>
+                        </div>
+                        <div class="text-truncate mb-3" style="max-width: 300px;" >
+                            <span class="text-muted fs-6" th:text="${job.getCompany().getCompName()}"></span>
+                        </div>
+                        <div class="d-flex">
+                            <span class="py-1 px-2 rounded me-1" style="background-color: #f4f5f5" th:text="'$'+${job.salary}"></span>
+                            <span class="py-1 px-2 rounded" style="background-color: #f4f5f5" th:text="${job.getCompany().getAddress().getCity()}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
