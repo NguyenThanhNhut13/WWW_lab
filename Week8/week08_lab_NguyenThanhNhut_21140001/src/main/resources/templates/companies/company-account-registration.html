@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Company Account Registration</title>
+    <link
+            crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            rel="stylesheet">
+</head>
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="text-center mb-4">Company Registration</h2>
+                    <form id="registrationForm" class="needs-validation" th:action="@{/company/register}" method="post"
+                          >
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="companyName" class="form-label">Tên công ty</label>
+                                <input type="text" class="form-control" id="companyName" name="companyName"  placeholder="Công ty ABC" required>
+                                <div class="invalid-feedback">Vui lòng nhập tên công ty</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="abc@gmail.com" required>
+                                <div class="invalid-feedback">Vui lòng nhập email</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="0123456789" required>
+                                <div class="invalid-feedback">Vui lòng nhập số điện thoại</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="logo" class="form-label">Logo</label>
+                                <input type="text" class="form-control" id="logo" name="logo" placeholder="https://example.com/logo.png" required>
+                                <div class="invalid-feedback">Vui lòng nhập URL logo</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="website" class="form-label">Website</label>
+                                <input type="text" class="form-control" id="website" name="website" placeholder="https://example.com" required>
+                                <div class="invalid-feedback">Vui lòng nhập URL website</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country" class="form-label">Quốc gia</label>
+                                <select class="form-select" id="country" name="country" required>
+                                    <option value="">Chọn quốc gia</option>
+                                    <option th:each="country : ${countries}"
+                                            th:value="${country}"
+                                            th:text="${country}"></option>
+                                </select>
+                                <div class="invalid-feedback">Vui lòng chọn quốc gia</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">Thành phố</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="Hồ Chí Minh" required>
+                                <div class="invalid-feedback">Vui lòng nhập thành phố</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="street" class="form-label">Đường</label>
+                                <input type="text" class="form-control" id="street" name="street" placeholder="Lê Đức Thọ" required>
+                                <div class="invalid-feedback">Vui lòng nhập tên đường</div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="number" class="form-label">Số nhà</label>
+                                <input type="text" class="form-control" id="number" name="number" placeholder="123" required>
+                                <div class="invalid-feedback">Vui lòng nhập số nhà</div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="zip" class="form-label">Mã bưu điện</label>
+                                <input type="text" class="form-control" id="zip" name="zip" placeholder="700000" required>
+                                <div class="invalid-feedback">Vui lòng nhập mã bưu điện</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="description" class="form-label">Mô tả công ty</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                <div class="invalid-feedback">Vui lòng nhập mô tả công ty</div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                Register Company
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const form = document.getElementById("registrationForm");
+
+    form.querySelectorAll("input, select, textarea").forEach(field => {
+        field.addEventListener("blur", checkInput);
+    });
+
+    function checkInput(event) {
+        const field = event.target;
+        const errorMessage = field.nextElementSibling;
+
+        if (field.tagName === "SELECT") {
+            if (field.value === "") {
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        } else {
+            if (field.value.trim() === "") {
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        }
+
+    }
+</script>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

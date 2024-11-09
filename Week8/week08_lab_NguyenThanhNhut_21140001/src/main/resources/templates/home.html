@@ -23,9 +23,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item" sec:authorize="hasAnyAuthority('CANDIDATE')">
-                        <a class="nav-link active" aria-current="page" th:href="@{/static}">Việc làm</a></li>
+                        <a class="nav-link active" aria-current="page" th:href="@{/static}">Việc làm</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="#">Cá nhân</a></li>
-                    <li class="nav-item" sec:authorize="hasAnyAuthority('COMPANY')"><a class="nav-link" href="#">Đăng tuyển</a>
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('COMPANY','ADMIN')">
+                        <a class="nav-link" th:href="@{/company/account-registration}">Đăng tuyển</a>
                     </li>
                 </ul>
                 <form class="d-flex me-5">

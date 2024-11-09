@@ -27,6 +27,7 @@ import vn.edu.iuh.fit.backend.models.Job;
 import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
 import vn.edu.iuh.fit.backend.repositories.JobRepository;
 import vn.edu.iuh.fit.backend.repositories.JobSkillRepository;
+import vn.edu.iuh.fit.backend.services.CompanyService;
 import vn.edu.iuh.fit.backend.services.JobService;
 
 import java.util.List;
@@ -40,13 +41,15 @@ public class JobServiceImpl implements JobService {
     private final JobSkillRepository jobSkillRepository;
     private final JobSkillMapper jobSkillMapper;
     private final CandidateRepository candidateRepository;
+    private final CompanyService companyService;
 
-    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, JobSkillRepository jobSkillRepository, JobSkillMapper jobSkillMapper, CandidateRepository candidateRepository) {
+    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, JobSkillRepository jobSkillRepository, JobSkillMapper jobSkillMapper, CandidateRepository candidateRepository, CompanyService companyService) {
         this.jobRepository = jobRepository;
         this.jobMapper = jobMapper;
         this.jobSkillRepository = jobSkillRepository;
         this.jobSkillMapper = jobSkillMapper;
         this.candidateRepository = candidateRepository;
+        this.companyService = companyService;
     }
 
     @Override
@@ -56,22 +59,42 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobDTO getJobById(long id) {
+    public JobDTO getJobById(Long id) {
         return jobRepository.findById(id).map(jobMapper::toDTO).orElse(null);
     }
 
     @Override
     public JobDTO saveJob(JobDTO jobDTO) {
+        if (jobDTO.getCompany() != null && jobDTO.getCompany().getId() != null) {
+            companyService.saveCompany(jobDTO.getCompany());
+        }
+
+        if (jobDTO.getJobSkills() != null) {
+            jobDTO.getJobSkills().forEach(jobSkillDTO -> {
+                jobSkillRepository.save(jobSkillMapper.toEntity(jobSkillDTO));
+            });
+        }
+
         return jobMapper.toDTO(jobRepository.save(jobMapper.toEntity(jobDTO)));
     }
 
     @Override
     public JobDTO updateJob(JobDTO jobDTO) {
+        if (jobDTO.getCompany() != null && jobDTO.getCompany().getId() != null) {
+            companyService.updateCompany(jobDTO.getCompany());
+        }
+
+        if (jobDTO.getJobSkills() != null) {
+            jobDTO.getJobSkills().forEach(jobSkillDTO -> {
+                jobSkillRepository.save(jobSkillMapper.toEntity(jobSkillDTO));
+            });
+        }
+
         return jobMapper.toDTO(jobRepository.save(jobMapper.toEntity(jobDTO)));
     }
 
     @Override
-    public void deleteJob(long id) {
+    public void deleteJob(Long id) {
         jobRepository.deleteById(id);
     }
 

@@ -25,8 +25,13 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 @Component
 public class JobModel {
+
+    private final RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    public JobModel(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     private static final String JOB_API_URL = "http://localhost:8080/api/jobs";
 

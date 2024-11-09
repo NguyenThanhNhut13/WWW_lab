@@ -32,10 +32,9 @@ public class JobController {
         this.jobModel = jobModel;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String index(Model model) {
         List<JobDTO> jobs = jobModel.getAllJob(0, 5).getContent().stream().toList();
-        System.out.println("cc + " + jobs);
         model.addAttribute("jobs", jobs);
         return "home";
     }

@@ -20,10 +20,10 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 public interface JobService {
     PageResponseDTO<JobDTO> getAllJob(Pageable pageable);
-    JobDTO getJobById(long id);
+    JobDTO getJobById(Long id);
     JobDTO saveJob(JobDTO jobDTO);
     JobDTO updateJob(JobDTO jobDTO);
-    void deleteJob(long id);
+    void deleteJob(Long id);
     PageResponseDTO<JobDTO> searchJob(String keyword, int page, int size, String sortBy, String sortDir);
     PageResponseDTO<JobDTO> findMatchingJobsForCandidate(Long candidateId, long minSkills, Pageable pageable);
 }
