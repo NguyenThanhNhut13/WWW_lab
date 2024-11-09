@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Register - Blog App</title>
+</head>
+<body>
+<section>
+  <h2 class="mb-4">Register</h2>
+  <form th:action="@{/register}" method="post">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" required>
+    </div>
+    <div class="mb-3">
+      <label for="middleName" class="form-label">Middle Name</label>
+      <input type="text" class="form-control" id="middleName" name="middleName">
+    </div>
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" required>
+    </div>
+    <div class="mb-3">
+      <label for="mobile" class="form-label">Mobile</label>
+      <input type="tel" class="form-control" id="mobile" name="mobile" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <label for="intro" class="form-label">Intro</label>
+      <textarea class="form-control" id="intro" name="intro" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</section>
+</body>
+</html>

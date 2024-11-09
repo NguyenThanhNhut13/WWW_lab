@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="${user.firstName + ' ' + user.lastName} + ' - Profile'">User Profile - Blog App</title>
+</head>
+<body>
+<section>
+    <h2 th:text="${user.firstName + ' ' + user.lastName}">User Name</h2>
+    <p th:text="${user.intro}">User intro...</p>
+
+    <h3 class="mt-4">Profile</h3>
+    <p th:text="${user.profile}">User profile...</p>
+
+    <h3 class="mt-4">Posts</h3>
+    <div class="list-group">
+        <a th:each="post : ${userPosts}" th:href="@{/posts/{id}(id=${post.id})}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1" th:text="${post.title}">Post Title</h5>
+                <small th:text="${#temporals.format(post.publishedAt, 'dd-MM-yyyy')}">01-01-2023</small>
+            </div>
+            <p class="mb-1" th:text="${post.summary}">Post summary...</p>
+        </a>
+    </div>
+
+    <h3 class="mt-4">Edit Profile</h3>
+    <form th:action="@{/profile/update}" th:object="${user}" method="post">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="middleName" class="form-label">Middle Name</label>
+            <input type="text" class="form-control" id="middleName" th:field="*{middleName}">
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="mobile" class="form-label">Mobile</label>
+            <input type="tel" class="form-control" id="mobile" th:field="*{mobile}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+        <div class="mb-3">
+            <label for="intro" class="form-label">Intro</label>
+            <textarea class="form-control" id="intro" th:field="*{intro}" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="profile" class="form-label">Profile</label>
+            <textarea class="form-control" id="profile" th:field="*{profile}" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</section>
+</body>
+</html>
