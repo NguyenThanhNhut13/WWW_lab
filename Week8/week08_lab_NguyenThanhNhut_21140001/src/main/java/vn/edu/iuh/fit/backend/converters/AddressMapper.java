@@ -30,22 +30,20 @@ public interface AddressMapper {
     @Mapping(source = "country", target = "country", qualifiedByName = "stringToCountry")
     Address toEntity(AddressDTO addressDTO);
 
+    // Conversion from CountryCode enum to String
     @Named("countryToString")
-    default String countryToString(CountryCode countryCode) {
-        if (countryCode == null) {
-            return null;
-        }
-        return countryCode.name(); // Chuyển Enum thành String (tên của Enum)
+    default String countryToString(CountryCode country) {
+        return country != null ? country.name() : null;
     }
 
+    // Conversion from String to CountryCode enum
     @Named("stringToCountry")
-    default CountryCode stringToCountry(String countryCode) {
-        if (countryCode == null || countryCode.isEmpty()) {
+    default CountryCode stringToCountry(String country) {
+        try {
+            return country != null ? CountryCode.valueOf(country) : null;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             return null;
         }
-        if ("Vietnam".equalsIgnoreCase(countryCode)) {
-            return CountryCode.VN;
-        }
-        return CountryCode.valueOf(countryCode); // Chuyển String thành Enum
     }
 }

@@ -23,6 +23,7 @@ import vn.edu.iuh.fit.backend.models.Role;
 import vn.edu.iuh.fit.backend.models.User;
 import vn.edu.iuh.fit.backend.repositories.RoleRepository;
 import vn.edu.iuh.fit.backend.repositories.UserRepository;
+import vn.edu.iuh.fit.backend.security.MyUserDetails;
 import vn.edu.iuh.fit.backend.services.UserService;
 
 import java.util.Collection;
@@ -33,35 +34,15 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
+
 
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userEntity = userRepository.findByUsername(username);
-        userEntity.orElseThrow(() -> new UsernameNotFoundException("Not found: " + username));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(userEntity.get().getUsername())
-                .password(userEntity.get().getPassword())
-                .authorities(rolesToAuthorities(userEntity.get().getRoles()))
-                .build();
-    }
-
-    // Convert roles to authorities
-    private Collection<? extends GrantedAuthority> rolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
-    }
-
 
 }

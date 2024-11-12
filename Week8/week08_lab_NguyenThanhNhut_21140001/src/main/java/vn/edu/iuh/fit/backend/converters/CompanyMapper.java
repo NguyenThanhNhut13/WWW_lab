@@ -13,6 +13,7 @@ package vn.edu.iuh.fit.backend.converters;
  */
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 import vn.edu.iuh.fit.backend.models.Company;
@@ -21,7 +22,9 @@ import vn.edu.iuh.fit.backend.models.Company;
 public interface CompanyMapper {
     CompanyMapper INSTANCE = Mappers.getMapper(CompanyMapper.class);
 
+    @Mapping(source = "user.id", target = "userId")
     CompanyDTO toDTO(Company company);
 
+    @Mapping(source = "userId", target = "user.id")
     Company toEntity(CompanyDTO companyDTO);
 }

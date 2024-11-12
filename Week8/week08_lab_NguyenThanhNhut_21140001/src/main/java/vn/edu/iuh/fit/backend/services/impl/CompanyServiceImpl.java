@@ -18,12 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.converters.AddressMapper;
 import vn.edu.iuh.fit.backend.converters.CompanyMapper;
-import vn.edu.iuh.fit.backend.dtos.AddressDTO;
+import vn.edu.iuh.fit.backend.converters.UserMapper;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.models.Address;
+import vn.edu.iuh.fit.backend.models.Company;
 import vn.edu.iuh.fit.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.backend.repositories.CompanyRepository;
+import vn.edu.iuh.fit.backend.repositories.UserRepository;
 import vn.edu.iuh.fit.backend.services.CompanyService;
 
 @Service
@@ -33,14 +35,17 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
     private final AddressMapper addressMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public CompanyServiceImpl(AddressRepository addressRepository, CompanyRepository companyRepository, CompanyMapper companyMapper,
-                              AddressMapper addressMapper) {
+    public CompanyServiceImpl(AddressRepository addressRepository, CompanyRepository companyRepository, CompanyMapper companyMapper, AddressMapper addressMapper, UserRepository userRepository, UserMapper userMapper) {
         this.addressRepository = addressRepository;
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
         this.addressMapper = addressMapper;
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -56,12 +61,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        if (companyDTO.getAddress() != null) {
-            Address aa = addressMapper.toEntity(companyDTO.getAddress());
-            System.out.println("Address: " + aa.getCountry());
-            addressRepository.save(addressMapper.toEntity(companyDTO.getAddress()));
+        Company company = companyMapper.toEntity(companyDTO);
+        if (companyDTO.getUserId() != null) {
+            company.setUser(userRepository.findById(companyDTO.getUserId()).orElse(null));
         }
-        return companyMapper.toDTO(companyRepository.save(companyMapper.toEntity(companyDTO)));
+        if (companyDTO.getAddress() != null) {
+            Address address = addressRepository.save(addressMapper.toEntity(companyDTO.getAddress()));
+            company.setAddress(address);
+        }
+        System.out.println("Company: " + company);
+        return companyMapper.toDTO(companyRepository.save(company));
     }
 
     @Override

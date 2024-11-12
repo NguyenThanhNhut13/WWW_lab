@@ -23,6 +23,7 @@ import java.io.Serializable;
 @ToString
 public class CompanyDTO implements Serializable {
     private Long id;
+    private Long userId;
     private String about;
     private String email;
     private String compName;

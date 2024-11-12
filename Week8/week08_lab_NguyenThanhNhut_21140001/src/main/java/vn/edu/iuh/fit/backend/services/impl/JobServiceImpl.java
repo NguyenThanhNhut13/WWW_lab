@@ -53,7 +53,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public PageResponseDTO<JobDTO> getAllJob(Pageable pageable) {
+    public PageResponseDTO<JobDTO> getAllJob(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<JobDTO> jobs = jobRepository.findAll(pageable).map(jobMapper::toDTO);
         return new PageResponseDTO<>(jobs);
     }

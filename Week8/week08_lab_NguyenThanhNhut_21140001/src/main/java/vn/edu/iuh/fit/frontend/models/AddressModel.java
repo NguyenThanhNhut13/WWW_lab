@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class AddressModel {
@@ -36,7 +38,7 @@ public class AddressModel {
         this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
-    public List<String> getCountries() throws JsonProcessingException {
+    public List<Map<String, String>> getCountries() throws JsonProcessingException {
         String url = "https://restcountries.com/v3.1/all";
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
@@ -47,12 +49,18 @@ public class AddressModel {
 
         JsonNode rootNode = jacksonObjectMapper.readTree(response.getBody());
 
-        List<String> countries = new ArrayList<>();
+        List<Map<String, String>> countries = new ArrayList<>();
 
         for (JsonNode node : rootNode) {
             JsonNode nameNode = node.path("name").path("common");
-            if (!nameNode.isMissingNode()) {
-                countries.add(nameNode.asText());
+            JsonNode codeNode = node.path("cca2");
+
+            if (!nameNode.isMissingNode() && !codeNode.isMissingNode()) {
+                Map<String, String> country = new HashMap<>();
+                country.put("name", nameNode.asText());
+                country.put("code", codeNode.asText());
+
+                countries.add(country);
             }
         }
 

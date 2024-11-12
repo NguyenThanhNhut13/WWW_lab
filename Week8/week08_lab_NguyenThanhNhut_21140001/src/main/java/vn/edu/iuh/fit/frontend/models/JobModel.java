@@ -14,9 +14,8 @@ package vn.edu.iuh.fit.frontend.models;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
@@ -36,13 +35,8 @@ public class JobModel {
     private static final String JOB_API_URL = "http://localhost:8080/api/jobs";
 
     public PageResponseDTO<JobDTO> getAllJob(int page, int size) {
-        ResponseEntity<PageResponseDTO<JobDTO>> response = restTemplate.exchange(
-                JOB_API_URL + "?page=" + page + "&size=" + size,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-        return response.getBody();
+
+        return restTemplate.exchange(JOB_API_URL + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
+        }).getBody();
     }
 }

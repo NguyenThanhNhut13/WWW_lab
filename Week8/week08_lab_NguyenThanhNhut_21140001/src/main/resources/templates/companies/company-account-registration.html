@@ -17,71 +17,71 @@
             <div class="card shadow-lg">
                 <div class="card-body p-4 p-md-5">
                     <h2 class="text-center mb-4">Company Registration</h2>
-                    <form id="registrationForm" class="needs-validation" th:action="@{/company/register}" method="post"
+                    <form id="registrationForm" class="needs-validation" th:action="@{/company/register}" th:object="${company}" method="post"
                           >
                         <div class="row g-3">
                             <div class="col-12">
                                 <label for="companyName" class="form-label">Tên công ty</label>
-                                <input type="text" class="form-control" id="companyName" name="companyName"  placeholder="Công ty ABC" required>
+                                <input type="text" class="form-control" id="companyName" th:field="*{compName}"  placeholder="Công ty ABC" required>
                                 <div class="invalid-feedback">Vui lòng nhập tên công ty</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="abc@gmail.com" required>
+                                <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="abc@gmail.com" required>
                                 <div class="invalid-feedback">Vui lòng nhập email</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">Số điện thoại</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="0123456789" required>
+                                <input type="tel" class="form-control" id="phone" th:field="*{phone}" placeholder="0123456789" required>
                                 <div class="invalid-feedback">Vui lòng nhập số điện thoại</div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="logo" class="form-label">Logo</label>
-                                <input type="text" class="form-control" id="logo" name="logo" placeholder="https://example.com/logo.png" required>
+                                <input type="text" class="form-control" id="logo" th:field="*{logo}" placeholder="https://example.com/logo.png" required>
                                 <div class="invalid-feedback">Vui lòng nhập URL logo</div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="website" class="form-label">Website</label>
-                                <input type="text" class="form-control" id="website" name="website" placeholder="https://example.com" required>
+                                <input type="text" class="form-control" id="website" th:field="*{webUrl}" placeholder="https://example.com" required>
                                 <div class="invalid-feedback">Vui lòng nhập URL website</div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="country" class="form-label">Quốc gia</label>
-                                <select class="form-select" id="country" name="country" required>
+                                <select class="form-select" id="country" th:field="*{address.country}" required>
                                     <option value="">Chọn quốc gia</option>
                                     <option th:each="country : ${countries}"
-                                            th:value="${country}"
-                                            th:text="${country}"></option>
+                                            th:value="${country['code']}"
+                                            th:text="${country['name']}"></option>
                                 </select>
                                 <div class="invalid-feedback">Vui lòng chọn quốc gia</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="city" class="form-label">Thành phố</label>
-                                <input type="text" class="form-control" id="city" name="city" placeholder="Hồ Chí Minh" required>
+                                <input type="text" class="form-control" id="city" th:field="*{address.city}" placeholder="Hồ Chí Minh" required>
                                 <div class="invalid-feedback">Vui lòng nhập thành phố</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="street" class="form-label">Đường</label>
-                                <input type="text" class="form-control" id="street" name="street" placeholder="Lê Đức Thọ" required>
+                                <input type="text" class="form-control" id="street" th:field="*{address.street}" placeholder="Lê Đức Thọ" required>
                                 <div class="invalid-feedback">Vui lòng nhập tên đường</div>
                             </div>
                             <div class="col-md-3">
                                 <label for="number" class="form-label">Số nhà</label>
-                                <input type="text" class="form-control" id="number" name="number" placeholder="123" required>
+                                <input type="text" class="form-control" id="number" th:field="*{address.number}" placeholder="123" required>
                                 <div class="invalid-feedback">Vui lòng nhập số nhà</div>
                             </div>
                             <div class="col-md-3">
                                 <label for="zip" class="form-label">Mã bưu điện</label>
-                                <input type="text" class="form-control" id="zip" name="zip" placeholder="700000" required>
+                                <input type="text" class="form-control" id="zip" th:field="*{address.zipCode}" placeholder="700000" required>
                                 <div class="invalid-feedback">Vui lòng nhập mã bưu điện</div>
                             </div>
 
                             <div class="col-12">
                                 <label for="description" class="form-label">Mô tả công ty</label>
-                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                <textarea class="form-control" id="description" th:field="*{about}" rows="3" required></textarea>
                                 <div class="invalid-feedback">Vui lòng nhập mô tả công ty</div>
                             </div>
                         </div>

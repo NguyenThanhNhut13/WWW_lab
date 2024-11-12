@@ -19,7 +19,7 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 
 public interface JobService {
-    PageResponseDTO<JobDTO> getAllJob(Pageable pageable);
+    PageResponseDTO<JobDTO> getAllJob(int page, int size);
     JobDTO getJobById(Long id);
     JobDTO saveJob(JobDTO jobDTO);
     JobDTO updateJob(JobDTO jobDTO);

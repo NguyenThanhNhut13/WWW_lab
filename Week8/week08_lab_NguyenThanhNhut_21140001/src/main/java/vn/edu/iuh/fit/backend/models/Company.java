@@ -17,7 +17,8 @@ public class Company {
     @Column(name = "comp_id", nullable = false)
     private Long id;
 
-    @Column(name = "about", length = 2000)
+    @Lob
+    @Column(name = "about", columnDefinition = "TEXT")
     private String about;
 
     @Column(name = "email", nullable = false)
@@ -34,11 +35,15 @@ public class Company {
 
     private String logo;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
     @OneToMany(mappedBy = "company")
     private Set<Job> jobs = new LinkedHashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
 }

@@ -14,6 +14,8 @@ package vn.edu.iuh.fit.backend.resources;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +36,8 @@ public class CompanyRESTController {
 
     @PostMapping
     @Transactional
-    public void saveCompany(@RequestBody CompanyDTO companyDTO) {
-        companyService.saveCompany(companyDTO);
+    public ResponseEntity<CompanyDTO> saveCompany(@RequestBody CompanyDTO companyDTO) {
+        CompanyDTO company = companyService.saveCompany(companyDTO);
+        return new ResponseEntity<>(company, HttpStatus.CREATED);
     }
 }

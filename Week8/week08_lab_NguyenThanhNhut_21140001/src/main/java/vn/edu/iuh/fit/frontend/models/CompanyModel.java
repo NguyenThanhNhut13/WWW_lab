@@ -13,16 +13,14 @@ package vn.edu.iuh.fit.frontend.models;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import vn.edu.iuh.fit.backend.dtos.AddressDTO;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 
 @Component
 public class CompanyModel {
@@ -35,47 +33,24 @@ public class CompanyModel {
         this.restTemplate = restTemplate;
     }
 
-    public boolean saveCompany(Map<String, String> allParams) {
-        CompanyDTO companyDTO = new CompanyDTO();
-        companyDTO.setCompName(allParams.get("companyName"));
-        companyDTO.setEmail(allParams.get("email"));
-        companyDTO.setPhone(allParams.get("phone"));
-        companyDTO.setLogo(allParams.get("logo"));
-        companyDTO.setWebUrl(allParams.get("website"));
-        companyDTO.setAbout(allParams.get("description"));
-
-        AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setCity(allParams.get("city"));
-        addressDTO.setCountry(allParams.get("country"));
-        addressDTO.setStreet(allParams.get("street"));
-        addressDTO.setZipCode(allParams.get("zip"));
-        addressDTO.setNumber(allParams.get("number"));
-
-        companyDTO.setAddress(addressDTO);
-
-        System.out.println(companyDTO);
-
+    public boolean saveCompany(CompanyDTO companyDTO) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
+            HttpEntity<CompanyDTO> request = new HttpEntity<>(companyDTO, headers);
 
-            // Create the HttpEntity with the request body and headers
-            HttpEntity<CompanyDTO> requestEntity = new HttpEntity<>(companyDTO, headers);
-
-            // Send the request
             ResponseEntity<CompanyDTO> response = restTemplate.exchange(
                     COMPANY_API_URL,
                     HttpMethod.POST,
-                    requestEntity,  // Passing the request entity with the body
-                    CompanyDTO.class
-            );
-            return true;
+                    request,
+                    CompanyDTO.class);
+
+            return response.getStatusCode() == HttpStatus.CREATED;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error while saving company: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
-
 
 }
