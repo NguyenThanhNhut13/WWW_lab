@@ -40,7 +40,7 @@ public class Candidate {
     private Address address;
 
     @OneToMany(mappedBy = "can")
-    private Set<CandidateSkill> candidateSkills = new LinkedHashSet<>();
+    private List<CandidateSkill> candidateSkills;
 
     @OneToMany(mappedBy = "candidate")
     private List<Experience> experiences;

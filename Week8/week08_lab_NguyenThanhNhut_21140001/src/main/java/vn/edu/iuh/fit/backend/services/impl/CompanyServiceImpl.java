@@ -23,20 +23,26 @@ import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.models.Address;
 import vn.edu.iuh.fit.backend.models.Company;
+import vn.edu.iuh.fit.backend.models.Role;
+import vn.edu.iuh.fit.backend.models.User;
 import vn.edu.iuh.fit.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.backend.repositories.CompanyRepository;
 import vn.edu.iuh.fit.backend.repositories.UserRepository;
 import vn.edu.iuh.fit.backend.services.CompanyService;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
     private final AddressRepository addressRepository;
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private final CompanyMapper companyMapper;
     private final AddressMapper addressMapper;
-    private final UserRepository userRepository;
     private final UserMapper userMapper;
+
 
     @Autowired
     public CompanyServiceImpl(AddressRepository addressRepository, CompanyRepository companyRepository, CompanyMapper companyMapper, AddressMapper addressMapper, UserRepository userRepository, UserMapper userMapper) {
@@ -60,10 +66,24 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDTO getCompanyByUserId(Long id) {
+        return companyMapper.toDTO(companyRepository.findCompanyByUserId(id));
+    }
+
+    @Override
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
         Company company = companyMapper.toEntity(companyDTO);
         if (companyDTO.getUserId() != null) {
-            company.setUser(userRepository.findById(companyDTO.getUserId()).orElse(null));
+            User user = userRepository.findById(companyDTO.getUserId()).orElse(null);
+
+            // If the user is not null, add the role "COMPANY" to the user
+            if (user != null) {
+                Set<Role> roles = user.getRoles();
+                roles.add(new Role("COMPANY"));
+                user.setRoles(roles);
+                userRepository.save(user);
+            }
+            company.setUser(user);
         }
         if (companyDTO.getAddress() != null) {
             Address address = addressRepository.save(addressMapper.toEntity(companyDTO.getAddress()));

@@ -21,6 +21,7 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 public interface JobService {
     PageResponseDTO<JobDTO> getAllJob(int page, int size);
     JobDTO getJobById(Long id);
+    PageResponseDTO<JobDTO> getJobsByCompanyId(Long id, int page, int size);
     JobDTO saveJob(JobDTO jobDTO);
     JobDTO updateJob(JobDTO jobDTO);
     void deleteJob(Long id);

@@ -25,7 +25,7 @@ public class Skill {
     private String skillName;
 
     @Column(name = "type")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SkillType type;
 
     @OneToMany(mappedBy = "skill")

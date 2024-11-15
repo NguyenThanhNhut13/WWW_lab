@@ -13,15 +13,36 @@ package vn.edu.iuh.fit.backend.converters;
  */
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import vn.edu.iuh.fit.backend.dtos.JobSkillDTO;
+import vn.edu.iuh.fit.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.backend.models.JobSkill;
 
 @Mapper(componentModel = "spring")
 public interface JobSkillMapper {
     JobSkillMapper INSTANCE = Mappers.getMapper(JobSkillMapper.class);
 
+    @Mapping(target = "skillLevel", source = "skillLevel", qualifiedByName = "toSkillLevel")
     JobSkillDTO toDTO(JobSkill jobSkill);
 
+    @Mapping(target = "skillLevel", source = "skillLevel", qualifiedByName = "fromSkillLevel")
     JobSkill toEntity(JobSkillDTO jobSkillDTO);
+
+    @Named("toSkillLevel")
+    default String toSkillLevel(SkillLevel level) {
+        return level.getValue();
+    }
+
+    @Named("fromSkillLevel")
+    default SkillLevel fromSkillLevel(String value) {
+        if (value == null) return null;
+        for (SkillLevel level : SkillLevel.values()) {
+            if (level.getValue().equals(value)) {
+                return level;
+            }
+        }
+        return SkillLevel.BEGINNER;
+    }
 }

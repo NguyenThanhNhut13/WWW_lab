@@ -25,9 +25,11 @@ public interface AddressMapper {
     AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);
 
     @Mapping(source = "country", target = "country", qualifiedByName = "countryToString")
+    @Mapping(source = "zipcode", target = "zipCode")
     AddressDTO toDTO(Address address);
 
     @Mapping(source = "country", target = "country", qualifiedByName = "stringToCountry")
+    @Mapping(source = "zipCode", target = "zipcode")
     Address toEntity(AddressDTO addressDTO);
 
     // Conversion from CountryCode enum to String

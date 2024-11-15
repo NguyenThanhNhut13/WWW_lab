@@ -1,17 +1,33 @@
 package vn.edu.iuh.fit.backend.enums;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum SkillLevel {
 
-    BEGINNER(1), INTERMEDIATE(2), ADVANCED(3), PROFESSIONAL(4), MASTER(5);
+    BEGINNER("BEGINNER"), INTERMEDIATE("INTERMEDIATE"), ADVANCED("ADVANCED"), PROFESSIONAL("PROFESSIONAL"), MASTER("MASTER");
 
-    private final int value;
+    private final String value;
 
-    SkillLevel(int value) {
+    SkillLevel(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    @JsonValue
+    public String getValue() {
         return value;
     }
+
+    @JsonCreator
+    public static SkillLevel fromValue(String value) {
+        for (SkillLevel level : SkillLevel.values()) {
+            if (level.value.equals(value)) {
+                return level;
+            }
+        }
+        throw new IllegalArgumentException("Unknown SkillLevel with value: " + value);
+    }
+
+
 }

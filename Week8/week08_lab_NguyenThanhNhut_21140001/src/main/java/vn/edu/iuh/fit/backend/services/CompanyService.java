@@ -19,6 +19,7 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 public interface CompanyService {
     PageResponseDTO<CompanyDTO> getAllCompany(Pageable pageable);
     CompanyDTO getCompanyById(Long id);
+    CompanyDTO getCompanyByUserId(Long id);
     CompanyDTO saveCompany(CompanyDTO companyDTO);
     CompanyDTO updateCompany(CompanyDTO companyDTO);
     void deleteCompany(Long id);

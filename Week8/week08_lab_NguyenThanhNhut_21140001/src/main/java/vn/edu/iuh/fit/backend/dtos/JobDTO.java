@@ -16,6 +16,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -28,6 +29,7 @@ public class JobDTO implements Serializable {
     private String jobDesc;
     private String jobName;
     private CompanyDTO company;
-    private double salary;
-    private Set<JobSkillDTO> jobSkills;
+    private String salary;
+    private int status;
+    private List<JobSkillDTO> jobSkills;
 }

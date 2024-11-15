@@ -15,8 +15,6 @@ package vn.edu.iuh.fit.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,4 +31,7 @@ public class Role {
     @Column(name = "role_name")
     private String roleName;
 
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
 }

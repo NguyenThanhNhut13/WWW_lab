@@ -20,6 +20,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
+import vn.edu.iuh.fit.backend.dtos.SkillDTO;
+
+import java.util.Set;
 
 
 @Component
@@ -38,5 +41,25 @@ public class JobModel {
 
         return restTemplate.exchange(JOB_API_URL + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
         }).getBody();
+    }
+
+    public PageResponseDTO<JobDTO> getJobsByCompanyId(Long id, int page, int size) {
+        try {
+            return restTemplate.exchange(JOB_API_URL + "/company/" + id + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
+            }).getBody();
+        } catch (Exception e) {
+            System.out.println("Error while getting jobs by company id: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Set<SkillDTO> getAllSkills() {
+        try {
+            return restTemplate.exchange("http://localhost:8080/api/skills", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Set<SkillDTO>>() {
+            }).getBody();
+        } catch (Exception e) {
+            System.out.println("Error while getting all skills: " + e.getMessage());
+            return null;
+        }
     }
 }

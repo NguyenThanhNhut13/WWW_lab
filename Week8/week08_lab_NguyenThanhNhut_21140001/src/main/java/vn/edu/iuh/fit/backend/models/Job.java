@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -23,13 +25,15 @@ public class Job {
     @Column(name = "job_name", nullable = false)
     private String jobName;
 
-    private double salary;
+    private String salary;
+
+    private int status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company")
     private Company company;
 
     @OneToMany(mappedBy = "job")
-    private Set<JobSkill> jobSkills = new LinkedHashSet<>();
+    private List<JobSkill> jobSkills = new ArrayList<>();
 
 }

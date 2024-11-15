@@ -13,16 +13,8 @@ package vn.edu.iuh.fit.backend.resources;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.services.JobService;
@@ -51,5 +43,39 @@ public class JobRESTController {
             return ResponseEntity.badRequest().build();
         }
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<JobDTO> getJobById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(jobService.getJobById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/company/{id}")
+    public ResponseEntity<PageResponseDTO<JobDTO>> getJobsByCompanyId(
+            @PathVariable Long id,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        try {
+            PageResponseDTO<JobDTO> jobs = jobService.getJobsByCompanyId(id, page.orElse(0), size.orElse(15));
+            return ResponseEntity.ok(jobs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<JobDTO> save(@RequestBody JobDTO jobDTO) {
+        try {
+            return ResponseEntity.ok(jobService.saveJob(jobDTO));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
 
 }

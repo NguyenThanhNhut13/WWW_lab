@@ -16,10 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 import vn.edu.iuh.fit.backend.services.CompanyService;
 
@@ -32,6 +29,15 @@ public class CompanyRESTController {
     @Autowired
     public CompanyRESTController(CompanyService companyService) {
         this.companyService = companyService;
+    }
+
+    @GetMapping("byUser/{userId}")
+    public ResponseEntity<CompanyDTO> findCompanyByUserId(@PathVariable Long userId) {
+        try {
+            return ResponseEntity.ok(companyService.getCompanyByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping

@@ -22,15 +22,12 @@ import vn.edu.iuh.fit.backend.converters.JobMapper;
 import vn.edu.iuh.fit.backend.converters.JobSkillMapper;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
-import vn.edu.iuh.fit.backend.models.Candidate;
-import vn.edu.iuh.fit.backend.models.Job;
-import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
-import vn.edu.iuh.fit.backend.repositories.JobRepository;
-import vn.edu.iuh.fit.backend.repositories.JobSkillRepository;
+import vn.edu.iuh.fit.backend.models.*;
+import vn.edu.iuh.fit.backend.repositories.*;
 import vn.edu.iuh.fit.backend.services.CompanyService;
 import vn.edu.iuh.fit.backend.services.JobService;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -41,15 +38,17 @@ public class JobServiceImpl implements JobService {
     private final JobSkillRepository jobSkillRepository;
     private final JobSkillMapper jobSkillMapper;
     private final CandidateRepository candidateRepository;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
+    private final SkillRepository skillRepository;
 
-    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, JobSkillRepository jobSkillRepository, JobSkillMapper jobSkillMapper, CandidateRepository candidateRepository, CompanyService companyService) {
+    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, JobSkillRepository jobSkillRepository, JobSkillMapper jobSkillMapper, CandidateRepository candidateRepository, CompanyRepository companyRepository, SkillRepository skillRepository) {
         this.jobRepository = jobRepository;
         this.jobMapper = jobMapper;
         this.jobSkillRepository = jobSkillRepository;
         this.jobSkillMapper = jobSkillMapper;
         this.candidateRepository = candidateRepository;
-        this.companyService = companyService;
+        this.companyRepository = companyRepository;
+        this.skillRepository = skillRepository;
     }
 
     @Override
@@ -65,33 +64,63 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public PageResponseDTO<JobDTO> getJobsByCompanyId(Long id, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<JobDTO> jobs = jobRepository.findJobsByCompany_Id(id, pageable).map(jobMapper::toDTO);
+        return new PageResponseDTO<>(jobs);
+    }
+
+    @Override
     public JobDTO saveJob(JobDTO jobDTO) {
+        Job job = jobMapper.toEntity(jobDTO);
         if (jobDTO.getCompany() != null && jobDTO.getCompany().getId() != null) {
-            companyService.saveCompany(jobDTO.getCompany());
+            Company company = companyRepository.findById(jobDTO.getCompany().getId())
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
+            job.setCompany(company);
         }
+
+        jobRepository.save(job);
 
         if (jobDTO.getJobSkills() != null) {
+            List<JobSkill> jobSkills = new ArrayList<>();
             jobDTO.getJobSkills().forEach(jobSkillDTO -> {
-                jobSkillRepository.save(jobSkillMapper.toEntity(jobSkillDTO));
+
+                Skill skill = new Skill();
+                // find skill by id
+                if (jobSkillDTO.getSkill().getId() != null) {
+                    skill = skillRepository.findById(jobSkillDTO.getSkill().getId())
+                            .orElseThrow(() -> new RuntimeException("Skill not found"));
+
+                } else {
+                    // create new skill
+                    skill.setSkillName(jobSkillDTO.getSkill().getSkillName());
+                    skill.setSkillDescription(jobSkillDTO.getSkill().getDescription());
+                    skillRepository.save(skill);
+                }
+
+                JobSkill jobSkill = jobSkillMapper.toEntity(jobSkillDTO);
+
+                // create job skill id
+                JobSkillId jobSkillId = new JobSkillId();
+                jobSkillId.setJobId(job.getId());
+                jobSkillId.setSkillId(skill.getId());
+
+                jobSkill.setId(jobSkillId);
+                jobSkill.setSkill(skill);
+                jobSkill.setJob(job);
+
+                jobSkillRepository.save(jobSkill);
+                jobSkills.add(jobSkill);
             });
+            job.setJobSkills(jobSkills);
         }
 
-        return jobMapper.toDTO(jobRepository.save(jobMapper.toEntity(jobDTO)));
+        return jobMapper.toDTO(jobRepository.save(job));
     }
 
     @Override
     public JobDTO updateJob(JobDTO jobDTO) {
-        if (jobDTO.getCompany() != null && jobDTO.getCompany().getId() != null) {
-            companyService.updateCompany(jobDTO.getCompany());
-        }
-
-        if (jobDTO.getJobSkills() != null) {
-            jobDTO.getJobSkills().forEach(jobSkillDTO -> {
-                jobSkillRepository.save(jobSkillMapper.toEntity(jobSkillDTO));
-            });
-        }
-
-        return jobMapper.toDTO(jobRepository.save(jobMapper.toEntity(jobDTO)));
+        return saveJob(jobDTO);
     }
 
     @Override

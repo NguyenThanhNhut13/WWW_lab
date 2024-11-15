@@ -13,13 +13,19 @@ package vn.edu.iuh.fit.frontend.models;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
+import vn.edu.iuh.fit.backend.dtos.JobDTO;
+import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
 
 
 @Component
@@ -48,8 +54,16 @@ public class CompanyModel {
             return response.getStatusCode() == HttpStatus.CREATED;
         } catch (Exception e) {
             System.out.println("Error while saving company: " + e.getMessage());
-            e.printStackTrace();
             return false;
+        }
+    }
+
+    public CompanyDTO getCompanyByUserId(Long id) {
+        try {
+            return restTemplate.getForObject(COMPANY_API_URL + "/byUser/" + id, CompanyDTO.class);
+        } catch (Exception e) {
+            System.out.println("Error while getting company by user id: " + e.getMessage());
+            return null;
         }
     }
 

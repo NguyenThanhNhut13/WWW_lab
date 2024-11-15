@@ -1,0 +1,189 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+    background: #343a40;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.sidebar.active {
+    margin-left: -250px;
+}
+
+.sidebar .sidebar-header {
+    padding: 20px;
+    background: #2c3136;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .sidebar-header .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.sidebar ul.components {
+    padding: 20px 0;
+}
+
+.sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: #2c3136;
+}
+
+.sidebar ul li.active > a {
+    background: #2c3136;
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: -250px;
+    }
+    .sidebar.active {
+        margin-left: 0;
+    }
+    #content {
+        width: 100%;
+    }
+    .stat-card {
+        margin-bottom: 20px;
+    }
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+
+/*For job management*/
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transition: background-color 0.2s ease;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.badge.bg-info {
+    color: #fff;
+}
+
+.badge.bg-warning {
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        border: 0;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+
+    .table td {
+        display: block;
+        text-align: right;
+        padding: 0.75rem;
+        position: relative;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+}

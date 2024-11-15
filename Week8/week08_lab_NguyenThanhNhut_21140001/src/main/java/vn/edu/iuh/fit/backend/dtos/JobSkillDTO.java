@@ -12,6 +12,8 @@ package vn.edu.iuh.fit.backend.dtos;
  * @version:    1.0
  */
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 import vn.edu.iuh.fit.backend.enums.SkillLevel;
 

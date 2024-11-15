@@ -27,7 +27,7 @@ public class CandidateSkill {
     private String moreInfos;
 
     @Column(name = "skill_level", nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SkillLevel skillLevel;
 
 }

@@ -1,15 +1,30 @@
 package vn.edu.iuh.fit.backend.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum SkillType {
-    SOFT_SKILL(1), UNSPECIFIED(2), TECHNICAL_SKILL(3);
+    SOFT_SKILL("SOFT_SKILL"), UNSPECIFIED("UNSPECIFIED"), TECHNICAL_SKILL("TECHNICAL_SKILL");
 
-    private final int value;
+    private final String value;
 
-    SkillType(int value) {
+    SkillType(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    @JsonValue
+    public String getValue() {
         return value;
     }
+
+    @JsonCreator
+    public static SkillType fromValue(String value) {
+        for (SkillType type : SkillType.values()) {
+            if (type.value.equals(value)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Unknown SkillType with value: " + value);
+    }
+
 }

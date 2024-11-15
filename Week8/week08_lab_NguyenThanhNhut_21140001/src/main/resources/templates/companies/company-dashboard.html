@@ -1,0 +1,509 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Posting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/company-dashboard.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="sidebar-header">
+                    <img th:src="${company.logo}"
+                            alt="Logo" class="logo">
+                    <h3>Job Portal</h3>
+                </div>
+                <ul class="list-unstyled components nav flex-column" id="sidebarMenu">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#jobs" data-bs-toggle="tab">
+                            <i class="bi bi-briefcase me-2"></i>Jobs Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#candidates" data-bs-toggle="tab">
+                            <i class="bi bi-people me-2"></i>Candidates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reports" data-bs-toggle="tab">
+                            <i class="bi bi-graph-up me-2"></i>Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#settings" data-bs-toggle="tab">
+                            <i class="bi bi-gear me-2"></i>Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="tab-content" id="sidebarContent">
+                <div class="tab-pane fade show active" id="dashboard">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h2>Dashboard Overview</h2>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card stat-card">
+                                <div class="card-body">
+                                    <h5>Total Jobs</h5>
+                                    <h2>256</h2>
+                                    <p class="text-success"><i class="bi bi-arrow-up"></i> 12% increase</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stat-card">
+                                <div class="card-body">
+                                    <h5>Active Jobs</h5>
+                                    <h2>180</h2>
+                                    <p class="text-primary"><i class="bi bi-clock"></i> Currently active</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stat-card">
+                                <div class="card-body">
+                                    <h5>Applications</h5>
+                                    <h2>1,204</h2>
+                                    <p class="text-success"><i class="bi bi-arrow-up"></i> 8% increase</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stat-card">
+                                <div class="card-body">
+                                    <h5>Hired</h5>
+                                    <h2>45</h2>
+                                    <p class="text-info"><i class="bi bi-person-check"></i> This month</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Recent Job Postings</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Job Title</th>
+                                                <th>Department</th>
+                                                <th>Posted Date</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Senior Frontend Developer</td>
+                                                <td>Engineering</td>
+                                                <td>2023-10-15</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info"><i class="bi bi-pencil"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Manager</td>
+                                                <td>Product</td>
+                                                <td>2023-10-14</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editJobModal"><i class="bi bi-pencil"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade container-fluid py-4" id="jobs">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">Job Listings</h2>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJobModal">
+                                    <i class="bi bi-plus-lg me-2"></i>Add New Job
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12 col-md-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search jobs..." aria-label="Search jobs">
+                                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <select class="form-select" aria-label="Filter by status">
+                                <option selected>Filter by Status</option>
+                                <option value="hiring">Hiring</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Job Title</th>
+                                        <th scope="col">Salary</th>
+                                        <th scope="col">Skills</th>
+                                        <th scope="col">Skill Level</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="job: ${jobs}">
+                                        <td><a href="#" class="text-decoration-none" th:text="${job.jobName}"></a></td>
+                                        <td th:text="'$'+${job.salary}"></td>
+                                        <td>
+                                            <span class="badge bg-primary me-1" th:each="jobSkill: ${job.jobSkills}" th:text="${jobSkill.skill.skillName}"></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info me-1" th:each="jobSkill: ${job.jobSkills}" th:text="${jobSkill.skillLevel}"></span>
+                                        </td>
+                                        <td><span class="badge bg-success" th:text="${job.status} == 1 ? 'Hiring' : 'Closed'"></span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="candidates">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h2>Candidates Management</h2>
+                        <div class="input-group w-25">
+                            <input type="text" class="form-control" placeholder="Search candidates..." aria-label="Search candidates">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9" class="card-img-top" alt="Candidate Photo">
+                                <div class="card-body">
+                                    <h5 class="card-title">John Doe</h5>
+                                    <p class="card-text">Senior Developer</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                                        <button class="btn btn-sm btn-outline-success">Contact</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="reports">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h2>Reports & Analytics</h2>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                This Month
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">This Week</a></li>
+                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">Job Applications Trend</div>
+                                <div class="card-body">
+                                    <canvas id="applicationsChart" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">Hiring Status</div>
+                                <div class="card-body">
+                                    <canvas id="hiringChart" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h2>System Settings</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">Company Information</div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label class="form-label">Company Name</label>
+                                            <input type="text" class="form-control" value="Tech Corp">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" value="contact@techcorp.com">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">Notification Settings</div>
+                                <div class="card-body">
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" checked>
+                                        <label class="form-check-label">Email Notifications</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" checked>
+                                        <label class="form-check-label">Application Alerts</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Weekly Reports</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Job Modal -->
+    <div class="modal fade" id="addJobModal" tabindex="-1" aria-labelledby="jobModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0">
+                <div class="modal-header bg-gradient">
+                    <h5 class="modal-title" id="jobModalLabel">Add New Job Position</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="jobForm" th:action="@{/company/job/save}" th:object="${jobDTO}" th:method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="jobTitle" class="form-label">Job Title</label>
+                                <input type="text" class="form-control" th:field="*{jobName}" id="jobTitle" aria-label="Job Title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="salary" class="form-label">Salary Range</label>
+                                <input type="text" class="form-control" th:field="*{salary}" id="salary" aria-label="Salary Range" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Job Description</label>
+                                <textarea class="form-control" th:field="*{jobDesc}" id="description" rows="3" aria-label="Job Description"></textarea>
+                            </div>
+
+                            <input type="hidden" th:field="*{company.id}" th:value="${company.id}">
+
+                            <div class="col-12">
+                                <h6>Required Skills</h6>
+                                <div id="skillsContainer">
+
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="addSkill">
+                                    <i class="bi bi-plus-circle"></i> Add Another Skill
+                                </button>
+                            </div>
+
+                            <template id="skillGroupTemplate">
+                                <div class="skill-group mb-3 animate__animated animate__fadeIn">
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <select class="form-select skill-select" name="jobSkills[INDEX].skill.id" required>
+                                                <option th:each="skillOption : ${skills}"
+                                                        th:value="${skillOption.id}"
+                                                        th:text="${skillOption.skillName}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="jobSkills[INDEX].skill.skillName">
+                                        <div class="col-md-3">
+                                            <select class="form-select" name="jobSkills[INDEX].skillLevel" required>
+                                                <option value="BEGINNER">Beginner</option>
+                                                <option value="INTERMEDIATE">Intermediate</option>
+                                                <option value="ADVANCED">Advanced</option>
+                                                <option value="PROFESSIONAL">Professional</option>
+                                                <option value="MASTER">Master</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control"
+                                                   name="jobSkills[INDEX].moreInfos"
+                                                   placeholder="Additional Info">
+                                        </div>
+                                        <div class="col-md-1 px-3 py-2" style="display: none;">
+                                            <select class="form-select" name="jobSkills[INDEX].skill.skillType">
+                                                <option value="SOFT_SKILL">Soft Skill</option>
+                                                <option value="TECHNICAL_SKILL">Technical Skill</option>
+                                                <option value="UNSPECIFIED">Unspecified</option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" id="" name="jobSkills[INDEX].skill.description">
+                                        <div class="col-md-1 px-3 py-2">
+                                            <button type="button" class="btn btn-close btn-sm remove-skill-btn"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- New Skill Form -->
+                            <div class="col-12 mt-3 d-none" id="newSkillForm">
+                                <div class="card">
+                                    <div class="card-header">Add New Skill</div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="newSkillName" class="form-label">Skill Name</label>
+                                                <input type="text" class="form-control" id="newSkillName">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="newSkillCategory" class="form-label">Category</label>
+                                                <select class="form-select" id="newSkillCategory" >
+                                                    <option value="SOFT_SKILL">SOFT_SKILL</option>
+                                                    <option value="UNSPECIFIED">UNSPECIFIED</option>
+                                                    <option value="TECHNICAL_SKILL">TECHNICAL_SKILL</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="newSkillDescription" class="form-label">Description</label>
+                                                <textarea class="form-control" id="newSkillDescription" rows="3"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-success" id="saveNewSkill">Add Skill</button>
+                                                <button type="button" class="btn btn-secondary" id="cancelNewSkill">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <template id="skillOptionsTemplate">
+                                <option th:each="skill : ${skills}"
+                                        th:value="${skill.skillName}"
+                                        th:text="${skill.skillName}">
+                                </option>
+                            </template>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveJob">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                Save Job
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Job Modal -->
+    <div class="modal fade" id="editJobModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Edit Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Job Name</label>
+                            <input type="text" class="form-control" value="Software Engineer" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Job Description</label>
+                            <textarea class="form-control" rows="3" required>Developing and maintaining software applications</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Required Skills</label>
+                            <div class="skill-container border rounded p-3">
+                                <div class="skill-item mb-3">
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <select class="form-select">
+                                                <option>JavaScript</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select">
+                                                <option value="2">Advanced</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <textarea class="form-control">3+ years of experience required</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-plus-circle me-2"></i>Add Another Skill
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning">Update Job</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/company-dashboard.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

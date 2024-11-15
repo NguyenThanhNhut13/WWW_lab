@@ -29,4 +29,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query("SELECT j FROM Job j JOIN j.jobSkills js WHERE js.skill.id IN :skillIds GROUP BY j HAVING COUNT(js.skill.id) >= :minSkills")
     Page<Job> findJobBySkills(List<Long> skillIds, long minSkills, Pageable pageable);
+
+    Page<Job> findJobsByCompany_Id(Long companyId, Pageable pageable);
 }

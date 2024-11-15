@@ -13,8 +13,6 @@
      */
 
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.security.authentication.AuthenticationManager;
-    import org.springframework.security.core.Authentication;
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
@@ -26,16 +24,21 @@
     import java.util.List;
 
     @Controller
-    public class JobController {
+    public class HomeController {
 
         private final JobModel jobModel;
 
         @Autowired
-        public JobController(JobModel jobModel) {
+        public HomeController(JobModel jobModel) {
             this.jobModel = jobModel;
         }
 
-        @RequestMapping(value = "/home", method = RequestMethod.GET)
+        @RequestMapping(value = "/login", method = RequestMethod.GET)
+        public String loginPage() {
+            return "login";
+        }
+
+        @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
         public String index(Model model) {
             if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
                 return "redirect:/login";
@@ -44,6 +47,7 @@
             model.addAttribute("jobs", jobs);
             return "home";
         }
+
 
 
 
