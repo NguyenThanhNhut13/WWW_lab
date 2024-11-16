@@ -62,4 +62,14 @@ public class JobModel {
             return null;
         }
     }
+
+    public boolean saveJob(JobDTO jobDTO) {
+        try {
+            restTemplate.postForObject(JOB_API_URL, jobDTO, JobDTO.class);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error while saving job: " + e.getMessage());
+            return false;
+        }
+    }
 }

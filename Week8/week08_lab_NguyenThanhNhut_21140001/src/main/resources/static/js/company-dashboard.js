@@ -23,14 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const descriptionInput = newSkillGroup.querySelector('input[name="jobSkills[' + skillIndex + '].skill.description"]');
         const removeButton = newSkillGroup.querySelector('.remove-skill-btn');
 
-        console.log('skillSelect', skillSelect);
-        console.log('skillNameInput', skillNameInput);
-        console.log('levelSelect', levelSelect);
-        console.log('infoInput', infoInput);
-        console.log('typeSelect', typeSelect);
-        console.log('descriptionInput', descriptionInput);
-        console.log('removeButton', removeButton);
-
         // Thêm tùy chọn cho select skill
         const newOption = document.createElement('option');
         newOption.value = skillId || '';

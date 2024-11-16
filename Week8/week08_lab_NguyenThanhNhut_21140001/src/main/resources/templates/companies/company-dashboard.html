@@ -19,27 +19,32 @@
                 </div>
                 <ul class="list-unstyled components nav flex-column" id="sidebarMenu">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                        <a class="nav-link active" href="#dashboard" data-bs-toggle="tab"
+                            th:class="${activeTab == 'dashboard' || activeTab == null} ? 'nav-link active' : 'nav-link'">
                             <i class="bi bi-speedometer2 me-2"></i>Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#jobs" data-bs-toggle="tab">
+                        <a class="nav-link" href="#jobs" data-bs-toggle="tab"
+                            th:class="${activeTab == 'jobs'} ? 'nav-link active' : 'nav-link'">
                             <i class="bi bi-briefcase me-2"></i>Jobs Management
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#candidates" data-bs-toggle="tab">
+                        <a class="nav-link" href="#candidates" data-bs-toggle="tab"
+                            th:class="${activeTab == 'candidates'} ? 'nav-link active' : 'nav-link'">
                             <i class="bi bi-people me-2"></i>Candidates
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#reports" data-bs-toggle="tab">
+                        <a class="nav-link" href="#reports" data-bs-toggle="tab"
+                            th:class="${activeTab == 'reports'} ? 'nav-link active' : 'nav-link'">
                             <i class="bi bi-graph-up me-2"></i>Reports
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#settings" data-bs-toggle="tab">
+                        <a class="nav-link" href="#settings" data-bs-toggle="tab"
+                            th:class="${activeTab == 'settings'} ? 'nav-link active' : 'nav-link'">
                             <i class="bi bi-gear me-2"></i>Settings
                         </a>
                     </li>
@@ -51,7 +56,7 @@
         </nav>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="tab-content" id="sidebarContent">
-                <div class="tab-pane fade show active" id="dashboard">
+                <div class="tab-pane fade show active" id="dashboard" th:class="${activeTab == 'dashboard' || activeTab == null} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>Dashboard Overview</h2>
                         <div class="btn-toolbar mb-2 mb-md-0">
@@ -147,7 +152,12 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade container-fluid py-4" id="jobs">
+                <div class="tab-pane fade container-fluid py-4" id="jobs" th:class="${activeTab == 'jobs'} ? 'tab-pane fade show active container-fluid py-4' : 'tab-pane fade container-fluid py-4'">
+                    <!--Show success message-->
+                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                        <span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center">
@@ -192,7 +202,7 @@
                                     <tbody>
                                     <tr th:each="job: ${jobs}">
                                         <td><a href="#" class="text-decoration-none" th:text="${job.jobName}"></a></td>
-                                        <td th:text="'$'+${job.salary}"></td>
+                                        <td th:text="${job.salary}"></td>
                                         <td>
                                             <span class="badge bg-primary me-1" th:each="jobSkill: ${job.jobSkills}" th:text="${jobSkill.skill.skillName}"></span>
                                         </td>
@@ -212,7 +222,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="candidates">
+                <div class="tab-pane fade" id="candidates" th:class="${activeTab == 'candidates'} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>Candidates Management</h2>
                         <div class="input-group w-25">
@@ -239,7 +249,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="reports">
+                <div class="tab-pane fade" id="reports" th:class="${activeTab == 'reports'} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>Reports & Analytics</h2>
                         <div class="btn-group">
@@ -273,7 +283,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="settings">
+                <div class="tab-pane fade" id="settings" th:class="${activeTab == 'settings'} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>System Settings</h2>
                     </div>
@@ -503,6 +513,18 @@
     </div>
 
 </div>
+<script>
+    setTimeout(function() {
+        const alert = document.getElementById('successAlert');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 1000);
+        }
+    }, 3000);
+</script>
 <script th:src="@{/js/company-dashboard.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
