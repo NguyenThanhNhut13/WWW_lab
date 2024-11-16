@@ -13,6 +13,7 @@ package vn.edu.iuh.fit.backend.converters;
  */
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
 import vn.edu.iuh.fit.backend.models.Candidate;
@@ -21,8 +22,10 @@ import vn.edu.iuh.fit.backend.models.Candidate;
 public interface CandidateMapper {
     CandidateMapper INSTANCE = Mappers.getMapper(CandidateMapper.class);
 
+    @Mapping(source = "user.id", target = "userId")
     CandidateDTO toDTO(Candidate candidate);
 
+    @Mapping(source = "userId", target = "user.id")
     Candidate toEntity(CandidateDTO candidateDTO);
 
 }

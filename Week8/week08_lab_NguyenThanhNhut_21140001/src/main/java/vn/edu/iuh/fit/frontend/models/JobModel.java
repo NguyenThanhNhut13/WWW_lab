@@ -72,4 +72,13 @@ public class JobModel {
             return false;
         }
     }
+
+    public JobDTO getJobById(Long id) {
+        try {
+            return restTemplate.exchange(JOB_API_URL + "/" + id, HttpMethod.GET, HttpEntity.EMPTY, JobDTO.class).getBody();
+        } catch (Exception e) {
+            System.out.println("Error while getting job by id: " + e.getMessage());
+            return null;
+        }
+    }
 }

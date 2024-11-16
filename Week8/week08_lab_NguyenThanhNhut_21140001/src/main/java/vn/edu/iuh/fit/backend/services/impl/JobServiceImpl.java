@@ -114,7 +114,6 @@ public class JobServiceImpl implements JobService {
             });
             job.setJobSkills(jobSkills);
         }
-
         return jobMapper.toDTO(jobRepository.save(job));
     }
 

@@ -65,7 +65,6 @@ public class UserController {
             return "redirect:/company/dashboard";
         }
 
-        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(System.out::println);
         List<Map<String, String>> countries = addressModel.getCountries();
         model.addAttribute("company", new CompanyDTO());
         model.addAttribute("countries", countries);
@@ -119,7 +118,8 @@ public class UserController {
 
     @RequestMapping(value = "/job/save", method = RequestMethod.POST)
     public String saveJob(@ModelAttribute("jobDTO") JobDTO jobDTO, RedirectAttributes redirectAttributes) {
-        if (true) {
+        jobDTO.setStatus(1);
+        if (jobModel.saveJob(jobDTO)) {
             redirectAttributes.addFlashAttribute("successMessage", "Job saved successfully");
             redirectAttributes.addFlashAttribute("activeTab", "jobs");
             return "redirect:/company/dashboard";

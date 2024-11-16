@@ -32,4 +32,5 @@ public class CandidateDTO implements Serializable {
     private AddressDTO address;
     private Set<CandidateSkillDTO> candidateSkills;
     private Set<ExperienceDTO> experiences;
+    private String userId;
 }

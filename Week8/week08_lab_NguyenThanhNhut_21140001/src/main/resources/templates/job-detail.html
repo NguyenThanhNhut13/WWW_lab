@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${job != null ? job.jobName + ' - World Jobs' : 'Job Not Found - World Jobs'}">Job Details - World Jobs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .job-header {
+            background-color: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand fs-3 fw-bold text-primary" href="/">World Jobs</a>
+            <!-- Add more navigation items here if needed -->
+        </div>
+    </nav>
+</header>
+
+<main class="container py-5">
+    <div th:if="${job != null}" class="card shadow-sm">
+        <div class="card-header job-header py-4">
+            <div class="d-flex align-items-center">
+                <img th:src="${job.company?.logo}" th:alt="${job.company?.compName + ' logo'}"
+                     class="rounded company-logo me-4"
+                     onerror="this.src='https://via.placeholder.com/100';">
+                <div>
+                    <h1 class="card-title h2 mb-1" th:text="${job.jobName ?: 'Untitled Job'}">Software Engineer</h1>
+                    <p class="card-text fs-5 text-muted mb-0" th:text="${job.company?.compName ?: 'Unknown Company'}">Google</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-4">
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt fs-4 me-2 text-primary"></i>
+                        <span th:text="${job.company?.address?.city ?: 'Location not specified'}">Mountain View, CA</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-cash fs-4 me-2 text-primary"></i>
+                        <span th:text="${job.salary ?: 'Salary not specified'}">$120,000 - $180,000</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-calendar fs-4 me-2 text-primary"></i>
+                        <span>Posted on Oct 15, 2023</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock fs-4 me-2 text-primary"></i>
+                        <span>Full-time</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-briefcase fs-4 me-2 text-primary"></i>
+                        <span>3+ years</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people fs-4 me-2 text-primary"></i>
+                        <span>5 positions</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="h4 mb-3">Mô tả công việc</h2>
+            <p th:text="${job.jobDesc ?: 'No job description available.'}">Join our team of talented engineers working on cutting-edge technologies. You'll be responsible for designing, developing, and maintaining software systems that power Google's core products.</p>
+
+            <h2 class="h4 mb-3">Yêu cầu</h2>
+            <p>Bachelor's degree in Computer Science or related field</p>
+
+            <h2 class="h4 mb-3">Quyền lợi</h2>
+            <p>Competitive salary and equity package</p>
+
+            <div class="mt-4">
+                <a th:href="@{'/jobs/' + ${job.id} + '/apply'}" class="btn btn-primary btn-lg w-100"><i class="bi bi-send me-2"></i>Ứng tuyển ngay</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:if="${job == null}" class="card shadow-sm">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-exclamation-circle text-warning display-1 mb-3"></i>
+            <h2 class="h4 mb-3">Job Not Found</h2>
+            <p class="mb-4">The job you're looking for may have been removed or doesn't exist.</p>
+            <a href="/" class="btn btn-primary"><i class="bi bi-house me-2"></i>Return to Homepage</a>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-light mt-5 py-3">
+    <div class="container text-center">
+        <p>&copy; 2023 World Jobs. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

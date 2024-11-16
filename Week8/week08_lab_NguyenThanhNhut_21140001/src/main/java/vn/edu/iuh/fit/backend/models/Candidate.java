@@ -45,6 +45,10 @@ public class Candidate {
     @OneToMany(mappedBy = "candidate")
     private List<Experience> experiences;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
     public Candidate(String fullName, LocalDate dob, Address address, String phone, String email) {
         this.fullName = fullName;
         this.dob = dob;
