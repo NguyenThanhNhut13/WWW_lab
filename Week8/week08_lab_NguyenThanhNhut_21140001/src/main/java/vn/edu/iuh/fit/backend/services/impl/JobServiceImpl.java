@@ -95,6 +95,7 @@ public class JobServiceImpl implements JobService {
                     // create new skill
                     skill.setSkillName(jobSkillDTO.getSkill().getSkillName());
                     skill.setSkillDescription(jobSkillDTO.getSkill().getDescription());
+                    skill.setType(jobSkillDTO.getSkill().getSkillType());
                     skillRepository.save(skill);
                 }
 

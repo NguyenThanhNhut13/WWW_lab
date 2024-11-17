@@ -16,6 +16,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,7 +31,7 @@ public class CandidateDTO implements Serializable {
     private String email;
     private String phone;
     private AddressDTO address;
-    private Set<CandidateSkillDTO> candidateSkills;
-    private Set<ExperienceDTO> experiences;
-    private String userId;
+    private List<CandidateSkillDTO> candidateSkills;
+    private List<ExperienceDTO> experiences;
+    private Long userId;
 }

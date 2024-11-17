@@ -15,20 +15,19 @@
     import com.fasterxml.jackson.core.JsonProcessingException;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-    import org.springframework.security.core.GrantedAuthority;
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RequestMethod;
-    import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
-    import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
-    import vn.edu.iuh.fit.backend.dtos.JobDTO;
+    import org.springframework.web.bind.annotation.*;
+    import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+    import vn.edu.iuh.fit.backend.dtos.*;
     import vn.edu.iuh.fit.backend.security.MyUserDetails;
     import vn.edu.iuh.fit.frontend.models.AddressModel;
+    import vn.edu.iuh.fit.frontend.models.JobApplicationModel;
     import vn.edu.iuh.fit.frontend.models.JobModel;
 
+    import java.time.LocalDate;
+    import java.util.ArrayList;
     import java.util.List;
     import java.util.Map;
 
@@ -37,11 +36,13 @@
 
         private final JobModel jobModel;
         private final AddressModel addressModel;
+        private final JobApplicationModel jobApplicationModel;
 
         @Autowired
-        public HomeController(JobModel jobModel, AddressModel addressModel) {
+        public HomeController(JobModel jobModel, AddressModel addressModel, JobApplicationModel jobApplicationModel) {
             this.jobModel = jobModel;
             this.addressModel = addressModel;
+            this.jobApplicationModel = jobApplicationModel;
         }
 
         @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -72,12 +73,42 @@
                 return "redirect:/login";
             }
 
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
             CandidateDTO candidate = new CandidateDTO();
+            candidate.setCandidateSkills(new ArrayList<>());
+            candidate.setExperiences(new ArrayList<>());
+            candidate.setUserId(userDetails.getUser().getId());
+
             List<Map<String, String>> countries = addressModel.getCountries();
             model.addAttribute("countries", countries);
 
             model.addAttribute("jobId", id);
             model.addAttribute("candidate", candidate);
+
+            return "job-application";
+        }
+
+        @RequestMapping(value = "/jobs/{id}/apply", method = RequestMethod.POST)
+        public String applyJob(@PathVariable Long id, @ModelAttribute("candidate") CandidateDTO candidateDTO, RedirectAttributes redirectAttributes) {
+            if (!(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken)) {
+                return "redirect:/login";
+            }
+
+            JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
+            JobDTO jobDTO = jobModel.getJobById(id);
+            jobApplicationDTO.setJob(jobDTO);
+            jobApplicationDTO.setCandidate(candidateDTO);
+            jobApplicationDTO.setStatus(0);
+            jobApplicationDTO.setApplyAt(LocalDate.now());
+
+            System.out.println(jobApplicationDTO);
+            System.out.println("Candidate: " + candidateDTO);
+
+            if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
+                redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
+                return "redirect:/jobs/" + id;
+            }
 
             return "job-application";
         }

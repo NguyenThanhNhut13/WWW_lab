@@ -16,6 +16,7 @@ import lombok.*;
 import vn.edu.iuh.fit.backend.enums.SkillLevel;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -27,4 +28,5 @@ public class CandidateSkillDTO implements Serializable {
     private SkillDTO skill;
     private String moreInfos;
     private SkillLevel skillLevel;
+    private LocalDate appliedDate;
 }

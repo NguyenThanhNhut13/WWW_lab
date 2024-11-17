@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import vn.edu.iuh.fit.backend.enums.SkillLevel;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -29,5 +31,8 @@ public class CandidateSkill {
     @Column(name = "skill_level", nullable = false)
     @Enumerated(EnumType.STRING)
     private SkillLevel skillLevel;
+
+    @Column(name = "applied_date")
+    private LocalDate appliedDate;
 
 }
