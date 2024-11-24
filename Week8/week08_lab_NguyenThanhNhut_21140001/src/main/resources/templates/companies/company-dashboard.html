@@ -222,33 +222,129 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="candidates" th:class="${activeTab == 'candidates'} ? 'tab-pane fade show active' : 'tab-pane fade'">
+                <!-- Candidates Tab -->
+                <div class="tab-pane fade" id="candidates" th:classappend="${activeTab == 'candidates'} ? 'show active'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h2>Candidates Management</h2>
-                        <div class="input-group w-25">
-                            <input type="text" class="form-control" placeholder="Search candidates..." aria-label="Search candidates">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
+                        <h1 class="h2">Candidate Management</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addCandidateModal">
+                                <i class="bi bi-person-plus"></i> Add Candidate
                             </button>
                         </div>
                     </div>
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9" class="card-img-top" alt="Candidate Photo">
-                                <div class="card-body">
-                                    <h5 class="card-title">John Doe</h5>
-                                    <p class="card-text">Senior Developer</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button class="btn btn-sm btn-outline-primary">View Profile</button>
-                                        <button class="btn btn-sm btn-outline-success">Contact</button>
-                                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <form th:action="@{/company/candidates}" method="get" class="d-flex">
+                                <select name="jobId" class="form-select me-2" onchange="this.form.submit()">
+                                    <option value="">All Jobs</option>
+                                    <option th:each="job : ${jobs}"
+                                            th:value="${job.id}"
+                                            th:text="${job.jobName}"
+                                            th:selected="${job.id == selectedJobId}"></option>
+                                </select>
+                                <input type="text" name="search" class="form-control me-2" placeholder="Search candidates...">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Skills</th>
+                                <th>Experience</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="candidate : ${candidates}">
+                                <td th:text="${candidate.name}">John Doe</td>
+                                <td th:text="${candidate.email}">john@example.com</td>
+                                <td>
+                                    <span th:each="skill : ${candidate.skills}" class="badge bg-secondary badge-skill" th:text="${skill}">Skill</span>
+                                </td>
+                                <td th:text="${candidate.experience}">3 years</td>
+                                <td>
+                                            <span th:class="${'badge ' + (candidate.status == 'Interviewed' ? 'bg-info' : (candidate.status == 'Offered' ? 'bg-success' : 'bg-primary'))}"
+                                                  th:text="${candidate.status}">Status</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" th:data-bs-target="${'#candidateModal-' + candidate.id}">View</button>
+                                    <button class="btn btn-sm btn-outline-success">Interview</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Candidate Profile Modals -->
+                    <div th:each="candidate : ${candidates}" th:id="${'candidateModal-' + candidate.id}" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" th:text="${'Profile: ' + candidate.name}">Candidate Profile</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Email:</strong> <span th:text="${candidate.email}">email@example.com</span></p>
+                                    <p><strong>Experience:</strong> <span th:text="${candidate.experience}">3 years</span></p>
+                                    <p><strong>Skills:</strong></p>
+                                    <p>
+                                        <span th:each="skill : ${candidate.skills}" class="badge bg-secondary badge-skill" th:text="${skill}">Skill</span>
+                                    </p>
+                                    <p><strong>Status:</strong>
+                                        <span th:class="${'badge ' + (candidate.status == 'Interviewed' ? 'bg-info' : (candidate.status == 'Offered' ? 'bg-success' : 'bg-primary'))}"
+                                              th:text="${candidate.status}">Status</span>
+                                    </p>
+                                    <p><strong>Notes:</strong></p>
+                                    <p th:text="${candidate.notes}">Candidate notes go here.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Schedule Interview</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Candidate Modal -->
+                    <div class="modal fade" id="addCandidateModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add New Candidate</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{/company/add-candidate}" method="post">
+                                        <div class="mb-3">
+                                            <label for="candidateName" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="candidateName" name="name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="candidateEmail" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="candidateEmail" name="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="candidateSkills" class="form-label">Skills (comma-separated)</label>
+                                            <input type="text" class="form-control" id="candidateSkills" name="skills">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="candidateExperience" class="form-label">Experience</label>
+                                            <input type="text" class="form-control" id="candidateExperience" name="experience">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add Candidate</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="tab-pane fade" id="reports" th:class="${activeTab == 'reports'} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>Reports & Analytics</h2>

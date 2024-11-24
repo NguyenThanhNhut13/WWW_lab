@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.converters.*;
+import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
 import vn.edu.iuh.fit.backend.dtos.JobApplicationDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.models.*;
@@ -186,5 +187,21 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<JobApplicationDTO> jobApplications = jobApplicationRepository.findByJobId(jobId, pageable).map(jobApplicationMapper::toDTO);
         return new PageResponseDTO<>(jobApplications);
+    }
+
+    @Override
+    public PageResponseDTO<CandidateDTO> getAllCandidatesByCompanyId(Long companyId, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        Page<CandidateDTO> candidates = jobApplicationRepository.findByJob_CompanyId(companyId, pageable).map(jobApplicationMapper::toDTO).map(JobApplicationDTO::getCandidate);
+        return new PageResponseDTO<>(candidates);
+    }
+    @Override
+    public PageResponseDTO<CandidateDTO> getCandidatesByJobId(Long jobId, int page, int size) {
+        return null;
+    }
+
+    @Override
+    public PageResponseDTO<CandidateDTO> searchCandidate(Long jobId, String keyword, int page, int size) {
+        return null;
     }
 }

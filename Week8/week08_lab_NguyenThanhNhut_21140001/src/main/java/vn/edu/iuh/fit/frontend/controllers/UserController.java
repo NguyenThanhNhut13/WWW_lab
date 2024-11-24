@@ -98,7 +98,6 @@ public class UserController {
         }
 
         CompanyDTO company = companyModel.getCompanyByUsername(userDetails.getUsername());
-        System.out.println("Company: " + company);
         model.addAttribute("company", company);
         List<JobDTO> jobs = jobModel.getJobsByCompanyId(company.getId(), 0, 15).getContent().stream().toList();
         model.addAttribute("jobs", jobs);

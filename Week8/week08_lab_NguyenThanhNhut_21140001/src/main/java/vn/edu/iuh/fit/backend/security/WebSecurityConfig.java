@@ -74,7 +74,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(
             configurer -> configurer
-                    .requestMatchers(HttpMethod.GET, "/home", "/").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/home", "/", "/css/**", "/js/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/jobs/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/users/current-user").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/jobs").permitAll()
@@ -82,10 +82,12 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/jobs/{id}/apply").hasAnyAuthority("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/job-application").hasAnyAuthority("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/jobs").hasAnyAuthority("COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/company/account-registration").hasAnyAuthority("USER", "COMPANY", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/companies").hasAnyAuthority("ADMIN", "COMPANY")
                     .requestMatchers(HttpMethod.GET, "/api/companies/**").hasAnyAuthority("USER", "ADMIN", "COMPANY")
-                    .requestMatchers(HttpMethod.GET, "/company/dashboard").hasAnyAuthority("COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/company").hasAnyAuthority("COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/company/**").hasAnyAuthority("COMPANY", "ADMIN")
         ).formLogin(
                 formLogin -> formLogin
                         .loginPage("/login")

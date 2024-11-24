@@ -21,4 +21,8 @@ import vn.edu.iuh.fit.backend.models.JobApplication;
 @Repository
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
     Page<JobApplication> findByJobId(Long jobId, Pageable pageable);
+    Page<JobApplication> findByJob_CompanyId(Long companyId, Pageable pageable);
+    Page<JobApplication> findByJob_Id(Long jobId, Pageable pageable);
+    Page<JobApplication> findByCandidate_FullNameContaining(String fullName, Pageable pageable);
+    Page<JobApplication> findByJob_IdAndCandidate_FullNameContaining(Long jobId, String fullName, Pageable pageable);
 }
