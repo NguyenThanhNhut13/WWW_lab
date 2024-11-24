@@ -23,4 +23,6 @@ public interface CompanyService {
     CompanyDTO saveCompany(CompanyDTO companyDTO);
     CompanyDTO updateCompany(CompanyDTO companyDTO);
     void deleteCompany(Long id);
+
+    CompanyDTO getCompanyByUsername(String username);
 }

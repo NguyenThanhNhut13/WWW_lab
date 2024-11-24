@@ -26,10 +26,11 @@
 
 <main class="container py-5">
     <h1 class="mb-4">Job Application</h1>
-    <form th:action="@{/jobs/{id}/apply(id=${jobId})}" method="post" class="needs-validation" th:object="${candidate}" id="registrationForm">
+    <form th:action="@{/jobs/{jobId}/apply(jobId=${jobId})}" method="post" class="needs-validation" th:object="${candidate}" id="registrationForm">
 <!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
         <input type="hidden" name="jobId" th:value="${jobId}" />
         <input type="hidden" th:field="*{userId}" />
+        <input type="hidden" th:field="*{id}" />
 
         <!-- Personal Information -->
         <div class="card mb-4">

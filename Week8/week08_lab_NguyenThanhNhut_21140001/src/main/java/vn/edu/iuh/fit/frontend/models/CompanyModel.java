@@ -15,7 +15,9 @@ package vn.edu.iuh.fit.frontend.models;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
@@ -58,11 +60,11 @@ public class CompanyModel {
         }
     }
 
-    public CompanyDTO getCompanyByUserId(Long id) {
+    public CompanyDTO getCompanyByUsername(String username) {
         try {
-            return restTemplate.getForObject(COMPANY_API_URL + "/byUser/" + id, CompanyDTO.class);
+            return restTemplate.getForObject(COMPANY_API_URL + "/by-username/" + username, CompanyDTO.class);
         } catch (Exception e) {
-            System.out.println("Error while getting company by user id: " + e.getMessage());
+            System.out.println("Error while getting company by username: " + e.getMessage());
             return null;
         }
     }

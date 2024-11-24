@@ -16,15 +16,16 @@
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
     import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.core.userdetails.User;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
     import org.springframework.web.servlet.mvc.support.RedirectAttributes;
     import vn.edu.iuh.fit.backend.dtos.*;
-    import vn.edu.iuh.fit.backend.security.MyUserDetails;
     import vn.edu.iuh.fit.frontend.models.AddressModel;
     import vn.edu.iuh.fit.frontend.models.JobApplicationModel;
     import vn.edu.iuh.fit.frontend.models.JobModel;
+    import vn.edu.iuh.fit.frontend.models.UserModel;
 
     import java.time.LocalDate;
     import java.util.ArrayList;
@@ -37,12 +38,14 @@
         private final JobModel jobModel;
         private final AddressModel addressModel;
         private final JobApplicationModel jobApplicationModel;
+        private final UserModel userModel;
 
         @Autowired
-        public HomeController(JobModel jobModel, AddressModel addressModel, JobApplicationModel jobApplicationModel) {
+        public HomeController(JobModel jobModel, AddressModel addressModel, JobApplicationModel jobApplicationModel, UserModel userModel) {
             this.jobModel = jobModel;
             this.addressModel = addressModel;
             this.jobApplicationModel = jobApplicationModel;
+            this.userModel = userModel;
         }
 
         @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -52,9 +55,6 @@
 
         @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
         public String index(Model model) {
-            if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-                return "redirect:/login";
-            }
             List<JobDTO> jobs = jobModel.getAllJob(0, 10).getContent().stream().toList();
             model.addAttribute("jobs", jobs);
             return "home";
@@ -73,12 +73,13 @@
                 return "redirect:/login";
             }
 
-            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserDTO currentUser = userModel.getCurrentUser();
 
             CandidateDTO candidate = new CandidateDTO();
             candidate.setCandidateSkills(new ArrayList<>());
             candidate.setExperiences(new ArrayList<>());
-            candidate.setUserId(userDetails.getUser().getId());
+            candidate.setUserId(currentUser.getId());
+            candidate.setId(null);
 
             List<Map<String, String>> countries = addressModel.getCountries();
             model.addAttribute("countries", countries);
@@ -105,16 +106,12 @@
             System.out.println(jobApplicationDTO);
             System.out.println("Candidate: " + candidateDTO);
 
-            if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
-                redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
-                return "redirect:/jobs/" + id;
-            }
+//            if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
+//                redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
+//                return "redirect:/jobs/" + id;
+//            }
 
             return "job-application";
         }
-
-
-
-
 
     }

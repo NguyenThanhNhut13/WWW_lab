@@ -66,6 +66,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDTO getCompanyByUsername(String username) {
+        return companyMapper.toDTO(companyRepository.findCompanyByUserUsername(username));
+    }
+
+    @Override
     public CompanyDTO getCompanyByUserId(Long id) {
         return companyMapper.toDTO(companyRepository.findCompanyByUserId(id));
     }
@@ -78,7 +83,7 @@ public class CompanyServiceImpl implements CompanyService {
 
             // If the user is not null, add the role "COMPANY" to the user
             if (user != null) {
-                Set<Role> roles = user.getRoles();
+                List<Role> roles = user.getRoles();
                 roles.add(new Role("COMPANY"));
                 user.setRoles(roles);
                 userRepository.save(user);

@@ -20,4 +20,5 @@ import vn.edu.iuh.fit.backend.models.Company;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     boolean existsCompaniesByUserId(Long userId);
     Company findCompanyByUserId(Long userId);
+    Company findCompanyByUserUsername(String username);
 }

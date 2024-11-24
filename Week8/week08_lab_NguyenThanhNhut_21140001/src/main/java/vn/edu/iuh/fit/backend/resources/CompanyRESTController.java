@@ -40,6 +40,19 @@ public class CompanyRESTController {
         }
     }
 
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<CompanyDTO> findCompanyByUsername(@PathVariable String username) {
+        try {
+            CompanyDTO company = companyService.getCompanyByUsername(username);
+            if (company == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(company);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<CompanyDTO> saveCompany(@RequestBody CompanyDTO companyDTO) {

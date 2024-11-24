@@ -75,12 +75,14 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                         .orElseThrow(() -> new Exception("Job not found"));
                 jobApplication.setJob(job);
             }
+
+            Candidate candidate;
             if (jobApplicationDTO.getCandidate().getId() != null) {
-                Candidate candidate = candidateRepository.findById(jobApplicationDTO.getCandidate().getId())
+                candidate = candidateRepository.findById(jobApplicationDTO.getCandidate().getId())
                         .orElseThrow(() -> new Exception("Candidate not found"));
-                jobApplication.setCandidate(candidate);
+                System.out.println("Candidate found");
             } else {
-                Candidate candidate = candidateMapper.toEntity(jobApplicationDTO.getCandidate());
+                candidate = candidateMapper.toEntity(jobApplicationDTO.getCandidate());
 
                 // Save candidate's user
                 if (jobApplicationDTO.getCandidate().getUserId() != null) {
@@ -89,7 +91,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
                     // If the user is not null, add the role "CANDIDATE" to the user
                     if (user != null) {
-                        Set<Role> roles = new HashSet<>();
+                        List<Role> roles = new ArrayList<>();
                         Role role = roleRepository.findByRoleName("CANDIDATE");
                         roles.add(role);
                         user.setRoles(roles);
@@ -165,8 +167,8 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                     });
                     candidate.setCandidateSkills(candidateSkills);
                 }
-                jobApplication.setCandidate(candidate);
             }
+            jobApplication.setCandidate(candidate);
             return jobApplicationMapper.toDTO(jobApplicationRepository.save(jobApplication));
         } catch (Exception e) {
             e.printStackTrace();

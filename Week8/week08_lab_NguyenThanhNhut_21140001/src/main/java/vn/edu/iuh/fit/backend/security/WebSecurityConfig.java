@@ -12,78 +12,129 @@ package vn.edu.iuh.fit.backend.security;
  * @version:    1.0
  */
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.OncePerRequestFilter;
+import vn.edu.iuh.fit.backend.services.UserService;
+import vn.edu.iuh.fit.backend.services.impl.UserServiceImpl;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailServiceImpl();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Create an authentication provider that uses the custom user service and password encoder
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-                .authorizeRequests()
-                .requestMatchers("/login/**")
-                .permitAll()
-                .and()
-                .formLogin(
-                        formLogin -> formLogin
-                                .loginPage("/login")
-                                .loginProcessingUrl("/do-login")
-                                .defaultSuccessUrl("/home", true)
-                                .permitAll()
-                )
-                .logout(
-                        logout -> logout
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout")
-                                .permitAll()
-                );
+        http.authorizeHttpRequests(
+            configurer -> configurer
+                    .requestMatchers(HttpMethod.GET, "/home", "/").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/jobs/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/users/current-user").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/jobs").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/jobs/{id}/apply").hasAnyAuthority("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/jobs").hasAnyAuthority("COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/company/account-registration").hasAnyAuthority("USER", "COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/companies").hasAnyAuthority("ADMIN", "COMPANY")
+                    .requestMatchers(HttpMethod.GET, "/api/companies/**").hasAnyAuthority("USER", "ADMIN", "COMPANY")
+                    .requestMatchers(HttpMethod.GET, "/company/dashboard").hasAnyAuthority("COMPANY", "ADMIN")
+        ).formLogin(
+                formLogin -> formLogin
+                        .loginPage("/login")
+                        .loginProcessingUrl("/do-login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+        ).
+        logout(
+                LogoutConfigurer::permitAll
+        );
 
-        // Require authentication for all requests
-        http.httpBasic(AbstractHttpConfigurer::disable);
+        http.sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        );
 
-        // Disable CSRF
+        http.httpBasic(Customizer.withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
+
+//        http
+//
+//                .authorizeRequests()
+//                .requestMatchers("/login/**")
+//                .permitAll()
+//                .and()
+//                .formLogin(
+//                        formLogin -> formLogin
+//                                .loginPage("/login")
+//                                .loginProcessingUrl("/do-login")
+//                                .defaultSuccessUrl("/home", true)
+//                                .permitAll()
+//                )
+//                .logout(
+//                        logout -> logout
+//                                .invalidateHttpSession(true)
+//                                .clearAuthentication(true)
+//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                                .logoutSuccessUrl("/login?logout")
+//                                .permitAll()
+//                );
+//
+//        // Require authentication for all requests
+//        http.httpBasic(AbstractHttpConfigurer::disable);
+//
+//        // Disable CSRF
+//        http.csrf(AbstractHttpConfigurer::disable);
+//
+//        return http.build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
 
 }
