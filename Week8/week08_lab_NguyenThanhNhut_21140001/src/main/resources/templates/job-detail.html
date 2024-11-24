@@ -40,6 +40,13 @@
         <span th:text="${successMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <!--Show error message-->
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div th:if="${job != null}" class="card shadow-sm">
         <div class="card-header job-header py-4">
             <div class="d-flex align-items-center">
@@ -125,7 +132,7 @@
 </footer>
 <script>
     setTimeout(function() {
-        const alert = document.getElementById('successAlert');
+        const alert = document.getElementById('successAlert') || document.getElementById('errorAlert');
         if (alert) {
             alert.classList.remove('show');
             alert.classList.add('fade');

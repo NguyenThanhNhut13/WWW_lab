@@ -80,6 +80,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/jobs").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/jobs/{id}/apply").hasAnyAuthority("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/job-application").hasAnyAuthority("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/jobs").hasAnyAuthority("COMPANY", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/company/account-registration").hasAnyAuthority("USER", "COMPANY", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/companies").hasAnyAuthority("ADMIN", "COMPANY")

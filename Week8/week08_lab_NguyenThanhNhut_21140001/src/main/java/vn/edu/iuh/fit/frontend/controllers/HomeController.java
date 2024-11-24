@@ -103,15 +103,14 @@
             jobApplicationDTO.setStatus(0);
             jobApplicationDTO.setApplyAt(LocalDate.now());
 
-            System.out.println(jobApplicationDTO);
-            System.out.println("Candidate: " + candidateDTO);
+            if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
+                redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
+                return "redirect:/jobs/" + id;
+            }
 
-//            if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
-//                redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
-//                return "redirect:/jobs/" + id;
-//            }
+            redirectAttributes.addFlashAttribute("errorMessage", "Error while submitting job application");
 
-            return "job-application";
+            return "redirect:/jobs/" + id;
         }
 
     }
