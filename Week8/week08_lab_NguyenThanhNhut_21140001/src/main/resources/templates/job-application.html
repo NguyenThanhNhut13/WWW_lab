@@ -85,7 +85,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="zip" class="form-label">Zip Code</label>
-                        <input type="text" class="form-control" id="zip" th:field="*{address.zipCode}" placeholder="700000" required>
+                        <input type="text" class="form-control" id="zip" th:field="*{address.zipcode}" placeholder="700000" required>
                         <div class="invalid-feedback">Please provide a zip code.</div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="skillType0" class="form-label">Skill Type</label>
-                            <select class="form-select" id="skillType0" name="candidateSkills[0].skill.skillType" required>
+                            <select class="form-select" id="skillType0" name="candidateSkills[0].skill.type" required>
                                 <option value="">Choose...</option>
                                 <option value="SOFT_SKILL">Soft Skill</option>
                                 <option value="TECHNICAL_SKILL">Technical Skill</option>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="skillType${skillCount}" class="form-label">Skill Type</label>
-                    <select class="form-select" id="skillType${skillCount}" name="candidateSkills[${skillCount}].skill.skillType" required>
+                    <select class="form-select" id="skillType${skillCount}" name="candidateSkills[${skillCount}].skill.type" required>
                         <option value="">Choose...</option>
                         <option value="SOFT_SKILL">Soft Skill</option>
                         <option value="TECHNICAL_SKILL">Technical Skill</option>

@@ -15,10 +15,10 @@ public class CandidateSkill {
     @EmbeddedId
     private CandidateSkillId id;
 
-    @MapsId("canId")
+    @MapsId("candidateId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "can_id", nullable = false)
-    private Candidate can;
+    @JoinColumn(name = "candidate_id", nullable = false)
+    private Candidate candidate;
 
     @MapsId("skillId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

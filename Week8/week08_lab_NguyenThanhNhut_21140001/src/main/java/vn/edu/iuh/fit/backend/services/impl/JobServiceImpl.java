@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.converters.JobMapper;
 import vn.edu.iuh.fit.backend.converters.JobSkillMapper;
@@ -24,7 +23,6 @@ import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.repositories.*;
-import vn.edu.iuh.fit.backend.services.CompanyService;
 import vn.edu.iuh.fit.backend.services.JobService;
 
 import java.util.*;
@@ -95,7 +93,7 @@ public class JobServiceImpl implements JobService {
                     // create new skill
                     skill.setSkillName(jobSkillDTO.getSkill().getSkillName());
                     skill.setSkillDescription(jobSkillDTO.getSkill().getDescription());
-                    skill.setType(jobSkillDTO.getSkill().getSkillType());
+                    skill.setType(jobSkillDTO.getSkill().getType());
                     skillRepository.save(skill);
                 }
 

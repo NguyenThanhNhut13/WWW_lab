@@ -14,8 +14,8 @@ import java.util.Objects;
 @Embeddable
 public class CandidateSkillId implements Serializable {
     private static final long serialVersionUID = -6604284111764229624L;
-    @Column(name = "can_id", nullable = false)
-    private Long canId;
+    @Column(name = "candidate_id", nullable = false)
+    private Long candidateId;
 
     @Column(name = "skill_id", nullable = false)
     private Long skillId;
@@ -26,12 +26,12 @@ public class CandidateSkillId implements Serializable {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         CandidateSkillId entity = (CandidateSkillId) o;
         return Objects.equals(this.skillId, entity.skillId) &&
-                Objects.equals(this.canId, entity.canId);
+                Objects.equals(this.candidateId, entity.candidateId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skillId, canId);
+        return Objects.hash(skillId, candidateId);
     }
 
 }

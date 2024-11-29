@@ -25,6 +25,6 @@ import java.io.Serializable;
 public class SkillDTO implements Serializable {
     private Long id;
     private String skillName;
-    private SkillType skillType;
+    private SkillType type;
     private String description;
 }

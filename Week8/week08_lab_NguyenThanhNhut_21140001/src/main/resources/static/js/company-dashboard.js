@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const skillNameInput = newSkillGroup.querySelector('input[name="jobSkills[' + skillIndex + '].skill.skillName"]');
         const levelSelect = newSkillGroup.querySelector('select[name="jobSkills[' + skillIndex + '].skillLevel"]');
         const infoInput = newSkillGroup.querySelector('input[name="jobSkills[' + skillIndex + '].moreInfos"]');
-        const typeSelect = newSkillGroup.querySelector('select[name="jobSkills[' + skillIndex + '].skill.skillType"]');
+        const typeSelect = newSkillGroup.querySelector('select[name="jobSkills[' + skillIndex + '].skill.type"]');
         const descriptionInput = newSkillGroup.querySelector('input[name="jobSkills[' + skillIndex + '].skill.description"]');
         const removeButton = newSkillGroup.querySelector('.remove-skill-btn');
 

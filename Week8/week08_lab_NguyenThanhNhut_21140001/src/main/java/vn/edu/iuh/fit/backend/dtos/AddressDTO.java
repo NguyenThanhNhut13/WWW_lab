@@ -20,14 +20,13 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class AddressDTO implements Serializable {
     private Long id;
     private String street;
     private String city;
     private String number;
     private String country;
-    private String zipCode;
+    private String zipcode;
 
     public String getFullAddress() {
         String fullAddress = "";
@@ -43,8 +42,8 @@ public class AddressDTO implements Serializable {
         if (this.country != null) {
             fullAddress += this.country + ", ";
         }
-        if (this.zipCode != null) {
-            fullAddress += this.zipCode;
+        if (this.zipcode != null) {
+            fullAddress += this.zipcode;
         }
         return fullAddress;
     }

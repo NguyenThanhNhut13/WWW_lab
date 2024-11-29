@@ -39,7 +39,7 @@ public class AddressModel {
     }
 
     public List<Map<String, String>> getCountries() throws JsonProcessingException {
-        String url = "https://restcountries.com/v3.1/all";
+        String url = "https://restcountries.com/v3.1/all?fields=name,cca2";
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,

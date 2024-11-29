@@ -2,10 +2,7 @@ package vn.edu.iuh.fit.backend.models;
 
 import com.neovisionaries.i18n.CountryCode;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -50,4 +47,15 @@ public class Address {
     }
 
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "zipcode='" + zipcode + '\'' +
+                ", number='" + number + '\'' +
+                ", country=" + country +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

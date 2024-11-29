@@ -13,6 +13,7 @@ package vn.edu.iuh.fit.backend.converters;
  */
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import vn.edu.iuh.fit.backend.dtos.CandidateSkillDTO;
 import vn.edu.iuh.fit.backend.dtos.CandidateSkillIdDTO;

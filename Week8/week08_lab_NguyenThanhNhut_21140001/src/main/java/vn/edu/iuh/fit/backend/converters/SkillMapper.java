@@ -24,11 +24,11 @@ import vn.edu.iuh.fit.backend.models.Skill;
 public interface SkillMapper {
     SkillMapper INSTANCE = Mappers.getMapper(SkillMapper.class);
 
-    @Mapping(target = "skillType", source = "type", qualifiedByName = "toSkillType")
+    @Mapping(target = "type", source = "type", qualifiedByName = "toSkillType")
     @Mapping(target = "description", source = "skillDescription")
     SkillDTO toDTO(Skill skill);
 
-    @Mapping(target = "type", source = "skillType", qualifiedByName = "fromSkillType")
+    @Mapping(target = "type", source = "type", qualifiedByName = "fromSkillType")
     @Mapping(target = "skillDescription", source = "description")
     Skill toEntity(SkillDTO skillDTO);
 

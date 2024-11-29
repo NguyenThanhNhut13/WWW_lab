@@ -14,9 +14,12 @@ package vn.edu.iuh.fit.backend.resources;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
 import vn.edu.iuh.fit.backend.dtos.JobApplicationDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.services.JobApplicationService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/job-application")
@@ -45,4 +48,23 @@ public class JobApplicationRESTController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/company/{companyId}/candidates")
+    public ResponseEntity<PageResponseDTO<CandidateDTO>> getCandidate(@PathVariable Long companyId,
+                                                                      @RequestParam("jobId") Optional<Long> jobId,
+                                                                      @RequestParam("search") Optional<String> search,
+                                                                      @RequestParam("page") Optional<Integer> page,
+                                                                      @RequestParam("size") Optional<Integer> size) {
+        try {
+            int currentPage = page.orElse(0);
+            int pageSize = size.orElse(10);
+            Long jobIdValue = jobId.orElse(null);
+            String searchValue = search.orElse(null);
+            return ResponseEntity.ok(jobApplicationService.getCandidate(companyId, jobIdValue, searchValue, currentPage, pageSize));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
 }

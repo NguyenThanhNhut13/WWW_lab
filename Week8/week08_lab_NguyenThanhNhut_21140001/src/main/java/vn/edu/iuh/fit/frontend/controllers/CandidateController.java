@@ -54,6 +54,7 @@ public class CandidateController {
 
         Page<Candidate> candidatePage = candidateServices.findAll(currentPage, pageSize, "id", "asc");
         model.addAttribute("candidatePage", candidatePage);
+        System.out.println("candidateRepository.findAll() = " + candidateRepository.findAll());
 
         int totalPages = candidatePage.getTotalPages();
         if (totalPages > 0) {

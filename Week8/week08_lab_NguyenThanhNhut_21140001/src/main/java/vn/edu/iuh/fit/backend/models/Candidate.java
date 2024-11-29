@@ -39,7 +39,7 @@ public class Candidate {
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
-    @OneToMany(mappedBy = "can")
+    @OneToMany(mappedBy = "candidate")
     private List<CandidateSkill> candidateSkills;
 
     @OneToMany(mappedBy = "candidate")
@@ -55,5 +55,17 @@ public class Candidate {
         this.address = address;
         this.phone = phone;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "address=" + address +
+                ", phone='" + phone + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", dob=" + dob +
+                ", id=" + id +
+                '}';
     }
 }
