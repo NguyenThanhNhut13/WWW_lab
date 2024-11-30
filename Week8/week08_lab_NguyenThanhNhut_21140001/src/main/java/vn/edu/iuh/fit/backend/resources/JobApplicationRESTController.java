@@ -50,7 +50,7 @@ public class JobApplicationRESTController {
     }
 
     @GetMapping("/company/{companyId}/candidates")
-    public ResponseEntity<PageResponseDTO<CandidateDTO>> getCandidate(@PathVariable Long companyId,
+    public ResponseEntity<PageResponseDTO<JobApplicationDTO>> getCandidate(@PathVariable Long companyId,
                                                                       @RequestParam("jobId") Optional<Long> jobId,
                                                                       @RequestParam("search") Optional<String> search,
                                                                       @RequestParam("page") Optional<Integer> page,
@@ -59,8 +59,8 @@ public class JobApplicationRESTController {
             int currentPage = page.orElse(0);
             int pageSize = size.orElse(10);
             Long jobIdValue = jobId.orElse(null);
-            String searchValue = search.orElse(null);
-            return ResponseEntity.ok(jobApplicationService.getCandidate(companyId, jobIdValue, searchValue, currentPage, pageSize));
+            String searchValue = search.orElse("");
+            return ResponseEntity.ok(jobApplicationService.getCandidates(companyId, jobIdValue, searchValue, currentPage, pageSize));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

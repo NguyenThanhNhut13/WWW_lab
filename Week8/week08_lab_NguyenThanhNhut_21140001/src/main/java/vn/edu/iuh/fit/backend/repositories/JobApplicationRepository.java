@@ -24,15 +24,7 @@ import vn.edu.iuh.fit.backend.models.JobApplication;
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
     Page<JobApplication> findByJobId(Long jobId, Pageable pageable);
 
-    @Query("SELECT c FROM JobApplication ja JOIN ja.candidate c WHERE ja.job.id = :jobId")
-    Page<Candidate> findCandidateByJobId(Long jobId, Pageable pageable);
-
-    @Query("SELECT c FROM JobApplication ja JOIN ja.candidate c WHERE ja.job.company.id = :companyId")
-    Page<Candidate> findCandidateByJob_CompanyId(Long companyId, Pageable pageable);
-
-    @Query("SELECT c FROM JobApplication ja JOIN ja.candidate c WHERE c.fullName LIKE %:fullName%")
-    Page<Candidate> findCandidateByCandidate_FullNameContaining(String fullName, Pageable pageable);
-
-    @Query("SELECT c FROM JobApplication ja JOIN ja.candidate c WHERE ja.job.id = :jobId AND c.fullName LIKE %:fullName%")
-    Page<Candidate> findCandidateByJob_IdAndCandidate_FullNameContaining(Long jobId, String fullName, Pageable pageable);
+    Page<JobApplication> findByJob_CompanyId(Long companyId, Pageable pageable);
+    Page<JobApplication> findByJob_CompanyIdAndCandidate_FullNameContaining(Long companyId, String fullName, Pageable pageable);
+    Page<JobApplication> findByJob_IdAndCandidate_FullNameContaining(Long jobId, String fullName, Pageable pageable);
 }

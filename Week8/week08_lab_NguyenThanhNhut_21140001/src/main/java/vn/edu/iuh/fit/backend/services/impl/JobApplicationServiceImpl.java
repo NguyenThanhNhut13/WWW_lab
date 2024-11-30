@@ -189,21 +189,18 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    public PageResponseDTO<CandidateDTO> getCandidate(Long companyId, Long jobId, String search, int page, int size) {
+    public PageResponseDTO<JobApplicationDTO> getCandidates(Long companyId, Long jobId, String search, int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        Page<Candidate> candidates;
 
-        if (jobId != null && search != null) {
-            candidates = jobApplicationRepository.findCandidateByJob_IdAndCandidate_FullNameContaining(jobId, search, pageable);
+        if (jobId != null && !search.isEmpty()) {
+            return new PageResponseDTO<>(jobApplicationRepository.findByJob_IdAndCandidate_FullNameContaining(jobId, search, pageable).map(jobApplicationMapper::toDTO));
         } else if (jobId != null) {
-            candidates = jobApplicationRepository.findCandidateByJobId(jobId, pageable);
-        } else if (search != null) {
-            candidates = jobApplicationRepository.findCandidateByCandidate_FullNameContaining(search, pageable);
+            return new PageResponseDTO<>(jobApplicationRepository.findByJobId(jobId, pageable).map(jobApplicationMapper::toDTO));
+        } else if (!search.isEmpty()) {
+            return new PageResponseDTO<>(jobApplicationRepository.findByJob_CompanyIdAndCandidate_FullNameContaining(companyId, search, pageable).map(jobApplicationMapper::toDTO));
         } else {
-            candidates = jobApplicationRepository.findCandidateByJob_CompanyId(companyId, pageable);
+            return new PageResponseDTO<>(jobApplicationRepository.findByJob_CompanyId(companyId, pageable).map(jobApplicationMapper::toDTO));
         }
-
-        return new PageResponseDTO<>(candidates.map(candidateMapper::toDTO));
 
     }
 }

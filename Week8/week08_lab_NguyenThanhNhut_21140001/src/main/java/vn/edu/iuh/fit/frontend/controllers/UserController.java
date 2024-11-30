@@ -22,15 +22,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
-import vn.edu.iuh.fit.backend.dtos.JobDTO;
-import vn.edu.iuh.fit.backend.dtos.SkillDTO;
-import vn.edu.iuh.fit.backend.dtos.UserDTO;
-import vn.edu.iuh.fit.frontend.models.AddressModel;
-import vn.edu.iuh.fit.frontend.models.CompanyModel;
-import vn.edu.iuh.fit.frontend.models.JobModel;
-import vn.edu.iuh.fit.frontend.models.UserModel;
+import vn.edu.iuh.fit.backend.dtos.*;
+import vn.edu.iuh.fit.frontend.models.*;
 
 import java.security.Principal;
 import java.util.*;
@@ -43,12 +38,14 @@ public class UserController {
     private final CompanyModel companyModel;
     private final JobModel jobModel;
     private final UserModel userModel;
+    private final JobApplicationModel jobApplicationModel;
 
-    public UserController(AddressModel addressModel, CompanyModel companyModel, JobModel jobModel, UserModel userModel) {
+    public UserController(AddressModel addressModel, CompanyModel companyModel, JobModel jobModel, UserModel userModel, JobApplicationModel jobApplicationModel) {
         this.addressModel = addressModel;
         this.companyModel = companyModel;
         this.jobModel = jobModel;
         this.userModel = userModel;
+        this.jobApplicationModel = jobApplicationModel;
     }
 
 
@@ -84,7 +81,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String showDashboard(Model model) {
+    public String showDashboard(@RequestParam(value = "jobId", required = false) Long jobId,
+                                @RequestParam(value = "search", required = false) String search, Model model) {
         if (!(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken)) {
             return "redirect:/login";
         }
@@ -102,6 +100,12 @@ public class UserController {
         List<JobDTO> jobs = jobModel.getJobsByCompanyId(company.getId(), 0, 15).getContent().stream().toList();
         model.addAttribute("jobs", jobs);
 
+        long jobIdValue = jobId == null ? 0 : jobId;
+        String searchValue = search == null ? "" : search;
+
+        List<JobApplicationDTO> jobApplicationDTOS = jobApplicationModel.getCandidatesByCompanyId(company.getId(), jobIdValue, searchValue, 0, 15).getContent().stream().toList();
+        model.addAttribute("jobApplicationDTOS", jobApplicationDTOS);
+
         JobDTO jobDTO = new JobDTO();
         jobDTO.setJobSkills(new ArrayList<>());
         jobDTO.setCompany(company);
@@ -109,6 +113,13 @@ public class UserController {
 
         Set<SkillDTO> skills = jobModel.getAllSkills();
         model.addAttribute("skills", skills);
+
+        if (jobId!= null || !searchValue.isEmpty()) {
+            model.addAttribute("selectedJobId", jobIdValue);
+            model.addAttribute("activeTab", "candidates");
+        } else {
+            model.addAttribute("activeTab", "dashboard");
+        }
 
         return "companies/company-dashboard";
     }

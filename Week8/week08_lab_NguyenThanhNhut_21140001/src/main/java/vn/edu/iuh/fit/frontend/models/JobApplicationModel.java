@@ -12,9 +12,12 @@ package vn.edu.iuh.fit.frontend.models;
  * @version:    1.0
  */
 
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
 import vn.edu.iuh.fit.backend.dtos.JobApplicationDTO;
+import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 @Component
 public class JobApplicationModel {
@@ -32,6 +35,20 @@ public class JobApplicationModel {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public PageResponseDTO<JobApplicationDTO> getCandidatesByCompanyId(Long companyId, Long jobId, String search, int page, int size) {
+        try {
+            return restTemplate.exchange(
+                    JOB_APPLICATION_URL + "/company/" + companyId + "/candidates?jobId=" + (jobId == 0 ? "" : jobId) + "&search=" + search + "&page=" + page + "&size=" + size,
+                    HttpMethod.GET,
+                    null,
+                    new org.springframework.core.ParameterizedTypeReference<PageResponseDTO<JobApplicationDTO>>() {
+                    }).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -22,5 +22,5 @@ public interface JobApplicationService {
     JobApplicationDTO save(JobApplicationDTO jobApplicationDTO);
     JobApplicationDTO findById(Long id);
     PageResponseDTO<JobApplicationDTO> findByJobId(Long jobId, int page, int size);
-    PageResponseDTO<CandidateDTO> getCandidate(Long companyId, Long jobId, String search, int page, int size);
+    PageResponseDTO<JobApplicationDTO> getCandidates(Long companyId, Long jobId, String search, int page, int size);
 }
