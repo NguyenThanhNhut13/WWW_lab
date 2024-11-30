@@ -30,4 +30,6 @@ public class UserModel {
     public UserDTO getCurrentUser() {
         return restTemplate.getForObject(USER_API_URL + "/current-user", UserDTO.class);
     }
+
+
 }

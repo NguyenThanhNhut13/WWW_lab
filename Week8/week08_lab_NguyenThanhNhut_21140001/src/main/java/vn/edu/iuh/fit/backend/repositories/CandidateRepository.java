@@ -18,4 +18,5 @@ import vn.edu.iuh.fit.backend.models.Candidate;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+    Candidate findByUser_Username(String username);
 }

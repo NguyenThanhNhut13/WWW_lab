@@ -22,10 +22,7 @@
     import org.springframework.web.bind.annotation.*;
     import org.springframework.web.servlet.mvc.support.RedirectAttributes;
     import vn.edu.iuh.fit.backend.dtos.*;
-    import vn.edu.iuh.fit.frontend.models.AddressModel;
-    import vn.edu.iuh.fit.frontend.models.JobApplicationModel;
-    import vn.edu.iuh.fit.frontend.models.JobModel;
-    import vn.edu.iuh.fit.frontend.models.UserModel;
+    import vn.edu.iuh.fit.frontend.models.*;
 
     import java.time.LocalDate;
     import java.util.ArrayList;
@@ -39,13 +36,15 @@
         private final AddressModel addressModel;
         private final JobApplicationModel jobApplicationModel;
         private final UserModel userModel;
+        private final CandidateModel candidateModel;
 
         @Autowired
-        public HomeController(JobModel jobModel, AddressModel addressModel, JobApplicationModel jobApplicationModel, UserModel userModel) {
+        public HomeController(JobModel jobModel, AddressModel addressModel, JobApplicationModel jobApplicationModel, UserModel userModel, CandidateModel candidateModel) {
             this.jobModel = jobModel;
             this.addressModel = addressModel;
             this.jobApplicationModel = jobApplicationModel;
             this.userModel = userModel;
+            this.candidateModel = candidateModel;
         }
 
         @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -74,13 +73,17 @@
             }
 
             UserDTO currentUser = userModel.getCurrentUser();
-
-            CandidateDTO candidate = new CandidateDTO();
-            candidate.setCandidateSkills(new ArrayList<>());
-            candidate.setExperiences(new ArrayList<>());
-            candidate.setUserId(currentUser.getId());
-            candidate.setId(null);
-
+            CandidateDTO candidate;
+            if (currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
+                candidate = candidateModel.findByUsername(currentUser.getUsername());
+            } else {
+                candidate = new CandidateDTO();
+                candidate.setCandidateSkills(new ArrayList<>());
+                candidate.setExperiences(new ArrayList<>());
+                candidate.setUserId(currentUser.getId());
+                candidate.setId(null);
+            }
+            System.out.println("Candidate: " + candidate);
             List<Map<String, String>> countries = addressModel.getCountries();
             model.addAttribute("countries", countries);
 
