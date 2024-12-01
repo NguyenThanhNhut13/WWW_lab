@@ -99,7 +99,47 @@
             </div>
             <div class="card-body">
                 <div id="skillsContainer">
-                    <div class="row g-3 mb-3 skill-entry">
+                    <!-- Kiểm tra nếu candidateSkills có dữ liệu -->
+                    <div th:each="candidateSkill, iterStat : ${candidate.candidateSkills}">
+                        <input type="hidden" th:field="*{candidateSkills[__${iterStat.index}__].id.candidateId}" />
+                        <input type="hidden" th:field="*{candidateSkills[__${iterStat.index}__].id.skillId}" />
+                        <div class="row g-3 mb-3">
+                            <input type="hidden" th:field="*{candidateSkills[__${iterStat.index}__].skill.id}" />
+                            <div class="col-md-4">
+                                <label for="skillName" class="form-label">Skill Name</label>
+                                <input type="text" class="form-control" id="skillName"
+                                       th:field="*{candidateSkills[__${iterStat.index}__].skill.skillName}"
+                                       required>
+                                <div class="invalid-feedback">Please provide a skill name.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="skillLevel" class="form-label">Skill Level</label>
+                                <select class="form-select" id="skillLevel"
+                                        th:field="*{candidateSkills[__${iterStat.index}__].skillLevel}">
+                                    <option value="">Choose...</option>
+                                    <option value="BEGINNER">Beginner</option>
+                                    <option value="INTERMEDIATE">Intermediate</option>
+                                    <option value="ADVANCED">Advanced</option>
+                                    <option value="PROFESSIONAL">Professional</option>
+                                    <option value="MASTER">Master</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a skill level.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="skillType" class="form-label">Skill Type</label>
+                                <select class="form-select" id="skillType"
+                                        th:field="*{candidateSkills[__${iterStat.index}__].skill.type}" required>
+                                    <option value="">Choose...</option>
+                                    <option value="SOFT_SKILL">Soft Skill</option>
+                                    <option value="TECHNICAL_SKILL">Technical Skill</option>
+                                    <option value="UNSPECIFIED">Unspecified</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a skill type.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(candidate.candidateSkills)}">
+                        <div class="row g-3 mb-3 skill-entry">
                         <div class="col-md-4">
                             <label for="skillName0" class="form-label">Skill Name</label>
                             <input type="text" class="form-control" id="skillName0" name="candidateSkills[0].skill.skillName" required>
@@ -128,6 +168,7 @@
                             <div class="invalid-feedback">Please select a skill type.</div>
                         </div>
                     </div>
+                    </div>
                 </div>
                 <button type="button" class="btn btn-secondary" id="addSkill">Add Another Skill</button>
             </div>
@@ -140,7 +181,49 @@
             </div>
             <div class="card-body">
                 <div id="experienceContainer">
-                    <div class="row g-3 mb-3 experience-entry">
+                    <!-- Kiểm tra nếu experiences có dữ liệu -->
+                    <div th:each="experience, iterStat : ${candidate.experiences}">
+                        <div class="row g-3 mb-3">
+                            <input type="hidden" th:field="*{experiences[__${iterStat.index}__].id}" />
+                            <div class="col-md-6">
+                                <label th:for="|companyName${iterStat.index}|"
+                                       class="form-label">Company Name</label>
+                                <input type="text" class="form-control" th:id="|companyName${iterStat.index}|"
+                                       th:field="*{experiences[__${iterStat.index}__].companyName}" required>
+                                <div class="invalid-feedback">Please provide a company name.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label th:for="|role${iterStat.index}|"
+                                       class="form-label">Role</label>
+                                <input type="text" class="form-control" th:id="|role${iterStat.index}|"
+                                       th:field="*{experiences[__${iterStat.index}__].role}" required>
+                                <div class="invalid-feedback">Please provide your role.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label th:for="|fromDate${iterStat.index}|"
+                                       class="form-label">From Date</label>
+                                <input type="date" class="form-control" th:id="|fromDate${iterStat.index}|"
+                                       th:field="*{experiences[__${iterStat.index}__].fromDate}" required>
+                                <div class="invalid-feedback">Please provide a start date.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label th:for="|toDate${iterStat.index}|"
+                                       class="form-label">To Date</label>
+                                <input type="date" class="form-control" th:id="|toDate${iterStat.index}|"
+                                       th:field="*{experiences[__${iterStat.index}__].toDate}">
+                                <div class="invalid-feedback">Leave blank if this is your current job.</div>
+                            </div>
+                            <div class="col-12">
+                                <label th:for="|workDescription${iterStat.index}|"
+                                       class="form-label">Work Description</label>
+                                <textarea class="form-control" th:id="|workDescription${iterStat.index}|"
+                                            th:field="*{experiences[__${iterStat.index}__].workDescription}" rows="3" required></textarea>
+                                <div class="invalid-feedback">Please provide a work description.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(candidate.experiences)}">
+                        <div class="row g-3 mb-3 experience-entry">
                         <div class="col-md-6">
                             <label for="companyName0" class="form-label">Company Name</label>
                             <input type="text" class="form-control" id="companyName0" name="experiences[0].companyName" required>
@@ -166,6 +249,7 @@
                             <textarea class="form-control" id="workDescription0" name="experiences[0].workDescription" rows="3" required></textarea>
                             <div class="invalid-feedback">Please provide a work description.</div>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary" id="addExperience">Add Another Experience</button>
@@ -214,7 +298,8 @@
     }
 
     // Add skill
-    let skillCount = 1;
+    const skillsContainer = document.getElementById("skillsContainer");
+    let skillCount = skillsContainer.children.length > 0 ? skillsContainer.children.length : 1;
     document.getElementById('addSkill').addEventListener('click', function() {
         const skillsContainer = document.getElementById('skillsContainer');
         const newSkill = document.createElement('div');
@@ -253,7 +338,8 @@
     });
 
     // Add experience
-    let experienceCount = 1;
+    const experienceContainer = document.getElementById('experienceContainer');
+    let experienceCount = experienceContainer.children.length > 0 ? experienceContainer.children.length : 1;
     document.getElementById('addExperience').addEventListener('click', function() {
         const experienceContainer = document.getElementById('experienceContainer');
         const newExperience = document.createElement('div');

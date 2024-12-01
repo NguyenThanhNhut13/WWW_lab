@@ -18,4 +18,5 @@ import vn.edu.iuh.fit.backend.models.CandidateSkill;
 
 @Repository
 public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, Long> {
+    CandidateSkill findByCandidate_IdAndSkill_Id(Long candidateId, Long skillId);
 }

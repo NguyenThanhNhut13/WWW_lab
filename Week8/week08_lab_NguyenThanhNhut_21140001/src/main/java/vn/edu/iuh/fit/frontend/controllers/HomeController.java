@@ -106,6 +106,8 @@
             jobApplicationDTO.setStatus(0);
             jobApplicationDTO.setApplyAt(LocalDate.now());
 
+            System.out.println("Job application: " + jobApplicationDTO);
+
             if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
                 redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
                 return "redirect:/jobs/" + id;

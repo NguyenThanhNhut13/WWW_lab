@@ -13,6 +13,7 @@ package vn.edu.iuh.fit.backend.dtos;
  */
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ import java.util.Set;
 public class CandidateDTO implements Serializable {
     private Long id;
     private String fullName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private String email;
     private String phone;

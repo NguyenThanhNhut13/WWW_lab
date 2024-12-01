@@ -13,6 +13,7 @@ package vn.edu.iuh.fit.backend.dtos;
  */
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,7 +25,9 @@ import java.time.LocalDate;
 @ToString
 public class ExperienceDTO implements Serializable {
     private Long id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate toDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fromDate;
     private String companyName;
     private String role;
