@@ -20,6 +20,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class AddressDTO implements Serializable {
     private Long id;
     private String street;

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.converters.*;
 import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
+import vn.edu.iuh.fit.backend.dtos.CandidateSkillDTO;
 import vn.edu.iuh.fit.backend.dtos.JobApplicationDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.models.*;
@@ -79,10 +80,12 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
             Candidate candidate;
             if (jobApplicationDTO.getCandidate().getId() != null) {
-                candidate = candidateRepository.findById(jobApplicationDTO.getCandidate().getId())
+                Candidate existingCandidate = candidateRepository.findById(jobApplicationDTO.getCandidate().getId())
                         .orElseThrow(() -> new Exception("Candidate not found"));
-
                 System.out.println("Candidate found");
+
+                candidate = updateCandidate(jobApplicationDTO, existingCandidate);
+
             } else {
                 candidate = candidateMapper.toEntity(jobApplicationDTO.getCandidate());
 
@@ -103,17 +106,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                 }
 
                 // Save candidate's address
-                if (jobApplicationDTO.getCandidate().getAddress().getId() != null) {
-//                    Address address = addressRepository.findById(jobApplicationDTO.getCandidate().getAddress().getId())
-//                            .orElseThrow(() -> new Exception("Address not found"));
-                    Address address = addressMapper.toEntity(jobApplicationDTO.getCandidate().getAddress());
-                    addressRepository.save(address);
-                    candidate.setAddress(address);
-                } else {
-                    Address address = addressMapper.toEntity(jobApplicationDTO.getCandidate().getAddress());
-                    addressRepository.save(address);
-                    candidate.setAddress(address);
-                }
+                Address address = addressMapper.toEntity(jobApplicationDTO.getCandidate().getAddress());
+                addressRepository.save(address);
+                candidate.setAddress(address);
 
                 candidateRepository.save(candidate);
 
@@ -121,26 +116,10 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                 if (jobApplicationDTO.getCandidate().getExperiences() != null) {
                     List<Experience> experiences = new ArrayList<>();
                     jobApplicationDTO.getCandidate().getExperiences().forEach(ex -> {
-                        if (ex.getId() != null) {
-                            try {
-                                Experience experience = experienceRepository.findById(ex.getId())
-                                        .orElseThrow(() -> new Exception("Experience not found"));
-                                experience.setRole(ex.getRole());
-                                experience.setCompanyName(ex.getCompanyName());
-                                experience.setFromDate(ex.getFromDate());
-                                experience.setToDate(ex.getToDate());
-                                experience.setWorkDescription(ex.getWorkDescription());
-                                experienceRepository.save(experience);
-                                experiences.add(experience);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            Experience experience = experienceMapper.toEntity(ex);
-                            experience.setCandidate(candidate);
-                            experienceRepository.save(experience);
-                            experiences.add(experience);
-                        }
+                        Experience experience = experienceMapper.toEntity(ex);
+                        experience.setCandidate(candidate);
+                        experienceRepository.save(experience);
+                        experiences.add(experience);
                     });
                     candidate.setExperiences(experiences);
                 }
@@ -151,49 +130,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                     jobApplicationDTO.getCandidate().getCandidateSkills().forEach(candidateSkillDTO -> {
                         CandidateSkill newCandidateSkill = candidateSkillMapper.toEntity(candidateSkillDTO);
 
-                        Skill skill;
-                        if (candidateSkillDTO.getSkill().getId() != null) {
-                            try {
-                                skill = skillRepository.findById(candidateSkillDTO.getSkill().getId())
-                                        .orElseThrow(() -> new Exception("Skill not found"));
+                        Skill skill = skillRepository.save(skillMapper.toEntity(candidateSkillDTO.getSkill()));
 
-                                // Set the skill type
-                                skill.setType(candidateSkillDTO.getSkill().getType());
-                                skill.setSkillName(candidateSkillDTO.getSkill().getSkillName());
-                                skillRepository.save(skill);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            skill = skillRepository.save(skillMapper.toEntity(candidateSkillDTO.getSkill()));
-                            System.out.println("Skill saved" + skill);
-                        }
-
-                        if (candidateSkillDTO.getId() != null) {
-                            try {
-                                CandidateSkill candidateSkill = candidateSkillRepository.findByCandidate_IdAndSkill_Id(candidate.getId(), skill.getId());
-                                candidateSkill.setSkill(skill);
-                                candidateSkill.setCandidate(candidate);
-                                candidateSkill.setSkillLevel(candidateSkillDTO.getSkillLevel());
-                                candidateSkillRepository.save(candidateSkill);
-                                candidateSkills.add(candidateSkill);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            CandidateSkillId candidateSkillId = new CandidateSkillId();
-                            candidateSkillId.setCandidateId(candidate.getId());
-                            candidateSkillId.setSkillId(skill.getId());
-
-                            newCandidateSkill.setId(candidateSkillId);
-                            newCandidateSkill.setSkill(skill);
-                            newCandidateSkill.setAppliedDate(LocalDate.now());
-                            newCandidateSkill.setSkillLevel(candidateSkillDTO.getSkillLevel());
-
-                            newCandidateSkill.setCandidate(candidate);
-                            candidateSkillRepository.save(newCandidateSkill);
-                            candidateSkills.add(newCandidateSkill);
-                        }
+                        saveCandidateSkill(candidate, candidateSkills, candidateSkillDTO, newCandidateSkill, skill);
                     });
                     candidate.setCandidateSkills(candidateSkills);
                 }
@@ -203,6 +142,117 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private Candidate updateCandidate(JobApplicationDTO jobApplicationDTO, Candidate candidate) {
+        try {
+            candidate.setFullName(jobApplicationDTO.getCandidate().getFullName());
+            candidate.setDob(jobApplicationDTO.getCandidate().getDob());
+            candidate.setEmail(jobApplicationDTO.getCandidate().getEmail());
+            candidate.setPhone(jobApplicationDTO.getCandidate().getPhone());
+
+            // Update candidate's address
+            Address address = addressRepository.findById(jobApplicationDTO.getCandidate().getAddress().getId())
+                    .orElseThrow(() -> new Exception("Address not found"));
+            Address newAddress = addressMapper.toEntity(jobApplicationDTO.getCandidate().getAddress());
+            address.setCity(newAddress.getCity());
+            address.setCountry(newAddress.getCountry());
+            address.setNumber(newAddress.getNumber());
+            address.setZipcode(newAddress.getZipcode());
+            address.setStreet(newAddress.getStreet());
+            addressRepository.save(address);
+            candidate.setAddress(address);
+
+            // Update candidate's experiences
+            List<Experience> experiences = new ArrayList<>();
+            jobApplicationDTO.getCandidate().getExperiences().forEach(ex -> {
+                if (ex.getId() != null) {
+                    try {
+                        Experience experience = experienceRepository.findById(ex.getId())
+                                .orElseThrow(() -> new Exception("Experience not found"));
+                        experience.setRole(ex.getRole());
+                        experience.setCompanyName(ex.getCompanyName());
+                        experience.setFromDate(ex.getFromDate());
+                        experience.setToDate(ex.getToDate());
+                        experience.setWorkDescription(ex.getWorkDescription());
+                        experienceRepository.save(experience);
+                        experiences.add(experience);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    Experience experience = experienceMapper.toEntity(ex);
+                    experience.setCandidate(candidate);
+                    experienceRepository.save(experience);
+                    experiences.add(experience);
+                }
+            });
+            candidate.setExperiences(experiences);
+
+            // Update candidate's skills
+            if (jobApplicationDTO.getCandidate().getCandidateSkills() != null) {
+                List<CandidateSkill> candidateSkills = new ArrayList<>();
+                jobApplicationDTO.getCandidate().getCandidateSkills().forEach(candidateSkillDTO -> {
+                    CandidateSkill newCandidateSkill = candidateSkillMapper.toEntity(candidateSkillDTO);
+
+                    Skill skill;
+                    if (candidateSkillDTO.getSkill().getId() != null) {
+                        try {
+                            skill = skillRepository.findById(candidateSkillDTO.getSkill().getId())
+                                    .orElseThrow(() -> new Exception("Skill not found"));
+                            skill.setType(candidateSkillDTO.getSkill().getType());
+                            skill.setSkillName(candidateSkillDTO.getSkill().getSkillName());
+                            skillRepository.save(skill);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        skill = skillRepository.save(skillMapper.toEntity(candidateSkillDTO.getSkill()));
+                    }
+
+                    if (candidateSkillDTO.getId() != null) {
+                        try {
+                            CandidateSkill candidateSkill = candidateSkillRepository.findByCandidate_IdAndSkill_Id(candidate.getId(), skill.getId());
+                            candidateSkill.setSkill(skill);
+                            candidateSkill.setCandidate(candidate);
+                            candidateSkill.setSkillLevel(candidateSkillDTO.getSkillLevel());
+                            candidateSkillRepository.save(candidateSkill);
+                            candidateSkills.add(candidateSkill);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        saveCandidateSkill(candidate, candidateSkills, candidateSkillDTO, newCandidateSkill, skill);
+                        System.out.println("Candidate skill saved");
+                    }
+
+                    candidateSkills.add(newCandidateSkill);
+                    System.out.println("Candidate skill added" + candidateSkills);
+
+                });
+                candidate.setCandidateSkills(candidateSkills);
+            }
+            candidateRepository.save(candidate);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return candidate;
+    }
+
+    private void saveCandidateSkill(Candidate candidate, List<CandidateSkill> candidateSkills, CandidateSkillDTO candidateSkillDTO, CandidateSkill newCandidateSkill, Skill skill) {
+        CandidateSkillId candidateSkillId = new CandidateSkillId();
+        candidateSkillId.setCandidateId(candidate.getId());
+        candidateSkillId.setSkillId(skill.getId());
+
+        newCandidateSkill.setId(candidateSkillId);
+        newCandidateSkill.setSkill(skill);
+        newCandidateSkill.setAppliedDate(LocalDate.now());
+        newCandidateSkill.setSkillLevel(candidateSkillDTO.getSkillLevel());
+
+        newCandidateSkill.setCandidate(candidate);
+        candidateSkillRepository.save(newCandidateSkill);
+        candidateSkills.add(newCandidateSkill);
     }
 
     @Override

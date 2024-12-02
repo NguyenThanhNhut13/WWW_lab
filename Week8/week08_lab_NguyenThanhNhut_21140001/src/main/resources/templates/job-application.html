@@ -58,6 +58,7 @@
                         <input type="date" class="form-control" id="dob" th:field="*{dob}" required>
                         <div class="invalid-feedback">Please provide your date of birth.</div>
                     </div>
+                    <input type="hidden" th:field="*{address.id}" />
                     <div class="col-md-6">
                         <label for="country" class="form-label">Country</label>
                         <select class="form-select" id="country" th:field="*{address.country}" required>

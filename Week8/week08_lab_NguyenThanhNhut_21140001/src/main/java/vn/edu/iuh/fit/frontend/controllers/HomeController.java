@@ -83,7 +83,6 @@
                 candidate.setUserId(currentUser.getId());
                 candidate.setId(null);
             }
-            System.out.println("Candidate: " + candidate);
             List<Map<String, String>> countries = addressModel.getCountries();
             model.addAttribute("countries", countries);
 
@@ -105,8 +104,6 @@
             jobApplicationDTO.setCandidate(candidateDTO);
             jobApplicationDTO.setStatus(0);
             jobApplicationDTO.setApplyAt(LocalDate.now());
-
-            System.out.println("Job application: " + jobApplicationDTO);
 
             if (jobApplicationModel.saveJobApplication(jobApplicationDTO)) {
                 redirectAttributes.addFlashAttribute("successMessage", "Job application submitted successfully");
