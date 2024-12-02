@@ -48,5 +48,9 @@ public class JobApplication {
     @Column(name = "status", nullable = false)
     private int status;
 
+    @Column(name = "match_percentage", nullable = false)
+    private double matchPercentage;
+
+
 
 }

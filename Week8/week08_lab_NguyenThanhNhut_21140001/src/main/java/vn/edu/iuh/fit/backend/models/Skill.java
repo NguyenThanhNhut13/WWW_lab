@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.backend.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import vn.edu.iuh.fit.backend.enums.SkillType;
 
 import java.util.LinkedHashSet;
@@ -34,4 +35,13 @@ public class Skill {
     @OneToMany(mappedBy = "skill")
     private Set<JobSkill> jobSkills = new LinkedHashSet<>();
 
+    @Override
+    public String toString() {
+        return "Skill{" +
+                "type=" + type +
+                ", skillName='" + skillName + '\'' +
+                ", skillDescription='" + skillDescription + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

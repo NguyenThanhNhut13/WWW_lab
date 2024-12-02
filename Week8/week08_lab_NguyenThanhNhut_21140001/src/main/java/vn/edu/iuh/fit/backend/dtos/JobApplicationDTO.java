@@ -28,4 +28,5 @@ public class JobApplicationDTO implements Serializable {
     private CandidateDTO candidate;
     private LocalDate applyAt;
     private int status;
+    private double matchPercentage;
 }

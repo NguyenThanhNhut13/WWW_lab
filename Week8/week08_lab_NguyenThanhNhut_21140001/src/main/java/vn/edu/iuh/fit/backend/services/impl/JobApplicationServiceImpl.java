@@ -16,19 +16,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.converters.*;
-import vn.edu.iuh.fit.backend.dtos.CandidateDTO;
-import vn.edu.iuh.fit.backend.dtos.CandidateSkillDTO;
-import vn.edu.iuh.fit.backend.dtos.JobApplicationDTO;
-import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
+import vn.edu.iuh.fit.backend.dtos.*;
+import vn.edu.iuh.fit.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.repositories.*;
 import vn.edu.iuh.fit.backend.services.JobApplicationService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class JobApplicationServiceImpl implements JobApplicationService {
@@ -138,6 +134,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                 }
             }
             jobApplication.setCandidate(candidate);
+            System.out.println("Candidate saved" + candidate);
+            double matchPercent = calculateMatchPercent(jobApplicationDTO, candidate);
+            jobApplication.setMatchPercentage(matchPercent);
             return jobApplicationMapper.toDTO(jobApplicationRepository.save(jobApplication));
         } catch (Exception e) {
             return null;
@@ -217,17 +216,15 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                             candidateSkill.setCandidate(candidate);
                             candidateSkill.setSkillLevel(candidateSkillDTO.getSkillLevel());
                             candidateSkillRepository.save(candidateSkill);
-                            candidateSkills.add(candidateSkill);
+//                            candidateSkills.add(candidateSkill);
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         saveCandidateSkill(candidate, candidateSkills, candidateSkillDTO, newCandidateSkill, skill);
-                        System.out.println("Candidate skill saved");
                     }
 
                     candidateSkills.add(newCandidateSkill);
-                    System.out.println("Candidate skill added" + candidateSkills);
 
                 });
                 candidate.setCandidateSkills(candidateSkills);
@@ -238,6 +235,46 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
 
         return candidate;
+    }
+
+    // Calculate match percent between job and candidate based on skills and applied date skill
+    private double calculateMatchPercent(JobApplicationDTO jobApplicationDTO, Candidate candidate) {
+        List<Skill> jobSkills = jobApplicationDTO.getJob().getJobSkills().stream()
+                .map(skillDTO -> skillRepository.findById(skillDTO.getId().getSkillId()).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<Skill> candidateSkills = candidate.getCandidateSkills().stream()
+                .filter(cs -> cs.getAppliedDate().equals(jobApplicationDTO.getApplyAt()))
+                .map(CandidateSkill::getSkill)
+                .toList();
+
+        if (jobSkills.isEmpty()) return 0.0;
+
+        double matchScore = jobSkills.stream()
+                .mapToDouble(jobSkill -> {
+                    Optional<CandidateSkill> matchedSkill = candidate.getCandidateSkills().stream()
+                            .filter(cs -> cs.getAppliedDate().equals(jobApplicationDTO.getApplyAt()) &&
+                                    cs.getSkill().getSkillName().equalsIgnoreCase(jobSkill.getSkillName()))
+                            .findFirst();
+
+                    if (matchedSkill.isPresent()) {
+                        SkillLevel jobLevel = jobApplicationDTO.getJob().getJobSkills().stream()
+                                .filter(sd -> sd.getId().getSkillId().equals(jobSkill.getId()))
+                                .findFirst()
+                                .map(JobSkillDTO::getSkillLevel)
+                                .orElse(null);
+
+                        System.out.println("Matched skill: " + matchedSkill.get().getSkill().getSkillName());
+
+                        return jobLevel != null && jobLevel.ordinal() <= matchedSkill.get().getSkillLevel().ordinal() ? 1.0 : 0.5;
+                    }
+                    System.out.println("No matched skill" + jobSkill.getSkillName());
+                    return 0.0;
+                })
+                .sum();
+
+        return (matchScore / jobSkills.size()) * 100;
     }
 
     private void saveCandidateSkill(Candidate candidate, List<CandidateSkill> candidateSkills, CandidateSkillDTO candidateSkillDTO, CandidateSkill newCandidateSkill, Skill skill) {
