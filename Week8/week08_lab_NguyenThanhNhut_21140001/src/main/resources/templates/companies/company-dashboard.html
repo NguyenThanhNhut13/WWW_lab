@@ -266,7 +266,6 @@
                             <tr th:each="jobApplication : ${jobApplicationDTOS}">
                                 <td>
                                     <div class="d-flex align-items-center">
-<!--                                        <img th:src="${jobApplication.candidate.profilePicture != null ? jobApplication.candidate.profilePicture : 'https://via.placeholder.com/40'}"-->
                                         <img src="https://via.placeholder.com/40"
                                              alt="Avatar" class="rounded-circle me-2 candidate-avatar" style="width: 40px; height: 40px; object-fit: cover;">
                                         <div>
@@ -288,11 +287,13 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" th:style="'width: ' + ${jobApplication.matchPercentage} + '%'"
-                                             th:aria-valuenow="${jobApplication.matchPercentage}" aria-valuemin="0" aria-valuemax="100"
-                                             th:text="${jobApplication.matchPercentage + '%'}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="progress flex-grow-1" style="height: 10px;">
+                                            <div class="progress-bar bg-success" role="progressbar" th:style="'width: ' + ${#numbers.formatDecimal(jobApplication.matchPercentage, 1, 0)} + '%'"
+                                                 th:aria-valuenow="${#numbers.formatDecimal(jobApplication.matchPercentage, 1, 0)}" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
                                         </div>
+                                        <span class="ms-2 fw-bold" th:text="${#numbers.formatDecimal(jobApplication.matchPercentage, 1, 0) + '%'}">85%</span>
                                     </div>
                                 </td>
                                 <td>
@@ -303,14 +304,8 @@
                           (jobApplication.status == 1 ? 'Approved' : 'Rejected')}">Status</span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" th:data-bs-target="${'#candidateModal-' + jobApplication.candidate.id}">
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" th:data-bs-target="${'#candidateModal-' + jobApplication.candidate.id}">
                                         <i class="bi bi-eye"></i> View
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-success me-1" th:onclick="'scheduleInterview(' + ${jobApplication.id} + ')'">
-                                        <i class="bi bi-calendar-event"></i> Interview
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info" th:onclick="'sendEmail(' + ${jobApplication.id} + ')'">
-                                        <i class="bi bi-envelope"></i> Email
                                     </button>
                                 </td>
                             </tr>
@@ -318,72 +313,95 @@
                         </table>
                     </div>
 
-                    <!-- Candidate Profile Modals -->
-                    <div th:each="jobApplication : ${jobApplicationDTOS}" th:id="${'candidateModal-' + jobApplication.candidate.id}" class="modal fade" tabindex="-1">
+                    <!-- Candidate Profile Modal -->
+                    <div th:each="jobApplication : ${jobApplicationDTOS}" th:id="${'candidateModal-' + jobApplication.candidate?.id}" class="modal fade" tabindex="-1">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header bg-primary text-white">
-                                    <h5 class="modal-title" th:text="${'Profile: ' + jobApplication.candidate.fullName}">Candidate Profile</h5>
+                                    <h5 class="modal-title" th:text="${'Profile: ' + (jobApplication.candidate?.fullName ?: 'N/A')}">Candidate Profile</h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-4 text-center">
-<!--                                            <img th:src="${jobApplication.candidate.profilePicture != null ? jobApplication.candidate.profilePicture : 'https://via.placeholder.com/150'}"-->
-                                                <img src="https://via.placeholder.com/150"
-                                                 alt="Avatar" class="rounded-circle mb-3 shadow" style="width: 150px; height: 150px; object-fit: cover;">
-                                            <h4 th:text="${jobApplication.candidate.fullName}">John Doe</h4>
+                                            <img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle mb-3 shadow" style="width: 150px; height: 150px; object-fit: cover;">
+                                            <h4 th:text="${jobApplication.candidate?.fullName ?: 'N/A'}">John Doe</h4>
                                             <p class="text-muted">
                                                 <i class="bi bi-envelope me-2"></i>
-                                                <span th:text="${jobApplication.candidate.email}">john@example.com</span>
+                                                <span th:text="${jobApplication.candidate?.email ?: 'N/A'}">john@example.com</span>
                                             </p>
                                             <p class="text-muted">
                                                 <i class="bi bi-telephone me-2"></i>
-                                                <span th:text="${jobApplication.candidate.phone}">123-456-7890</span>
+                                                <span th:text="${jobApplication.candidate?.phone ?: 'N/A'}">123-456-7890</span>
                                             </p>
+                                            <div class="mt-3">
+                                                <h5>Match Score</h5>
+                                                <div class="progress" style="height: 25px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         th:style="'width: ' + ${jobApplication.matchPercentage != null ? jobApplication.matchPercentage : 0} + '%'"
+                                                         th:attr="aria-valuenow=${jobApplication.matchPercentage != null ? jobApplication.matchPercentage : 0}"
+                                                         aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="fw-bold" th:text="${jobApplication.matchPercentage != null ? #numbers.formatDecimal(jobApplication.matchPercentage, 1, 0) + '%' : 'N/A'}">85%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Applied for</h5>
-                                                    <p class="card-text" th:text="${jobApplication.job.jobName}">Software Engineer</p>
+                                            <ul class="nav nav-tabs" id="candidateProfileTabs" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button" role="tab" aria-controls="skills" aria-selected="false">Skills</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" type="button" role="tab" aria-controls="experience" aria-selected="false">Experience</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content mt-3" id="candidateProfileTabContent">
+                                                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                                                    <div class="card mb-3">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Applied for</h5>
+                                                            <p class="card-text" th:text="${jobApplication.job?.jobName ?: 'N/A'}">Software Engineer</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card mb-3">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Status</h5>
+                                                            <p class="card-text">
+                                            <span th:class="${'badge ' + (jobApplication.status == 0 ? 'bg-warning' : (jobApplication.status == 1 ? 'bg-success' : 'bg-danger'))}"
+                                                  th:text="${jobApplication.status == 0 ? 'Pending' : (jobApplication.status == 1 ? 'Approved' : 'Rejected')}">Status</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Address</h5>
+                                                            <p class="card-text" th:text="${jobApplication.candidate?.address?.fullAddress ?: 'N/A'}">Full Address</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Skills</h5>
-                                                    <p class="card-text">
-                                        <span th:each="skill : ${jobApplication.candidate.candidateSkills}"
-                                              class="badge bg-primary badge-skill me-1 mb-1"
-                                              th:text="${skill.skill.skillName + ' (' + skill.skillLevel + ')'}">Skill (Level)</span>
-                                                    </p>
+                                                <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
+                                                    <h5>Skills</h5>
+                                                    <div class="d-flex flex-wrap">
+                                    <span th:each="skill : ${jobApplication.candidate?.candidateSkills}"
+                                          class="badge bg-primary badge-skill me-2 mb-2 p-2"
+                                          th:text="${skill.skill?.skillName + ' (' + skill.skillLevel + ')'}">Skill (Level)</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Experience</h5>
-                                                    <ul class="list-group list-group-flush">
-                                                        <li th:each="experience : ${jobApplication.candidate.experiences}" class="list-group-item">
-                                                            <h6 class="mb-1" th:text="${experience.role + ' at ' + experience.companyName}">Role at Company</h6>
-                                                            <small class="text-muted" th:text="${experience.fromDate + ' - ' + experience.toDate}">Date Range</small>
-                                                            <p class="mb-0" th:text="${experience.workDescription}">Work description</p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Status</h5>
-                                                    <p class="card-text">
-                                                        <span th:class="${'badge ' + (jobApplication.status == 0 ? 'bg-warning' : (jobApplication.status == 1 ? 'bg-success' : 'bg-danger'))}"
-                                                              th:text="${jobApplication.status == 0 ? 'Pending' : (jobApplication.status == 1 ? 'Approved' : 'Rejected')}">Status</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Address</h5>
-                                                    <p class="card-text" th:text="${jobApplication.candidate.address.fullAddress}">Full Address</p>
+                                                <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
+                                                    <h5>Experience</h5>
+                                                    <div class="timeline">
+                                                        <div th:each="experience, iterStat : ${jobApplication.candidate?.experiences}" class="timeline-item">
+                                                            <div class="timeline-marker"></div>
+                                                            <div class="timeline-content">
+                                                                <h6 class="mb-1" th:text="${experience.role + ' at ' + experience.companyName}">Role at Company</h6>
+                                                                <p class="text-muted mb-2" th:text="${experience.fromDate + ' - ' + experience.toDate}">Date Range</p>
+                                                                <p class="mb-0" th:text="${experience.workDescription}">Work description</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -391,43 +409,59 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" th:onclick="'scheduleInterview(' + ${jobApplication.id} + ')'">Schedule Interview</button>
-                                    <button type="button" class="btn btn-success" th:onclick="'approveApplication(' + ${jobApplication.id} + ')'">Approve Application</button>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" th:data-bs-target="${'#emailModal-' + jobApplication.id}">Schedule Interview</button>
                                     <button type="button" class="btn btn-danger" th:onclick="'rejectApplication(' + ${jobApplication.id} + ')'">Reject Application</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <!-- Email Modal -->
+                    <div th:each="jobApplication : ${jobApplicationDTOS}" th:id="${'emailModal-' + jobApplication.id}" class="modal fade" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="emailModalLabel">Schedule Interview</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:id="${'emailForm-' + jobApplication.id}">
+                                        <input type="hidden" name="applicationId" th:value="${jobApplication.id}">
+                                        <div class="mb-3">
+                                            <label for="to" class="form-label">To</label>
+                                            <input type="email" class="form-control" id="to" name="to" th:value="${jobApplication.candidate.email}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="subject" class="form-label">Subject</label>
+                                            <input type="text" class="form-control" id="subject" name="subject" th:value="'Interview Invitation for ' + ${jobApplication.job.jobName} + ' Position'" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Message</label>
+                                            <textarea class="form-control" id="message" name="message" rows="10" required>
+Dear [[${jobApplication.candidate.fullName}]],
 
-                <!-- Email Modal -->
-                <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="emailModalLabel">Send Email</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="emailForm">
-                                    <input type="hidden" id="applicationId" name="applicationId">
-                                    <div class="mb-3">
-                                        <label for="subject" class="form-label">Subject</label>
-                                        <input type="text" class="form-control" id="subject" name="subject" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="message" class="form-label">Message</label>
-                                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="submitEmail()">Send Email</button>
+We are pleased to invite you for an interview for the [[${jobApplication.job.jobName}]] position at [[${company.compName}]].
+
+Your application has impressed us, and we would like to discuss your qualifications further.
+
+Please let us know your availability for the coming week, and we will schedule the interview accordingly.
+
+If you have any questions or need to reschedule, please don't hesitate to contact us.
+
+We look forward to meeting you!
+
+Best regards,
+[[${company.compName}]] Hiring Team
+                        </textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" th:onclick="'submitEmail(' + ${jobApplication.id} + ')'">Send Email</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- Add Candidate Modal -->
                     <div class="modal fade" id="addCandidateModal" tabindex="-1">
                         <div class="modal-dialog">
@@ -461,6 +495,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="tab-pane fade" id="reports" th:class="${activeTab == 'reports'} ? 'tab-pane fade show active' : 'tab-pane fade'">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>Reports & Analytics</h2>

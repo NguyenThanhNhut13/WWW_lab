@@ -82,6 +82,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/company").hasAnyAuthority("COMPANY", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/company/**").hasAnyAuthority("COMPANY", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/candidates").hasAnyAuthority("COMPANY", "ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/company/sendEmail").hasAnyAuthority("COMPANY", "ADMIN")
 
                     .requestMatchers(HttpMethod.GET, "/api/candidates").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/users/current-user").permitAll()
@@ -93,6 +94,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/skills").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/companies").hasAnyAuthority("ADMIN", "COMPANY")
                     .requestMatchers(HttpMethod.GET, "/api/companies/**").hasAnyAuthority("USER", "ADMIN", "COMPANY")
+                    .requestMatchers(HttpMethod.POST, "/api/email/send-interview-invitation").hasAnyAuthority("COMPANY", "ADMIN")
 
         ).formLogin(
                 formLogin -> formLogin

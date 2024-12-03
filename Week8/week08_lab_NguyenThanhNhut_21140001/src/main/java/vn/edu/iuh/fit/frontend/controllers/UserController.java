@@ -135,6 +135,17 @@ public class UserController {
         return "companies/company-dashboard";
     }
 
+//    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+//    public String sendEmail(@RequestParam("email") String email, @RequestParam("subject") String subject,
+//                            @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
+//        if (userModel.sendEmail(email, subject, message)) {
+//            redirectAttributes.addFlashAttribute("successMessage", "Email sent successfully");
+//        } else {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Failed to send email");
+//        }
+//        return "redirect:/company/dashboard";
+//    }
+
 
 
 }

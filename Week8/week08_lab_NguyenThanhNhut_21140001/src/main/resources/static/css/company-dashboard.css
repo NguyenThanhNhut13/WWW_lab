@@ -187,3 +187,34 @@ body {
         font-weight: bold;
     }
 }
+
+/*for candidate tab*/
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #007bff;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 3px #007bff;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 15px;
+    height: calc(100% + 1.5rem);
+    border-left: 2px solid #007bff;
+}
+.timeline-item:last-child::before {
+    display: none;
+}
