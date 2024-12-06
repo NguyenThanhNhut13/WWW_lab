@@ -226,6 +226,8 @@
                 <div class="tab-pane fade" id="candidates" th:classappend="${activeTab == 'candidates'} ? 'show active'">
                     <div th:if="${emailSuccessMessage}" class="alert alert-success" role="alert" id="emailSuccessMessage" th:text="${emailSuccessMessage}"></div>
                     <div th:if="${emailErrorMessage}" class="alert alert-danger" role="alert" id="emailErrorMessage" th:text="${emailErrorMessage}"></div>
+                    <div th:if="${rejectSuccessMessage}" class="alert alert-success" role="alert" id="rejectSuccessMessage" th:text="${rejectSuccessMessage}"></div>
+                    <div th:if="${rejectErrorMessage}" class="alert alert-danger" role="alert" id="rejectErrorMessage" th:text="${rejectErrorMessage}"></div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Candidate Management</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
@@ -412,7 +414,10 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" th:data-bs-target="${'#emailModal-' + jobApplication.id}">Schedule Interview</button>
-                                    <button type="button" class="btn btn-danger" th:onclick="'rejectApplication(' + ${jobApplication.id} + ')'">Reject Application</button>
+                                    <form th:action="@{/company/job-application/reject}" method="post">
+                                        <input type="hidden" name="jobApplicationId" th:value="${jobApplication.id}">
+                                        <button type="submit" class="btn btn-danger">Reject Application</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -769,7 +774,8 @@ Best regards,
 <script>
     setTimeout(function() {
         const alert = document.getElementById('successAlert') || document.getElementById('errorAlert')
-            || document.getElementById('emailSuccessMessage') || document.getElementById('emailErrorMessage');
+            || document.getElementById('emailSuccessMessage') || document.getElementById('emailErrorMessage')
+            || document.getElementById('rejectSuccessMessage') || document.getElementById('rejectErrorMessage');
         if (alert) {
             alert.classList.remove('show');
             alert.classList.add('fade');

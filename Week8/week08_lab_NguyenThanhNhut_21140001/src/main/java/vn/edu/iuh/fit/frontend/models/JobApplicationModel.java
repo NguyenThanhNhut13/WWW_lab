@@ -51,4 +51,12 @@ public class JobApplicationModel {
             return null;
         }
     }
+
+    public void updateStatus(Long jobApplicationId, int status) {
+        try {
+            restTemplate.put(JOB_APPLICATION_URL + "/update-status/" + jobApplicationId + "?status=" + status, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

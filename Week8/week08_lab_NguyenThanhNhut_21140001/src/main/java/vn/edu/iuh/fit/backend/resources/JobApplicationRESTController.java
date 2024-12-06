@@ -66,5 +66,14 @@ public class JobApplicationRESTController {
         }
     }
 
+    @PutMapping("/update-status/{jobApplicationId}")
+    public ResponseEntity<JobApplicationDTO> updateStatus(@PathVariable Long jobApplicationId, @RequestParam Integer status) {
+        try {
+            return ResponseEntity.ok(jobApplicationService.updateStatus(jobApplicationId, status));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 }

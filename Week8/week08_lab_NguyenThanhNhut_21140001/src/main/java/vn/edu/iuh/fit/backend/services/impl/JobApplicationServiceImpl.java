@@ -319,4 +319,16 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
 
     }
+
+    @Override
+    public JobApplicationDTO updateStatus(Long id, int status) {
+        try {
+            JobApplication jobApplication = jobApplicationRepository.findById(id)
+                    .orElseThrow(() -> new Exception("Job application not found"));
+            jobApplication.setStatus(status);
+            return jobApplicationMapper.toDTO(jobApplicationRepository.save(jobApplication));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

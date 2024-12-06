@@ -137,12 +137,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/send-email", method = RequestMethod.POST)
-    public String sendEmail(@RequestParam("to") String to, @RequestParam("subject") String subject,
+    public String sendEmail(@RequestParam("applicationId") Long jobApplicationId,
+                            @RequestParam("to") String to, @RequestParam("subject") String subject,
                             @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
         if (companyModel.sendEmail(to, subject, message)) {
             redirectAttributes.addFlashAttribute("emailSuccessMessage", "Email sent successfully");
+            jobApplicationModel.updateStatus(jobApplicationId, 1);
         } else {
             redirectAttributes.addFlashAttribute("emailErrorMessage", "Email sent failed");
+        }
+        return "redirect:/company/dashboard?activeTab=candidates";
+    }
+
+    @RequestMapping(value = "/job-application/reject", method = RequestMethod.POST)
+    public String rejectJobApplication(@RequestParam("jobApplicationId") Long jobApplicationId, RedirectAttributes redirectAttributes) {
+        try {
+            jobApplicationModel.updateStatus(jobApplicationId, -1);
+            redirectAttributes.addFlashAttribute("rejectSuccessMessage", "Job application rejected successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("rejectErrorMessage", "Job application rejected failed");
         }
         return "redirect:/company/dashboard?activeTab=candidates";
     }
