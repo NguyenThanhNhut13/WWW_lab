@@ -82,7 +82,8 @@ public class UserController {
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String showDashboard(@RequestParam(value = "jobId", required = false) Long jobId,
-                                @RequestParam(value = "search", required = false) String search, Model model) {
+                                @RequestParam(value = "search", required = false) String search,
+                                @RequestParam(value = "activeTab", required = false) String activeTab, Model model) {
         if (!(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken)) {
             return "redirect:/login";
         }
@@ -118,7 +119,7 @@ public class UserController {
             model.addAttribute("selectedJobId", jobIdValue);
             model.addAttribute("activeTab", "candidates");
         } else {
-            model.addAttribute("activeTab", "dashboard");
+            model.addAttribute("activeTab", activeTab == null ? "dashboard" : activeTab);
         }
 
         return "companies/company-dashboard";
@@ -135,16 +136,16 @@ public class UserController {
         return "companies/company-dashboard";
     }
 
-//    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-//    public String sendEmail(@RequestParam("email") String email, @RequestParam("subject") String subject,
-//                            @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
-//        if (userModel.sendEmail(email, subject, message)) {
-//            redirectAttributes.addFlashAttribute("successMessage", "Email sent successfully");
-//        } else {
-//            redirectAttributes.addFlashAttribute("errorMessage", "Failed to send email");
-//        }
-//        return "redirect:/company/dashboard";
-//    }
+    @RequestMapping(value = "/send-email", method = RequestMethod.POST)
+    public String sendEmail(@RequestParam("to") String to, @RequestParam("subject") String subject,
+                            @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
+        if (companyModel.sendEmail(to, subject, message)) {
+            redirectAttributes.addFlashAttribute("emailSuccessMessage", "Email sent successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("emailErrorMessage", "Email sent failed");
+        }
+        return "redirect:/company/dashboard?activeTab=candidates";
+    }
 
 
 

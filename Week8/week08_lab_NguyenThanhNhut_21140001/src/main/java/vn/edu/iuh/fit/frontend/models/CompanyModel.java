@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import vn.edu.iuh.fit.backend.dtos.CompanyDTO;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
+import vn.edu.iuh.fit.backend.dtos.MailDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 
 import java.nio.charset.StandardCharsets;
@@ -35,6 +36,7 @@ public class CompanyModel {
 
     private final RestTemplate restTemplate;
     private static final String COMPANY_API_URL = "http://localhost:8080/api/companies";
+    private static final String EMAIL_API_URL = "http://localhost:8080/api/email";
 
     @Autowired
     public CompanyModel(RestTemplate restTemplate) {
@@ -69,4 +71,18 @@ public class CompanyModel {
         }
     }
 
+    public boolean sendEmail(String to, String subject, String message) {
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    EMAIL_API_URL + "/send-interview-invitation",
+                    HttpMethod.POST,
+                    new HttpEntity<>(new MailDTO(to, subject, message)),
+                    String.class);
+
+            return response.getStatusCode() == HttpStatus.OK;
+        } catch (Exception e) {
+            System.out.println("Error while sending email: " + e.getMessage());
+            return false;
+        }
+    }
 }

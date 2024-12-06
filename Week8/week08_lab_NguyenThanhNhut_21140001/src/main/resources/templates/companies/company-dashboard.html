@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                        <a th:href="@{/login}" class="nav-link"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </li>
                 </ul>
             </div>
@@ -154,7 +154,7 @@
 
                 <div class="tab-pane fade container-fluid py-4" id="jobs" th:class="${activeTab == 'jobs'} ? 'tab-pane fade show active container-fluid py-4' : 'tab-pane fade container-fluid py-4'">
                     <!--Show success message-->
-                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <span th:text="${successMessage}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -224,6 +224,8 @@
 
                 <!-- Candidates Tab -->
                 <div class="tab-pane fade" id="candidates" th:classappend="${activeTab == 'candidates'} ? 'show active'">
+                    <div th:if="${emailSuccessMessage}" class="alert alert-success" role="alert" id="emailSuccessMessage" th:text="${emailSuccessMessage}"></div>
+                    <div th:if="${emailErrorMessage}" class="alert alert-danger" role="alert" id="emailErrorMessage" th:text="${emailErrorMessage}"></div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Candidate Management</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
@@ -314,7 +316,7 @@
                     </div>
 
                     <!-- Candidate Profile Modal -->
-                    <div th:each="jobApplication : ${jobApplicationDTOS}" th:id="${'candidateModal-' + jobApplication.candidate?.id}" class="modal fade" tabindex="-1">
+                    <div th:each="jobApplication, appStat : ${jobApplicationDTOS}" th:id="${'candidateModal-' + jobApplication.candidate?.id}" class="modal fade" tabindex="-1">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header bg-primary text-white">
@@ -347,19 +349,19 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <ul class="nav nav-tabs" id="candidateProfileTabs" role="tablist">
+                                            <ul class="nav nav-tabs" th:id="${'candidateProfileTabs-' + appStat.index}" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                                                    <button class="nav-link active" th:id="${'overview-tab-' + appStat.index}" data-bs-toggle="tab" th:data-bs-target="${'#overview-' + appStat.index}" type="button" role="tab" th:aria-controls="${'overview-' + appStat.index}" aria-selected="true">Overview</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button" role="tab" aria-controls="skills" aria-selected="false">Skills</button>
+                                                    <button class="nav-link" th:id="${'skills-tab-' + appStat.index}" data-bs-toggle="tab" th:data-bs-target="${'#skills-' + appStat.index}" type="button" role="tab" th:aria-controls="${'skills-' + appStat.index}" aria-selected="false">Skills</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" type="button" role="tab" aria-controls="experience" aria-selected="false">Experience</button>
+                                                    <button class="nav-link" th:id="${'experience-tab-' + appStat.index}" data-bs-toggle="tab" th:data-bs-target="${'#experience-' + appStat.index}" type="button" role="tab" th:aria-controls="${'experience-' + appStat.index}" aria-selected="false">Experience</button>
                                                 </li>
                                             </ul>
-                                            <div class="tab-content mt-3" id="candidateProfileTabContent">
-                                                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                                            <div class="tab-content mt-3" th:id="${'candidateProfileTabContent-' + appStat.index}">
+                                                <div class="tab-pane fade show active" th:id="${'overview-' + appStat.index}" role="tabpanel" th:aria-labelledby="${'overview-tab-' + appStat.index}">
                                                     <div class="card mb-3">
                                                         <div class="card-body">
                                                             <h5 class="card-title">Applied for</h5>
@@ -382,7 +384,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
+                                                <div class="tab-pane fade" th:id="${'skills-' + appStat.index}" role="tabpanel" th:aria-labelledby="${'skills-tab-' + appStat.index}">
                                                     <h5>Skills</h5>
                                                     <div class="d-flex flex-wrap">
                                     <span th:each="skill : ${jobApplication.candidate?.candidateSkills}"
@@ -390,7 +392,7 @@
                                           th:text="${skill.skill?.skillName + ' (' + skill.skillLevel + ')'}">Skill (Level)</span>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
+                                                <div class="tab-pane fade" th:id="${'experience-' + appStat.index}" role="tabpanel" th:aria-labelledby="${'experience-tab-' + appStat.index}">
                                                     <h5>Experience</h5>
                                                     <div class="timeline">
                                                         <div th:each="experience, iterStat : ${jobApplication.candidate?.experiences}" class="timeline-item">
@@ -415,16 +417,17 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Email Modal -->
                     <div th:each="jobApplication : ${jobApplicationDTOS}" th:id="${'emailModal-' + jobApplication.id}" class="modal fade" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="emailModalLabel">Schedule Interview</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form th:id="${'emailForm-' + jobApplication.id}">
+                                <form th:id="${'emailForm-' + jobApplication.id}" th:action="@{/company/send-email}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="emailModalLabel">Schedule Interview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         <input type="hidden" name="applicationId" th:value="${jobApplication.id}">
                                         <div class="mb-3">
                                             <label for="to" class="form-label">To</label>
@@ -439,26 +442,28 @@
                                             <textarea class="form-control" id="message" name="message" rows="10" required>
 Dear [[${jobApplication.candidate.fullName}]],
 
-We are pleased to invite you for an interview for the [[${jobApplication.job.jobName}]] position at [[${company.compName}]].
+We are pleased to invite you for an interview for the **[[${jobApplication.job.jobName}]]** position at **[[${company.compName}]]**.
 
-Your application has impressed us, and we would like to discuss your qualifications further.
+### Next Steps:
+Please confirm your availability for the interview directly with **[[${company.compName}]]**.
+- **Email**: [[${company.email}]]
+- **Phone**: [[${company.phone}]]
 
-Please let us know your availability for the coming week, and we will schedule the interview accordingly.
+If you have any questions about this email or the job application process, please contact **World Job** at support.worldjob@gmail.com
 
-If you have any questions or need to reschedule, please don't hesitate to contact us.
-
-We look forward to meeting you!
+Thank you for using our platform to connect with top employers.
 
 Best regards,
-[[${company.compName}]] Hiring Team
-                        </textarea>
+**World Job** Team
+
+                                            </textarea>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" th:onclick="'submitEmail(' + ${jobApplication.id} + ')'">Send Email</button>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Send Email</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -763,7 +768,8 @@ Best regards,
 </div>
 <script>
     setTimeout(function() {
-        const alert = document.getElementById('successAlert');
+        const alert = document.getElementById('successAlert') || document.getElementById('errorAlert')
+            || document.getElementById('emailSuccessMessage') || document.getElementById('emailErrorMessage');
         if (alert) {
             alert.classList.remove('show');
             alert.classList.add('fade');
