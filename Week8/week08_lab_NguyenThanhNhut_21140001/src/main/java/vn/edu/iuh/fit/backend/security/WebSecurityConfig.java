@@ -98,6 +98,9 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/companies/**").hasAnyAuthority("USER", "ADMIN", "COMPANY")
                     .requestMatchers(HttpMethod.POST, "/api/email/send-interview-invitation").hasAnyAuthority("COMPANY", "ADMIN")
 
+                    .requestMatchers(HttpMethod.GET, "/api/jobs/recommendations/").permitAll()
+
+
         ).formLogin(
                 formLogin -> formLogin
                         .loginPage("/login")

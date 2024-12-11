@@ -160,6 +160,4 @@ public class UserController {
         return "redirect:/company/dashboard?activeTab=candidates";
     }
 
-
-
 }

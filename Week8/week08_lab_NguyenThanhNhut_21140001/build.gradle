@@ -48,6 +48,9 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.2'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
 
+    // https://mvnrepository.com/artifact/org.tensorflow/tensorflow
+    implementation 'org.tensorflow:tensorflow:1.15.0'
+
 
 }
 

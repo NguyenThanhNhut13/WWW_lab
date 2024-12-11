@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.services.JobService;
+import vn.edu.iuh.fit.backend.services.impl.JobRecommendationService;
 
 import java.util.Optional;
 
@@ -26,10 +27,12 @@ import java.util.Optional;
 public class JobRESTController {
 
     private final JobService jobService;
+    private final JobRecommendationService recommendationService;
 
     @Autowired
-    public JobRESTController(JobService jobService) {
+    public JobRESTController(JobService jobService, JobRecommendationService recommendationService) {
         this.jobService = jobService;
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping
@@ -75,6 +78,13 @@ public class JobRESTController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("recommendations/{skillWeight}")
+    public float getRecommendation(@PathVariable float skillWeight) {
+        return recommendationService.predictSkillMatch(skillWeight);
+    }
+
+
 
 
 
