@@ -98,13 +98,28 @@ class JobRecommendationModel:
         return self.compute_skill_match(candidate_id)
 
     def save_model(self, model_path="../models/job_recommendation_model"):
-        # Example TensorFlow model for demonstration
-        input_layer = tf.keras.layers.Input(shape=(1,))
-        output_layer = tf.keras.layers.Dense(1, activation='linear')(input_layer)
+        input_layer = tf.keras.layers.Input(shape=(1,), name="input_candidate_skills")
+        output_layer = tf.keras.layers.Dense(1, activation='linear', name="output_job_recommendations")(input_layer)
         model = tf.keras.Model(inputs=input_layer, outputs=output_layer)
 
-        # Save the model
-        tf.saved_model.save(model, model_path)
+        model.compile(optimizer='adam', loss='mse')
+
+        # Khởi tạo các biến trọng số
+        dummy_input = tf.constant([[0.0]], dtype=tf.float32)  # Dữ liệu giả
+        model(dummy_input)  # Chạy một lần để khởi tạo các biến
+
+        # Định nghĩa signature
+        @tf.function(input_signature=[tf.TensorSpec(shape=(None, 1), dtype=tf.float32)])
+        def serve(input_candidate_skills):
+            output = model(input_candidate_skills)
+            return {"output_job_recommendations": output}
+
+        # Lưu mô hình
+        tf.saved_model.save(
+            model,
+            model_path,
+            signatures={"serving_default": serve}
+        )
         print(f"Model saved at {model_path}")
 
     def close_connection(self):
@@ -125,5 +140,11 @@ if __name__ == '__main__':
 
     # Save the model
     recommender.save_model()
+
+    model_path = "../models/job_recommendation_model"
+    model = tf.saved_model.load(model_path)
+
+    print("Inputs:", model.signatures['serving_default'].structured_input_signature)
+    print("Outputs:", model.signatures['serving_default'].structured_outputs)
 
     recommender.close_connection()

@@ -20,6 +20,8 @@ import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.services.JobService;
 import vn.edu.iuh.fit.backend.services.impl.JobRecommendationService;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -79,9 +81,9 @@ public class JobRESTController {
         }
     }
 
-    @GetMapping("recommendations/{skillWeight}")
-    public float getRecommendation(@PathVariable float skillWeight) {
-        return recommendationService.predictSkillMatch(skillWeight);
+    @GetMapping("recommendations/{candidateId}")
+    public List<Map<String, Object>> getRecommendations(@PathVariable Long candidateId) {
+        return recommendationService.recommendJobs(candidateId);
     }
 
 
