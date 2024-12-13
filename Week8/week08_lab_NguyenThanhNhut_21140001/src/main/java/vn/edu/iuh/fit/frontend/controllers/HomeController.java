@@ -55,6 +55,15 @@
         @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
         public String index(Model model) {
             List<JobDTO> jobs = jobModel.getAllJob(0, 10).getContent().stream().toList();
+            List<JobDTO> recommendedJobs = new ArrayList<>();
+
+            if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+                UserDTO currentUser = userModel.getCurrentUser();
+
+            }
+
+
+
             model.addAttribute("jobs", jobs);
             return "home";
         }

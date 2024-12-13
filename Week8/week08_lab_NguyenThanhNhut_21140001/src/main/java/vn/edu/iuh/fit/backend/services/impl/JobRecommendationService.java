@@ -36,7 +36,7 @@ public class JobRecommendationService {
         this.jobSkillRepository = jobSkillRepository;
 
         // Load TensorFlow model
-        String modelPath = "src/main/resources/models/job_recommendation_model";
+        String modelPath = "python-api/models/job_recommendation_model";
         this.model = SavedModelBundle.loader(modelPath).withTags("serve").load();
     }
 
@@ -118,7 +118,6 @@ public class JobRecommendationService {
 
         return recommendations;
     }
-
 
 
 }

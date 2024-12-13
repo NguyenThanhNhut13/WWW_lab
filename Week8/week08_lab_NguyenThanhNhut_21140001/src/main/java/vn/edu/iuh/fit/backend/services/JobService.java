@@ -27,6 +27,6 @@ public interface JobService {
     JobDTO updateJob(JobDTO jobDTO);
     void deleteJob(Long id);
     PageResponseDTO<JobDTO> searchJob(String keyword, int page, int size, String sortBy, String sortDir);
-    PageResponseDTO<JobDTO> findMatchingJobsForCandidate(Long candidateId, long minSkills, Pageable pageable);
+    PageResponseDTO<JobDTO> getRecommendJobs(String username, int page, int size);
 
 }

@@ -99,7 +99,8 @@ class JobRecommendationModel:
 
     def save_model(self, model_path="../models/job_recommendation_model"):
         input_layer = tf.keras.layers.Input(shape=(1,), name="input_candidate_skills")
-        output_layer = tf.keras.layers.Dense(1, activation='linear', name="output_job_recommendations")(input_layer)
+        dense_layer = tf.keras.layers.Dense(10, activation='relu')(input_layer)
+        output_layer = tf.keras.layers.Dense(1, activation='linear', name="output_job_recommendations")(dense_layer)
         model = tf.keras.Model(inputs=input_layer, outputs=output_layer)
 
         model.compile(optimizer='adam', loss='mse')

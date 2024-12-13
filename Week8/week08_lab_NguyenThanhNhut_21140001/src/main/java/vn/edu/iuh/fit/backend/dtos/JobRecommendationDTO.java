@@ -14,14 +14,16 @@ package vn.edu.iuh.fit.backend.dtos;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class JobRecommendationDTO {
-    private Long jobId;
-    private String jobName;
-    private String jobDescription;
-    private Double matchProbability;
+public class JobRecommendationDTO implements Serializable {
+    private Long job_id;
+    private String job_name;
+    private double match_percentage;
+
 }

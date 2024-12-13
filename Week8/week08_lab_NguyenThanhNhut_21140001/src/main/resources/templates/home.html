@@ -77,6 +77,73 @@
 
 <main class="container py-5">
     <h1 class="mb-4 text-center">Khám phá cơ hội nghề nghiệp</h1>
+    <!-- Jobs for new users -->
+    <div th:if="${isNewUser}" class="mb-5">
+        <h2 class="mb-4">Công việc phổ biến</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div th:each="job : ${popularJobs}" class="col">
+                <div class="card h-100 shadow-sm job-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img th:src="${job.company?.logo}" th:alt="${job.company?.compName + ' logo'}" class="rounded company-logo me-3">
+                            <div>
+                                <h5 class="card-title mb-0 text-truncate" style="max-width: 280px;" th:text="${job.jobName}"></h5>
+                                <p class="card-text text-muted text-truncate" style="max-width: 300px;" th:text="${job.company?.compName}"></p>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="badge bg-light text-dark me-2 fs-6">
+                                <i class="bi bi-cash me-1"></i>
+                                <span th:text="${job.salary}"></span>
+                            </span>
+                            <span class="badge bg-light text-dark fs-6">
+                                <i class="bi bi-geo-alt me-1"></i>
+                                <span th:text="${job.company?.address?.city}"></span>
+                            </span>
+                        </div>
+                        <p class="card-text job-desc" th:text="${job.jobDesc}"></p>
+                        <a th:href="@{'/jobs/' + ${job.jobId}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended jobs for existing users -->
+    <div th:unless="${isNewUser}" class="mb-5">
+        <h2 class="mb-4">Công việc được gợi ý cho bạn</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div th:each="job : ${recommendedJobs}" class="col">
+                <div class="card h-100 shadow-sm job-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img th:src="${job.company?.logo}" th:alt="${job.company?.compName + ' logo'}" class="rounded company-logo me-3">
+                            <div>
+                                <h5 class="card-title mb-0 text-truncate" style="max-width: 280px;" th:text="${job.jobName}"></h5>
+                                <p class="card-text text-muted text-truncate" style="max-width: 300px;" th:text="${job.company?.compName}"></p>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="badge bg-success text-white me-2 fs-6">
+                                <i class="bi bi-check-circle me-1"></i>
+                                <span th:text="${#numbers.formatDecimal(job.matchPercentage, 0, 0) + '% Match'}"></span>
+                            </span>
+                            <span class="badge bg-light text-dark me-2 fs-6">
+                                <i class="bi bi-cash me-1"></i>
+                                <span th:text="${job.salary}"></span>
+                            </span>
+                            <span class="badge bg-light text-dark fs-6">
+                                <i class="bi bi-geo-alt me-1"></i>
+                                <span th:text="${job.company?.address?.city}"></span>
+                            </span>
+                        </div>
+                        <p class="card-text job-desc" th:text="${job.jobDesc}"></p>
+                        <a th:href="@{'/jobs/' + ${job.jobId}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div th:if="${not #lists.isEmpty(jobs)}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <!-- Sample Job 1 -->
         <div th:each="job : ${jobs}" class="col">

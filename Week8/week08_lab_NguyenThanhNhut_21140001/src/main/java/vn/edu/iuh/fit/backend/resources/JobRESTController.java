@@ -81,9 +81,17 @@ public class JobRESTController {
         }
     }
 
-    @GetMapping("recommendations/{candidateId}")
-    public List<Map<String, Object>> getRecommendations(@PathVariable Long candidateId) {
-        return recommendationService.recommendJobs(candidateId);
+    @GetMapping("recommendations/{username}")
+    public ResponseEntity<PageResponseDTO<JobDTO>> getRecommendations(@PathVariable String username,
+                                                @RequestParam("page") Optional<Integer> page,
+                                                @RequestParam("size") Optional<Integer> size) {
+        try {
+            PageResponseDTO<JobDTO> jobs = jobService.getRecommendJobs(username, page.orElse(0), size.orElse(10));
+            return ResponseEntity.ok(jobs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 

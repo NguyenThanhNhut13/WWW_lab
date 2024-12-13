@@ -22,6 +22,7 @@ import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.dtos.PageResponseDTO;
 import vn.edu.iuh.fit.backend.dtos.SkillDTO;
 
+import java.net.ContentHandler;
 import java.util.Set;
 
 
@@ -78,6 +79,16 @@ public class JobModel {
             return restTemplate.exchange(JOB_API_URL + "/" + id, HttpMethod.GET, HttpEntity.EMPTY, JobDTO.class).getBody();
         } catch (Exception e) {
             System.out.println("Error while getting job by id: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public PageResponseDTO<JobDTO> getRecommendedJobs(int page, int size) {
+        try {
+            return restTemplate.exchange(JOB_API_URL + "/recommendations/" + "username" + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
+            }).getBody();
+        } catch (Exception e) {
+            System.out.println("Error while getting recommended jobs: " + e.getMessage());
             return null;
         }
     }
