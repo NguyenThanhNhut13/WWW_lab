@@ -170,16 +170,18 @@ public class JobServiceImpl implements JobService {
 
         List<JobRecommendationDTO> jobRecommendationDTOS = response.getBody().get("recommendations");
 
-        List<Job> jobs = new ArrayList<>();
+        List<JobDTO> jobs = new ArrayList<>();
         jobRecommendationDTOS.forEach(jobRecommendationDTO -> {
             Job job = jobRepository.findById(jobRecommendationDTO.getJob_id()).orElse(null);
             if (job != null && jobRecommendationDTO.getMatch_percentage() > 0) {
-                jobs.add(job);
+                JobDTO jobDTO = jobMapper.toDTO(job);
+                jobDTO.setMatchPercentage(jobRecommendationDTO.getMatch_percentage());
+                jobs.add(jobDTO);
             }
         });
 
-        Page<Job> jobPage = new PageImpl<>(jobs, PageRequest.of(page, size), jobs.size());
+        Page<JobDTO> jobPage = new PageImpl<>(jobs, PageRequest.of(page, size), jobs.size());
 
-        return new PageResponseDTO<>(jobPage.map(jobMapper::toDTO));
+        return new PageResponseDTO<>(jobPage);
     }
 }

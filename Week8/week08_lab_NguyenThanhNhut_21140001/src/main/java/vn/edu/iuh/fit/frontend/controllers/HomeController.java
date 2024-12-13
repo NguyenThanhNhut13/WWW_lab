@@ -55,14 +55,19 @@
         @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
         public String index(Model model) {
             List<JobDTO> jobs = jobModel.getAllJob(0, 10).getContent().stream().toList();
-            List<JobDTO> recommendedJobs = new ArrayList<>();
+            UserDTO currentUser = userModel.getCurrentUser();
 
-            if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
-                UserDTO currentUser = userModel.getCurrentUser();
+            String username = currentUser != null ? currentUser.getUsername() : null;
 
+            List<JobDTO> recommendedJobs = jobModel.getRecommendedJobs(username, 0, 10).getContent().stream().toList();
+
+            if (currentUser != null && currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
+                model.addAttribute("isNewUser", false);
+                model.addAttribute("recommendedJobs", recommendedJobs);
+            } else {
+                model.addAttribute("isNewUser", true);
+                model.addAttribute("popularJobs", recommendedJobs);
             }
-
-
 
             model.addAttribute("jobs", jobs);
             return "home";
@@ -71,6 +76,13 @@
         @RequestMapping(value = "/jobs/{id}", method = RequestMethod.GET)
         public String jobDetail(@PathVariable Long id, Model model) {
             JobDTO job = jobModel.getJobById(id);
+
+            UserDTO currentUser = userModel.getCurrentUser();
+
+            if (currentUser != null && currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
+                model.addAttribute("isNewUser", false);
+            }
+
             model.addAttribute("job", job);
             return "job-detail";
         }

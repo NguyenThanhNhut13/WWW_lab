@@ -31,5 +31,6 @@ public class JobDTO implements Serializable {
     private CompanyDTO company;
     private String salary;
     private int status;
+    private double matchPercentage;
     private List<JobSkillDTO> jobSkills;
 }

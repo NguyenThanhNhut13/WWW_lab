@@ -102,7 +102,7 @@
                             </span>
                         </div>
                         <p class="card-text job-desc" th:text="${job.jobDesc}"></p>
-                        <a th:href="@{'/jobs/' + ${job.jobId}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                        <a th:href="@{'/jobs/' + ${job.id}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
@@ -123,27 +123,30 @@
                                 <p class="card-text text-muted text-truncate" style="max-width: 300px;" th:text="${job.company?.compName}"></p>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <span class="badge bg-success text-white me-2 fs-6">
+                        <div class="d-flex flex-wrap align-items-center mb-3 fs-6">
+                            <span class="badge bg-success text-white me-2 mb-2">
                                 <i class="bi bi-check-circle me-1"></i>
                                 <span th:text="${#numbers.formatDecimal(job.matchPercentage, 0, 0) + '% Match'}"></span>
                             </span>
-                            <span class="badge bg-light text-dark me-2 fs-6">
+                            <span class="badge bg-light text-dark me-2 mb-2">
                                 <i class="bi bi-cash me-1"></i>
                                 <span th:text="${job.salary}"></span>
                             </span>
-                            <span class="badge bg-light text-dark fs-6">
+                            <span class="badge bg-light text-dark mb-2">
                                 <i class="bi bi-geo-alt me-1"></i>
                                 <span th:text="${job.company?.address?.city}"></span>
                             </span>
                         </div>
                         <p class="card-text job-desc" th:text="${job.jobDesc}"></p>
-                        <a th:href="@{'/jobs/' + ${job.jobId}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                        <a th:href="@{'/jobs/' + ${job.id}}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- All jobs section -->
+    <h2 class="mb-4">Tất cả công việc</h2>
     <div th:if="${not #lists.isEmpty(jobs)}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <!-- Sample Job 1 -->
         <div th:each="job : ${jobs}" class="col">
@@ -218,7 +221,7 @@
 
 <footer class="bg-light mt-5 py-3">
     <div class="container text-center">
-        <p>&copy; 2023 World Jobs. All rights reserved.</p>
+        <p>&copy; 2024 World Jobs. All rights reserved.</p>
     </div>
 </footer>
 

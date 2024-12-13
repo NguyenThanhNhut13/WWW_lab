@@ -108,6 +108,39 @@
             <h2 class="h4 mb-3">Quyền lợi</h2>
             <p>Competitive salary and equity package</p>
 
+            <div th:if="${!isNewUser}" class="row">
+                <div class="col-md-12">
+                    <h3 class="h5 mb-3">Kỹ năng yêu cầu và mức độ của bạn</h3>
+                    <div th:each="jobSkill : ${job.jobSkills}" class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span th:text="${jobSkill.skill.skillName}" class="fw-bold">JavaScript</span>
+                            <span th:text="${jobSkill.skillLevel}" class="text-muted">INTERMEDIATE</span>
+                        </div>
+                        <div class="progress skill-match">
+                            <div class="progress-bar bg-primary" role="progressbar"
+                                 th:with="jobSkillPercentage=${T(java.lang.Math).min(jobSkill.calculatePercentage(), 100)}"
+                                 th:style="'width: ' + ${jobSkillPercentage} + '%'"
+                                 th:attr="aria-valuenow=${jobSkillPercentage}"
+                                 aria-valuemin="0" aria-valuemax="100">
+                                <span th:text="${jobSkillPercentage + '%'}" class="fw-bold"></span>
+                            </div>
+                        </div>
+                        <div th:if="${candidateSkill != null and candidateSkill.skill.skillId == jobSkill.skill.skillId}" class="mt-2">
+                            <small>Your skill level:</small>
+                            <div class="progress skill-match mt-1">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                     th:with="candidateSkillPercentage=${T(java.lang.Math).min(candidateSkill.calculatePercentage(), 100)}"
+                                     th:style="'width: ' + ${candidateSkillPercentage} + '%'"
+                                     th:attr="aria-valuenow=${candidateSkillPercentage}"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <span th:text="${candidateSkillPercentage + '%'}" class="fw-bold"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-4">
                 <a th:href="@{'/jobs/' + ${job.id} + '/apply'}" class="btn btn-primary btn-lg w-100"><i class="bi bi-send me-2"></i>Ứng tuyển ngay</a>
             </div>

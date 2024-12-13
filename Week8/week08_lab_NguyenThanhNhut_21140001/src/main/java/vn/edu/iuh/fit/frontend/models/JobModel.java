@@ -83,9 +83,9 @@ public class JobModel {
         }
     }
 
-    public PageResponseDTO<JobDTO> getRecommendedJobs(int page, int size) {
+    public PageResponseDTO<JobDTO> getRecommendedJobs(String username, int page, int size) {
         try {
-            return restTemplate.exchange(JOB_API_URL + "/recommendations/" + "username" + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
+            return restTemplate.exchange(JOB_API_URL + "/recommendations/" + username + "?page=" + page + "&size=" + size, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<PageResponseDTO<JobDTO>>() {
             }).getBody();
         } catch (Exception e) {
             System.out.println("Error while getting recommended jobs: " + e.getMessage());
