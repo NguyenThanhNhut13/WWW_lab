@@ -18,9 +18,69 @@
             border-bottom: 1px solid #dee2e6;
         }
         .company-logo {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: contain;
+        }
+        .skill-badge {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .skill-level {
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+        .skill-suggestion {
+            transition: all 0.3s ease;
+            border-left: 5px solid #007bff;
+        }
+        .skill-suggestion:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .progress-bar-animated {
+            animation: progress-bar-stripes 1s linear infinite;
+        }
+        .job-detail-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .candidate-skill {
+            transition: all 0.3s ease;
+        }
+        .candidate-skill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .skill-comparison {
+            position: relative;
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .skill-comparison .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+        .skill-comparison .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+        }
+        .skill-comparison .bg-success {
+            z-index: 2;
+        }
+        .skill-comparison .bg-primary {
+            z-index: 1;
         }
     </style>
 </head>
@@ -47,102 +107,169 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div th:if="${job != null}" class="card shadow-sm">
+    <div th:if="${job != null}" class="card shadow">
         <div class="card-header job-header py-4">
             <div class="d-flex align-items-center">
-                <img th:src="${job.company?.logo}" th:alt="${job.company?.compName + ' logo'}"
-                     class="rounded company-logo me-4"
-                     onerror="this.src='https://via.placeholder.com/100';">
+                <img th:src="${job.company != null and job.company.logo != null ? job.company.logo : 'https://via.placeholder.com/120'}"
+                     th:alt="${job.company != null ? job.company.compName + ' logo' : 'Company logo'}"
+                     class="rounded company-logo me-4">
                 <div>
-                    <h1 class="card-title h2 mb-1" th:text="${job.jobName ?: 'Untitled Job'}">Software Engineer</h1>
-                    <p class="card-text fs-5 text-muted mb-0" th:text="${job.company?.compName ?: 'Unknown Company'}">Google</p>
+                    <h1 class="card-title h2 mb-1" th:text="${job.jobName != null ? job.jobName : 'Untitled Job'}">Software Engineer</h1>
+                    <p class="card-text fs-5 text-muted mb-2" th:text="${job.company != null and job.company.compName != null ? job.company.compName : 'Unknown Company'}">Google</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary"><i class="bi bi-geo-alt me-1"></i><span th:text="${job.company != null and job.company.address != null and job.company.address.city != null ? job.company.address.city : 'Location not specified'}">Mountain View, CA</span></span>
+                        <span class="badge bg-success"><i class="bi bi-cash me-1"></i><span th:text="${job.salary != null ? job.salary : 'Salary not specified'}">$120,000 - $180,000</span></span>
+                        <span class="badge bg-info"><i class="bi bi-clock me-1"></i>Full-time</span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-4">
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-geo-alt fs-4 me-2 text-primary"></i>
-                        <span th:text="${job.company?.address?.city ?: 'Location not specified'}">Mountain View, CA</span>
-                    </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <section class="job-detail-section">
+                        <h2 class="h4 mb-4">Mô tả công việc</h2>
+                        <p th:text="${job.jobDesc != null ? job.jobDesc : 'No job description available.'}" class="mb-4">Join our team of talented engineers working on cutting-edge technologies. You'll be responsible for designing, developing, and maintaining software systems that power Google's core products.</p>
+
+                        <h3 class="h5 mb-3">Trách nhiệm chính:</h3>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Phát triển và duy trì các ứng dụng web quy mô lớn</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Tối ưu hóa hiệu suất và khả năng mở rộng của hệ thống</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Cộng tác với các nhóm đa chức năng để thiết kế và triển khai các tính năng mới</li>
+                        </ul>
+
+                        <h3 class="h5 mb-3">Yêu cầu:</h3>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item"><i class="bi bi-star-fill text-warning me-2"></i>Bằng cử nhân Khoa học Máy tính hoặc lĩnh vực liên quan</li>
+                            <li class="list-group-item"><i class="bi bi-star-fill text-warning me-2"></i>Ít nhất 3 năm kinh nghiệm phát triển phần mềm</li>
+                            <li class="list-group-item"><i class="bi bi-star-fill text-warning me-2"></i>Thành thạo Java, Python, hoặc C++</li>
+                            <li class="list-group-item"><i class="bi bi-star-fill text-warning me-2"></i>Kinh nghiệm với các framework web hiện đại</li>
+                        </ul>
+
+                        <h3 class="h5 mb-3">Quyền lợi:</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-gift-fill text-danger me-2"></i>Mức lương cạnh tranh và gói cổ phần</li>
+                            <li class="list-group-item"><i class="bi bi-gift-fill text-danger me-2"></i>Bảo hiểm sức khỏe toàn diện</li>
+                            <li class="list-group-item"><i class="bi bi-gift-fill text-danger me-2"></i>Chế độ nghỉ phép linh hoạt</li>
+                            <li class="list-group-item"><i class="bi bi-gift-fill text-danger me-2"></i>Cơ hội phát triển nghề nghiệp và học tập liên tục</li>
+                        </ul>
+                    </section>
                 </div>
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-cash fs-4 me-2 text-primary"></i>
-                        <span th:text="${job.salary ?: 'Salary not specified'}">$120,000 - $180,000</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-calendar fs-4 me-2 text-primary"></i>
-                        <span>Posted on Oct 15, 2023</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-clock fs-4 me-2 text-primary"></i>
-                        <span>Full-time</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-briefcase fs-4 me-2 text-primary"></i>
-                        <span>3+ years</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-people fs-4 me-2 text-primary"></i>
-                        <span>5 positions</span>
+                <div class="col-md-4">
+                    <div class="sticky-top" style="top: 2rem;">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3">Thông tin nhanh</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="bi bi-calendar-event text-primary me-2"></i>Ngày đăng: <span class="fw-bold">15/10/2023</span></li>
+                                    <li class="mb-2"><i class="bi bi-briefcase text-primary me-2"></i>Kinh nghiệm: <span class="fw-bold">3+ năm</span></li>
+                                    <li class="mb-2"><i class="bi bi-people text-primary me-2"></i>Số lượng: <span class="fw-bold">5 vị trí</span></li>
+                                    <li><i class="bi bi-hourglass-split text-primary me-2"></i>Hạn nộp: <span class="fw-bold">30/11/2023</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{'/jobs/' + ${job.id} + '/apply'}" class="btn btn-primary btn-lg"><i class="bi bi-send me-2"></i>Ứng tuyển ngay</a>
+                            <button class="btn btn-outline-primary"><i class="bi bi-bookmark me-2"></i>Lưu công việc</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h2 class="h4 mb-3">Mô tả công việc</h2>
-            <p th:text="${job.jobDesc ?: 'No job description available.'}">Join our team of talented engineers working on cutting-edge technologies. You'll be responsible for designing, developing, and maintaining software systems that power Google's core products.</p>
-
-            <h2 class="h4 mb-3">Yêu cầu</h2>
-            <p>Bachelor's degree in Computer Science or related field</p>
-
-            <h2 class="h4 mb-3">Quyền lợi</h2>
-            <p>Competitive salary and equity package</p>
-
-            <div th:if="${!isNewUser}" class="row">
-                <div class="col-md-12">
-                    <h3 class="h5 mb-3">Kỹ năng yêu cầu và mức độ của bạn</h3>
-                    <div th:each="jobSkill : ${job.jobSkills}" class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span th:text="${jobSkill.skill.skillName}" class="fw-bold">JavaScript</span>
-                            <span th:text="${jobSkill.skillLevel}" class="text-muted">INTERMEDIATE</span>
-                        </div>
-                        <div class="progress skill-match">
-                            <div class="progress-bar bg-primary" role="progressbar"
-                                 th:with="jobSkillPercentage=${T(java.lang.Math).min(jobSkill.calculatePercentage(), 100)}"
-                                 th:style="'width: ' + ${jobSkillPercentage} + '%'"
-                                 th:attr="aria-valuenow=${jobSkillPercentage}"
-                                 aria-valuemin="0" aria-valuemax="100">
-                                <span th:text="${jobSkillPercentage + '%'}" class="fw-bold"></span>
-                            </div>
-                        </div>
-                        <div th:if="${candidateSkill != null and candidateSkill.skill.skillId == jobSkill.skill.skillId}" class="mt-2">
-                            <small>Your skill level:</small>
-                            <div class="progress skill-match mt-1">
-                                <div class="progress-bar bg-success" role="progressbar"
-                                     th:with="candidateSkillPercentage=${T(java.lang.Math).min(candidateSkill.calculatePercentage(), 100)}"
-                                     th:style="'width: ' + ${candidateSkillPercentage} + '%'"
-                                     th:attr="aria-valuenow=${candidateSkillPercentage}"
-                                     aria-valuemin="0" aria-valuemax="100">
-                                    <span th:text="${candidateSkillPercentage + '%'}" class="fw-bold"></span>
+            <!-- Candidate's Current Skills Section -->
+            <div th:if="${candidateSkills != null and not #lists.isEmpty(candidateSkills) and not isNewUser}" class="job-detail-section mt-5">
+                <h2 class="h4 mb-4">Kỹ năng hiện tại của bạn</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div th:each="skill : ${candidateSkills}" class="col">
+                        <div class="card h-100 candidate-skill">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-between align-items-center">
+                                    <span th:text="${skill.skill.skillName}" class="skill-badge badge bg-success">Java</span>
+                                    <span th:text="${skill.skillLevel.getValue()}" class="skill-level badge bg-info">INTERMEDIATE</span>
+                                </h5>
+                                <p th:text="${skill.skill.description}" class="card-text mb-3">Your proficiency in this skill.</p>
+                                <div class="progress mb-3" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         th:style="${skill.skillLevel.getValue() eq 'BEGINNER' ? 'width: 20%;' :
+                                                    (skill.skillLevel.getValue() eq 'INTERMEDIATE' ? 'width: 40%;' :
+                                                    (skill.skillLevel.getValue() eq 'ADVANCED' ? 'width: 60%;' :
+                                                    (skill.skillLevel.getValue() eq 'PROFESSIONAL' ? 'width: 80%;' :
+                                                    (skill.skillLevel.getValue() eq 'MASTER' ? 'width: 100%;' : 'width: 0%;'))))}"
+                                         aria-valuemin="0" aria-valuemax="100">
+                                    </div>
                                 </div>
+                                <p class="small text-muted mb-0">Mức độ hiện tại:
+                                    <span th:text="${skill.skillLevel.getValue() eq 'BEGINNER' ? 'Cơ bản' :
+                                                    (skill.skillLevel.getValue() eq 'INTERMEDIATE' ? 'Trung bình' :
+                                                    (skill.skillLevel.getValue() eq 'ADVANCED' ? 'Nâng cao' :
+                                                    (skill.skillLevel.getValue() eq 'PROFESSIONAL' ? 'Chuyên nghiệp' :
+                                                    (skill.skillLevel.getValue() eq 'MASTER' ? 'Bậc thầy' : 'Không xác định'))))}">Trung bình</span>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <a href="#" class="btn btn-outline-primary btn-sm">Cập nhật kỹ năng</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-4">
-                <a th:href="@{'/jobs/' + ${job.id} + '/apply'}" class="btn btn-primary btn-lg w-100"><i class="bi bi-send me-2"></i>Ứng tuyển ngay</a>
+            <!-- Skill Suggestions Section -->
+            <div th:if="${jobSkills != null and not #lists.isEmpty(jobSkills) and not isNewUser}" class="job-detail-section mt-5">
+                <h2 class="h4 mb-4">Kỹ năng được đề xuất</h2>
+                <p class="mb-4">Dựa trên yêu cầu công việc, đây là những kỹ năng bạn nên phát triển để phù hợp hơn với vị trí này:</p>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div th:each="skill : ${jobSkills}" class="col">
+                        <div class="card h-100 skill-suggestion">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-between align-items-center">
+                                    <span th:text="${skill.skill.skillName}" class="skill-badge badge bg-primary">Java</span>
+                                    <span th:text="${skill.skillLevel.getValue()}" class="skill-level badge bg-secondary">INTERMEDIATE</span>
+                                </h5>
+                                <p th:text="${skill.skill.description}" class="card-text mb-3">Mô tả về kỹ năng này và tầm quan trọng của nó đối với công việc.</p>
+                                <div class="skill-comparison mb-3">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             style="width: 0%"
+                                             aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <span class="sr-only">Mức độ hiện tại của bạn</span>
+                                        </div>
+                                        <div class="progress-bar bg-primary" role="progressbar"
+                                             th:style="'width: ' + ${
+                                                skill.skillLevel.getValue() eq 'BEGINNER' ? 20 :
+                                                (skill.skillLevel.getValue() eq 'INTERMEDIATE' ? 40 :
+                                                (skill.skillLevel.getValue() eq 'ADVANCED' ? 60 :
+                                                (skill.skillLevel.getValue() eq 'PROFESSIONAL' ? 80 :
+                                                (skill.skillLevel.getValue() eq 'MASTER' ? 100 : 0))))} + '%'"
+                                             th:attr="aria-valuenow=${
+                                                skill.skillLevel.getValue() eq 'BEGINNER' ? 20 :
+                                                (skill.skillLevel.getValue() eq 'INTERMEDIATE' ? 40 :
+                                                (skill.skillLevel.getValue() eq 'ADVANCED' ? 60 :
+                                                (skill.skillLevel.getValue() eq 'PROFESSIONAL' ? 80 :
+                                                (skill.skillLevel.getValue() eq 'MASTER' ? 100 : 0))))}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="small text-muted mb-2">Mức độ hiện tại của bạn:
+                                    <span>Chưa có</span>
+                                </p>
+                                <p class="small text-muted mb-0">Mức độ yêu cầu:
+                                    <span th:text="${skill.skillLevel.getValue() eq 'BEGINNER' ? 'Cơ bản' :
+                                                    (skill.skillLevel.getValue() eq 'INTERMEDIATE' ? 'Trung bình' :
+                                                    (skill.skillLevel.getValue() eq 'ADVANCED' ? 'Nâng cao' :
+                                                    (skill.skillLevel.getValue() eq 'PROFESSIONAL' ? 'Chuyên nghiệp' :
+                                                    (skill.skillLevel.getValue() eq 'MASTER' ? 'Bậc thầy' : 'Không xác định'))))}">Trung bình</span>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <a href="#" class="btn btn-outline-primary btn-sm">Tìm hiểu thêm</a>
+                                <a href="#" class="btn btn-outline-success btn-sm">Khóa học liên quan</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -178,3 +305,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

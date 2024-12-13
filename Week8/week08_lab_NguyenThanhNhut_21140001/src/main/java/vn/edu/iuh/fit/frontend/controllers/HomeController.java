@@ -81,6 +81,9 @@
 
             if (currentUser != null && currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
                 model.addAttribute("isNewUser", false);
+                CandidateDTO candidate = candidateModel.findByUsername(currentUser.getUsername());
+                model.addAttribute("candidateSkills", candidate.getCandidateSkills());
+                model.addAttribute("jobSkills", job.getJobSkills());
             }
 
             model.addAttribute("job", job);
