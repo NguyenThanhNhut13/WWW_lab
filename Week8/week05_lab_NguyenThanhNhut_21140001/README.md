@@ -5,7 +5,8 @@
 #### Họ và tên: Nguyễn Thanh Nhứt
 #### Mã sinh viên: 21140001
 #### Giảng viên hướng dẫn: Thầy Võ Văn Hải
-#### File báo cáo (word + presentation): [Tại đây](https://drive.google.com/drive/folders/1PlDoA9-BJ4fi9Ad64jDx53b0qkNycFAV?usp=sharing)
+#### File báo cáo: [Tại đây](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/21140001_NguyenThanhNhut_BaoCao.docx)
+#### File presentation: [Tại đây](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/21140001_NguyenThanhNhut_Presentation.pptx)
 
 ## Giới thiệu
 
