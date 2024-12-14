@@ -146,7 +146,7 @@ public class JobServiceImpl implements JobService {
     public PageResponseDTO<JobDTO> getRecommendJobs(String username, int page, int size) {
         Candidate candidate = candidateRepository.findByUser_Username(username);
 
-        if (candidate == null) {
+        if (candidate == null || candidate.getCandidateSkills().isEmpty()) {
             List<Object[]> results = jobRepository.findPopularJobs(PageRequest.of(page, size));
             List<JobDTO> jobDTOS = new ArrayList<>();
             results.forEach(result -> {

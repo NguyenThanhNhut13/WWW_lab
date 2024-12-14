@@ -45,17 +45,8 @@ public class CompanyModel {
 
     public boolean saveCompany(CompanyDTO companyDTO) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-            HttpEntity<CompanyDTO> request = new HttpEntity<>(companyDTO, headers);
-
-            ResponseEntity<CompanyDTO> response = restTemplate.exchange(
-                    COMPANY_API_URL,
-                    HttpMethod.POST,
-                    request,
-                    CompanyDTO.class);
-
-            return response.getStatusCode() == HttpStatus.CREATED;
+            restTemplate.postForObject(COMPANY_API_URL, companyDTO, CompanyDTO.class);
+            return true;
         } catch (Exception e) {
             System.out.println("Error while saving company: " + e.getMessage());
             return false;

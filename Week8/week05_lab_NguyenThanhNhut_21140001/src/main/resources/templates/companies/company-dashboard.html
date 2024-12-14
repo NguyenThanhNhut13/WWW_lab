@@ -211,7 +211,7 @@
                                         </td>
                                         <td><span class="badge bg-success" th:text="${job.status} == 1 ? 'Hiring' : 'Closed'"></span></td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editJobModal"><i class="bi bi-pencil"></i></button>
                                             <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
@@ -268,7 +268,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="jobApplication : ${jobApplicationDTOS}">
-                                <td>
+                                <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <div class="d-flex align-items-center">
                                         <img src="https://via.placeholder.com/40"
                                              alt="Avatar" class="rounded-circle me-2 candidate-avatar" style="width: 40px; height: 40px; object-fit: cover;">
@@ -278,7 +278,8 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td th:text="${jobApplication.job.jobName}">Software Engineer</td>
+                                <td style="max-width: 200px;"
+                                    th:text="${jobApplication.job.jobName}">Software Engineer</td>
                                 <td>
                     <span th:each="skill : ${jobApplication.candidate.candidateSkills}"
                           class="badge bg-info text-dark me-1 mb-1"
@@ -652,7 +653,7 @@ Best regards,
                                                    placeholder="Additional Info">
                                         </div>
                                         <div class="col-md-1 px-3 py-2" style="display: none;">
-                                            <select class="form-select" name="jobSkills[INDEX].skill.skillType">
+                                            <select class="form-select" name="jobSkills[INDEX].skill.type">
                                                 <option value="SOFT_SKILL">Soft Skill</option>
                                                 <option value="TECHNICAL_SKILL">Technical Skill</option>
                                                 <option value="UNSPECIFIED">Unspecified</option>

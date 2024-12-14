@@ -62,8 +62,14 @@
             List<JobDTO> recommendedJobs = jobModel.getRecommendedJobs(username, 0, 10).getContent().stream().toList();
 
             if (currentUser != null && currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
-                model.addAttribute("isNewUser", false);
-                model.addAttribute("recommendedJobs", recommendedJobs);
+                CandidateDTO candidate = candidateModel.findByUsername(currentUser.getUsername());
+                if (candidate == null || candidate.getCandidateSkills().isEmpty()) {
+                    model.addAttribute("isNewUser", true);
+                    model.addAttribute("popularJobs", recommendedJobs);
+                } else {
+                    model.addAttribute("isNewUser", false);
+                    model.addAttribute("recommendedJobs", recommendedJobs);
+                }
             } else {
                 model.addAttribute("isNewUser", true);
                 model.addAttribute("popularJobs", recommendedJobs);
@@ -80,10 +86,14 @@
             UserDTO currentUser = userModel.getCurrentUser();
 
             if (currentUser != null && currentUser.getRoles().stream().anyMatch(role -> role.getRoleName().equals("CANDIDATE"))) {
-                model.addAttribute("isNewUser", false);
                 CandidateDTO candidate = candidateModel.findByUsername(currentUser.getUsername());
-                model.addAttribute("candidateSkills", candidate.getCandidateSkills());
-                model.addAttribute("jobSkills", job.getJobSkills());
+                if (candidate == null || candidate.getCandidateSkills().isEmpty()) {
+                    model.addAttribute("isNewUser", true);
+                } else {
+                    model.addAttribute("isNewUser", false);
+                    model.addAttribute("candidateSkills", candidate.getCandidateSkills());
+                    model.addAttribute("jobSkills", job.getJobSkills());
+                }
             }
 
             model.addAttribute("job", job);
