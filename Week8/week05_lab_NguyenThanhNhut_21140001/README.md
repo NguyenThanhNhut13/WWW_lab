@@ -5,8 +5,7 @@
 #### Họ và tên: Nguyễn Thanh Nhứt
 #### Mã sinh viên: 21140001
 #### Giảng viên hướng dẫn: Thầy Võ Văn Hải
-#### File báo cáo: [Tại đây]()
-#### File presentation: [Tại đây]()
+#### File báo cáo (word + presentation): [Tại đây](https://drive.google.com/drive/folders/1PlDoA9-BJ4fi9Ad64jDx53b0qkNycFAV?usp=sharing)
 
 ## Giới thiệu
 
@@ -159,15 +158,15 @@ Khi ấn vào xem chi tiết công việc người dùng có thể xem thông ti
 - Người dùng có thể quản lý các công việc đã đăng tuyển.
 ![Quản lý job](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/job-management.png)
 
-### 3. Quản lý ứng viên
+### 4. Quản lý ứng viên
 - Sau khi đăng tuyển người dùng có thể quản lý các ứng viên đã ứng tuyển như xem thông tin, tìm kiếm, v.v.
 ![Quản lý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/candidate-management.gif)
 
-### 4. Gửi thông báo cho ứng viên
+### 5. Gửi thông báo cho ứng viên
 - Người dùng có thể gửi email mời ứng viên đến phỏng vấn với nội dung có sẵn và người dùng có thể tùy chỉnh nội dung.
 ![Gửi thông báo cho ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/send-email.gif)
 
-### 5. Gợi ý ứng viên
+### 6. Gợi ý ứng viên
 - Hệ thống sẽ gợi ý các ứng viên phù hợp dựa vào mức độ phù hợp giữa công việc và kỹ năng của ứng viên.
 ![Gợi ý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-candidate.png)
 

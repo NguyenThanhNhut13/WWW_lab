@@ -126,35 +126,6 @@ public class WebSecurityConfig {
 
         return http.build();
 
-//        http
-//
-//                .authorizeRequests()
-//                .requestMatchers("/login/**")
-//                .permitAll()
-//                .and()
-//                .formLogin(
-//                        formLogin -> formLogin
-//                                .loginPage("/login")
-//                                .loginProcessingUrl("/do-login")
-//                                .defaultSuccessUrl("/home", true)
-//                                .permitAll()
-//                )
-//                .logout(
-//                        logout -> logout
-//                                .invalidateHttpSession(true)
-//                                .clearAuthentication(true)
-//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                                .logoutSuccessUrl("/login?logout")
-//                                .permitAll()
-//                );
-//
-//        // Require authentication for all requests
-//        http.httpBasic(AbstractHttpConfigurer::disable);
-//
-//        // Disable CSRF
-//        http.csrf(AbstractHttpConfigurer::disable);
-//
-//        return http.build();
     }
 
 
