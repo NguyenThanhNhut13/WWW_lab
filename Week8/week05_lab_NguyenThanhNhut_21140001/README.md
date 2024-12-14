@@ -119,57 +119,57 @@ Dự án này là một nền tảng tuyển dụng trực tuyến, nơi các c�
 ## Demo chức năng cho Guest - Không cần đăng nhập 
 #### 1. Trang chủ
 Sau khi truy cập vào url: http://localhost:8080/, người dùng có thể xem các công việc phổ biến, và các công việc mới nhất.
-![Trang chủ](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/homepage.png)
+![Trang chủ](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/homepage.png)
 #### 2. Xem chi tiết công việc
 Khi ấn vào xem chi tiết công việc người dùng có thể xem thông tin chi tiết về công việc
-![Trang chi tiết công việc](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/job-detail.gif)
+![Trang chi tiết công việc](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/job-detail.gif)
 
 ## Demo chức năng dành cho ứng viên
 #### 1. Trang chủ - Trang chi tiết công việc
 - Nếu là người dùng mới đăng ký tài khoản (chưa cập nhật thông tin) hoặc chưa từng ứng tuyển thì hệ thống sẽ gợi ý các công việc phổ biến như người dùng khách.
-![Trang chủ](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/homepage-new-user.png)
+![Trang chủ](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/homepage-new-user.png)
 
 - Nếu người dùng đã cập nhật thông tin hoặc đã từng ứng tuyển thì hệ thống sẽ gợi ý các job phù hợp dựa vào model đã được huấn luyện sẵn bằng TensorFlow.
-![Trang chi tiết công việc](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-job.gif)
+![Trang chi tiết công việc](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-job.gif)
 
 ### 2. Gợi ý kỹ năng cần thiết
 -  Khi người dùng xem chi tiết công việc hệ thống sẽ gợi ý các Skill phù hợp với công việc mà người dùng nên học.
-![Gợi ý kỹ năng](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-skill-new-user.gif)
+![Gợi ý kỹ năng](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-skill-new-user.gif)
 
 - Nếu người dùng đã cập nhật thông tin hoặc đã từng ứng tuyển thì hệ thống sẽ hiển thị thêm thông tin kỹ năng của họ để có cái nhìn tổng quát hơn.
-![Gợi ý kỹ năng](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-skill-old-user.gif)
+![Gợi ý kỹ năng](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-skill-old-user.gif)
 
 ### 3. Ứng tuyển - quản lý thông tin
 - Khi ứng tuyển, nếu là người dùng mới thì hệ thống sẽ hiện form ứng tuyển yêu cầu cung cấp thông tin cá nhân, kỹ năng, kinh nghiệm làm việc.
-![Ứng tuyển](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/apply-job-new-user.gif)
+![Ứng tuyển](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/apply-job-new-user.gif)
 
 - Nếu người dùng đã có thông tin thì hệ thống sẽ tự điền thông tin và cho phép người dùng cập nhật thông tin.
-![Ứng tuyển](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/apply-job-old-user.gif)
+![Ứng tuyển](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/apply-job-old-user.gif)
 
 ## Demo chức năng dành cho công ty tuyển dụng
 #### 1. Đăng ký tài khoản công ty
 - Nếu người dùng mới muốn đăng tuyển thì phải tạo tài khoản công ty. Sau khi tạo xong thì họ sẽ được chuyển hướng đến trang quản lý dành cho công ty. Nếu người dùng đã có tài khoản công ty thì sẽ được tự động chuyển hướng sau khi đăng nhập.
-![Đăng ký tài khoản công ty](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/register-company.gif)
+![Đăng ký tài khoản công ty](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/register-company.gif)
 
 ### 2. Đăng tin tuyển dụng
 - Người dùng có thể đăng tin tuyển dụng với các thông tin và kỹ năng yêu cầu.
-![Đăng tin tuyển dụng](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/post-job.gif)
+![Đăng tin tuyển dụng](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/post-job.gif)
 
 ### 3. Quản lý công việc
 - Người dùng có thể quản lý các công việc đã đăng tuyển.
-![Quản lý job](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/job-management.png)
+![Quản lý job](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/job-management.png)
 
 ### 3. Quản lý ứng viên
 - Sau khi đăng tuyển người dùng có thể quản lý các ứng viên đã ứng tuyển như xem thông tin, tìm kiếm, v.v.
-![Quản lý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/candidate-management.gif)
+![Quản lý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/candidate-management.gif)
 
 ### 4. Gửi thông báo cho ứng viên
 - Người dùng có thể gửi email mời ứng viên đến phỏng vấn với nội dung có sẵn và người dùng có thể tùy chỉnh nội dung.
-![Gửi thông báo cho ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/send-email.gif)
+![Gửi thông báo cho ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/send-email.gif)
 
 ### 5. Gợi ý ứng viên
 - Hệ thống sẽ gợi ý các ứng viên phù hợp dựa vào mức độ phù hợp giữa công việc và kỹ năng của ứng viên.
-![Gợi ý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/tree/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-candidate.png)
+![Gợi ý ứng viên](https://github.com/NguyenThanhNhut13/WWW_lab/blob/main/Week8/week05_lab_NguyenThanhNhut_21140001/demo/recommend-candidate.png)
 
 #### Ngoài ra còn có các chức năng khác như: cập nhật thông tin công ty, đăng xuất, v.v.
 

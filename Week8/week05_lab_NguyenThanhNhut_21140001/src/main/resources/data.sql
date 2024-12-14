@@ -35,8 +35,7 @@ INSERT INTO `address` (`id`, `street`, `city`, `country`, `number`, `zipcode`) V
 	(1, 'Hoàng Văn Thái', 'Hồ Chí Minh', 'VN', '8', NULL),
 	(1035, 'Hoàng Văn Thái', 'Hồ Chí Minh', 'VN', '8', '70000'),
 	(1041, 'Hoàng Văn Thái', 'Hồ Chí Minh', 'VN', '8', '70000'),
-	(1046, 'Lê Đức Thọ', 'Hồ Chí Minh', 'VN', '1', '696969'),
-	(1047, 'Nguyễn Văn Bảo', 'Hồ Chí Minh', 'VN', '12', '123456'),
+	(1046, 'Lê Đức Thọ', 'Hồ Chí Minh', 'VN', '114', '696969'),
 	(1048, 'Nguyễn Văn Bảo', 'Hồ Chí Minh', 'VN', '12', '123456'),
 	(1049, 'Lê Đức Thọ', 'Hồ Chí Minh', 'VN', '123', '696969'),
 	(1050, 'Nguyễn Thái Bình', 'Hồ Chí Minh', 'VN', '12A', '70002'),
@@ -84,7 +83,10 @@ INSERT INTO `address` (`id`, `street`, `city`, `country`, `number`, `zipcode`) V
 	(1092, 'Nguyễn Ái Quốc', 'Hồ Chí Minh', 'VN', '120', '70017'),
 	(1093, 'Bùi Thị Xuân', 'Đà Lạt', 'VN', '11', '67001'),
 	(1094, 'Đông Kinh Nghĩa Thục', 'Hà Nội', 'VN', '17A', '10008'),
-	(1095, 'Hàm Long', 'Hà Nội', 'VN', '6B', '10009');
+	(1095, 'Hàm Long', 'Hà Nội', 'VN', '6B', '10009'),
+	(1096, 'Lê Đức Thọ', 'Hồ Chí Minh', 'VN', '244', '123123'),
+	(1097, 'Lê Đức Thọ', 'Hồ Chí Minh', 'VN', '1', '696969'),
+	(1098, 'Điện Biên Phủ', 'Hồ Chí Minh', 'VN', '614', '123321');
 
 -- Dumping structure for table works.candidate
 CREATE TABLE IF NOT EXISTS `candidate` (
@@ -104,12 +106,11 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   CONSTRAINT `FKj9h7beyp5gsdtdb20km82b4fl` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.candidate: ~4 rows (approximately)
+-- Dumping data for table works.candidate: ~35 rows (approximately)
 INSERT INTO `candidate` (`id`, `dob`, `email`, `full_name`, `phone`, `address`, `user_id`) VALUES
 	(1018, '2000-01-01', 'momo@gmail.com', 'Nguyễn Văn A', '0987654321', 1046, 1),
-	(1020, '1998-08-15', 'tranthimet@gmail.com', 'Tran Thi Mẹt', '0808150888', 1048, 4),
-	(1021, '2003-10-13', 'thanhnhutcu@gmail.com', 'Nguyễn Thanh Nhứt', '0901407421', 1049, 5),
-	(1022, '2002-12-14', 'demo@gmail.com', 'Đề Văn Mô', '0987897978', 1047, 2),
+	(1020, '1998-08-15', 'tranthimet@gmail.com', 'Trần Thị Mẹt', '0808150888', 1048, 4),
+	(1021, '0000-00-00', 'nguyenthimen@gmail.com', 'Nguyễn Thị Mén', '0987687686', 1, 5),
 	(1023, '1990-01-15', 'nguyenvana1050@gmail.com', 'Nguyễn Văn A', '0901000001', 1050, 10),
 	(1024, '1992-02-25', 'tranthib1051@gmail.com', 'Trần Thị B', '0902000002', 1051, 11),
 	(1025, '1994-03-30', 'phamvanh1052@gmail.com', 'Phạm Văn H', '0903000003', 1052, 12),
@@ -141,21 +142,7 @@ INSERT INTO `candidate` (`id`, `dob`, `email`, `full_name`, `phone`, `address`, 
 	(1051, '2004-01-25', 'nguyenthituyet1078@gmail.com', 'Nguyễn Thị Tuyết', '0929000029', 1078, 38),
 	(1052, '1995-07-05', 'trankhanhly1079@gmail.com', 'Trần Khánh Ly', '0930000030', 1079, 39),
 	(1053, '1998-02-14', 'phamthithuthao1080@gmail.com', 'Phạm Thị Thu Thảo', '0931000031', 1080, 40),
-	(1054, '2001-09-03', 'ledinhthanh1081@gmail.com', 'Lê Đình Thành', '0932000032', 1081, 41),
-	(1055, '1993-11-30', 'dinhminhhoang1082@gmail.com', 'Đinh Minh Hoàng', '0933000033', 1082, 42),
-	(1056, '1994-04-22', 'phuongquynhanh1083@gmail.com', 'Phương Quỳnh Anh', '0934000034', 1083, 43),
-	(1057, '1999-08-08', 'nguyenhuongthuy1084@gmail.com', 'Nguyễn Hương Thủy', '0935000035', 1084, 44),
-	(1058, '2003-03-15', 'tranquangvinh1085@gmail.com', 'Trần Quang Vinh', '0936000036', 1085, 45),
-	(1059, '1997-06-30', 'phamletruc1086@gmail.com', 'Phạm Lê Trúc', '0937000037', 1086, 46),
-	(1060, '2002-10-25', 'lethiminhtam1087@gmail.com', 'Lê Thị Minh Tâm', '0938000038', 1087, 47),
-	(1061, '1990-12-14', 'dinhhongthanh1088@gmail.com', 'Đinh Hồng Thanh', '0939000039', 1088, 48),
-	(1062, '1996-09-01', 'nguyenhoangngan1089@gmail.com', 'Nguyễn Hoàng Ngân', '0940000040', 1089, 49),
-	(1063, '2000-11-11', 'phamthihanh1090@gmail.com', 'Phạm Thị Hạnh', '0941000041', 1090, 50),
-	(1064, '1994-02-07', 'trananhquoc1091@gmail.com', 'Trần Anh Quốc', '0942000042', 1091, 51),
-	(1065, '1995-05-20', 'nguyenkimcuong1092@gmail.com', 'Nguyễn Kim Cương', '0943000043', 1092, 52),
-	(1066, '2003-07-19', 'buitronghieu1093@gmail.com', 'Bùi Trọng Hiếu', '0944000044', 1093, 53),
-	(1067, '1999-09-24', 'lequynhhoa1094@gmail.com', 'Lê Quỳnh Hoa', '0945000045', 1094, 54),
-	(1068, '2001-12-10', 'tranthanhnhan1095@gmail.com', 'Trần Thanh Nhàn', '0946000046', 1095, 55);
+	(1070, '2003-10-13', 'thanhnhutcu@gmail.com', 'Nguyễn Thanh Nhứt', '0901407421', 1097, 42);
 
 -- Dumping structure for table works.candidate_skill
 CREATE TABLE IF NOT EXISTS `candidate_skill` (
@@ -170,15 +157,22 @@ CREATE TABLE IF NOT EXISTS `candidate_skill` (
   CONSTRAINT `FKijjf42p0sh2c2na28g5aalx2p` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.candidate_skill: ~7 rows (approximately)
+-- Dumping data for table works.candidate_skill: ~11 rows (approximately)
 INSERT INTO `candidate_skill` (`applied_date`, `more_infos`, `skill_level`, `candidate_id`, `skill_id`) VALUES
 	('2024-11-29', NULL, 'ADVANCED', 1018, 12),
 	('2024-11-30', NULL, 'ADVANCED', 1018, 14),
 	('2024-12-02', NULL, 'INTERMEDIATE', 1020, 17),
-	('2024-12-02', NULL, 'ADVANCED', 1020, 18),
 	('2024-12-06', NULL, 'ADVANCED', 1021, 20),
 	('2024-12-06', NULL, 'INTERMEDIATE', 1021, 21),
-	('2024-12-06', NULL, 'BEGINNER', 1021, 22);
+	('2024-12-06', NULL, 'BEGINNER', 1021, 22),
+	('2024-12-14', NULL, 'ADVANCED', 1023, 25),
+	('2024-12-14', NULL, 'PROFESSIONAL', 1024, 26),
+	('2024-12-14', NULL, 'BEGINNER', 1024, 27),
+	('2024-12-02', NULL, 'ADVANCED', 1066, 18),
+	('2024-12-14', NULL, 'ADVANCED', 1066, 22),
+	('2024-12-14', NULL, 'ADVANCED', 1070, 28),
+	('2024-12-14', NULL, 'INTERMEDIATE', 1070, 29),
+	('2024-12-14', NULL, 'BEGINNER', 1070, 32);
 
 -- Dumping structure for table works.company
 CREATE TABLE IF NOT EXISTS `company` (
@@ -201,9 +195,10 @@ CREATE TABLE IF NOT EXISTS `company` (
 -- Dumping data for table works.company: ~4 rows (approximately)
 INSERT INTO `company` (`comp_id`, `about`, `email`, `comp_name`, `phone`, `web_url`, `address`, `logo`, `user_id`) VALUES
 	(1, 'Công ty ', 'congtya@gmail.com', 'Công ty TNHH Eight One International', '0987654321', 'https://www.topcv.vn/cong-ty/cong-ty-tnhh-eight-one-international/150848.html', 1049, 'https://cdn-new.topcv.vn/unsafe/140x/https://static.topcv.vn/company_logos/O8O6w0f8nPS5gHFy0fywrjOTIaVyRnTE_1691486170____b0b1161dbd47daeb25f957967fc480f6.png', NULL),
-	(2, 'A subsidiary of the FPT Group, FPT Software is known as a leading global information technology service provider headquartered in Vietnam. With over 30,000 employees working in 83 offices across 30 countries on five continents, FPT Software consistently delivers the best solutions to more than 1000 clients, including 100 Fortune 500 companies. Placing human resources as the cornerstone of its achievements, employee experience is our top priority in continually creating an innovative, open, and enjoyable work environment for every member.', 'fptsoftware@gmail.com', 'FPT Software', '0909090909', 'https://www.topcv.vn/cong-ty/fpt-software/3.html', 1041, 'https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/fpt-software-6073b38a10cb4.jpg', NULL),
+	(2, 'A subsidiary of the FPT Group, FPT Software is known as a leading global information technology service provider headquartered in Vietnam. With over 30,000 employees working in 83 offices across 30 countries on five continents, FPT Software consistently delivers the best solutions to more than 1000 clients, including 100 Fortune 500 companies. Placing human resources as the cornerstone of its achievements, employee experience is our top priority in continually creating an innovative, open, and enjoyable work environment for every member.', 'fptsoftware@gmail.com', 'FPT Software', '0909090909', 'https://www.topcv.vn/cong-ty/fpt-software/3.html', 1041, 'https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/fpt-software-6073b38a10cb4.jpg', 41),
 	(3, 'BioTuring is an innovative bioinformatics company that develops algorithms, and software to serve scientists from hundreds of pharmaceutical companies and leading research institutions, enabling discoveries about human diseases.', 'bioturing@gmail.com', 'BioTurning', '0912345678', 'https://bioturing.com/', 1, 'https://i.ibb.co/xh9kR6z/Bio-Turing-2.webp', NULL),
-	(23, 'MoMo là siêu ứng dụng hàng đầu và là một trong những Fintech phát triển nhanh nhất tại Việt Nam với nhiều giải thưởng trong nước và quốc tế. ', 'momo@gmail.com', 'CÔNG TY CỔ PHẦN DỊCH VỤ DI ĐỘNG TRỰC TUYẾN (VÍ MOMO)', '0987654321', 'https://momo.vn/', 1035, 'https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/cong-ty-co-phan-dich-vu-di-dong-truc-tuyen-vi-momo-61a741d87b682.jpg', 1);
+	(23, 'MoMo là siêu ứng dụng hàng đầu và là một trong những Fintech phát triển nhanh nhất tại Việt Nam với nhiều giải thưởng trong nước và quốc tế. ', 'momo@gmail.com', 'CÔNG TY CỔ PHẦN DỊCH VỤ DI ĐỘNG TRỰC TUYẾN (VÍ MOMO)', '0987654321', 'https://momo.vn/', 1035, 'https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/cong-ty-co-phan-dich-vu-di-dong-truc-tuyen-vi-momo-61a741d87b682.jpg', 1),
+	(27, 'Tập đoàn Viễn thông Quân đội Viettel - giữ vững vị thế Nơi làm việc tốt nhất Việt Nam trong 06 năm liên tiếp trong ngành Viễn thông, Hạ tầng, IT (theo khảo sát Anphabe) là nhà cung cấp dịch vụ số toàn cầu, luôn đi đầu trong đổi mới sáng tạo và luôn lắng nghe, thấu hiểu để đem tới những dịch vụ tốt nhất cho khách hàng.', 'viettel@gmail.com', 'TẬP ĐOÀN CÔNG NGHIỆP - VIỄN THÔNG QUÂN ĐỘI', '0987654321', 'https://viettel.com.vn', 1098, 'https://cdn-new.topcv.vn/unsafe/140x/https://static.topcv.vn/company_logos/vnksUvAUJEzIxB7un4tTZrQ0cNWK6MAt_1719996933____3c701bdf079634d0e15cebed0655ae9d.png', 43);
 
 -- Dumping structure for table works.experience
 CREATE TABLE IF NOT EXISTS `experience` (
@@ -219,13 +214,17 @@ CREATE TABLE IF NOT EXISTS `experience` (
   CONSTRAINT `FKsmv65lqovssalk12ti3cqkpjf` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.experience: ~5 rows (approximately)
+-- Dumping data for table works.experience: ~7 rows (approximately)
 INSERT INTO `experience` (`id`, `company_name`, `from_date`, `role`, `to_date`, `work_description`, `candidate_id`) VALUES
 	(7, 'FPT', '2021-01-01', 'Technical Lead', '2023-01-01', 'Technical Lead ', 1018),
 	(8, 'IUH', '2015-01-01', 'Student', '2019-01-01', 'I am a Student in there', 1020),
 	(9, 'Amazon', '2020-01-01', 'Intern', '2023-01-01', 'Intern Java', 1020),
 	(10, 'IUH', '2021-01-01', 'Student', '2024-12-06', 'I am a Student there', 1021),
-	(11, 'Momo', '2024-12-06', 'Intern', '2025-02-01', 'Intern ', 1021);
+	(11, 'Momo', '2024-12-06', 'Intern', '2025-02-01', 'Intern ', 1021),
+	(12, 'Amazon', '1994-01-01', 'Leader', '2003-01-01', 'Leader', 1023),
+	(13, 'IUH', '2025-01-01', 'Student', '2029-01-01', 'Student', 1024),
+	(14, 'IUH', '2021-01-01', 'Student', '2024-12-14', 'Student', 1070),
+	(15, 'Amazon', '2024-01-01', 'Intern', '2024-12-14', 'Intern Java', 1070);
 
 -- Dumping structure for table works.job
 CREATE TABLE IF NOT EXISTS `job` (
@@ -240,13 +239,15 @@ CREATE TABLE IF NOT EXISTS `job` (
   CONSTRAINT `FKbaqlvluu78phmo9ld89um7wnm` FOREIGN KEY (`company`) REFERENCES `company` (`comp_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.job: ~5 rows (approximately)
+-- Dumping data for table works.job: ~7 rows (approximately)
 INSERT INTO `job` (`job_id`, `job_desc`, `job_name`, `company`, `salary`, `status`) VALUES
 	(1, 'Design, develop, and maintain secure and scalable Java-based applications for the banking domain, ensuring compliance with industry standards and regulations.', 'Java Developer', 1, '$1000', 1),
 	(2, '5+ years of experience required in related field (i.e. Computer Science, Computer Engineering, and Engineering);', 'Senior Java Engineer', 2, '$3000', 1),
 	(3, 'Design efficient data structure focusing on scalability & performance for extremely large biological data on GPU via CUDA.', 'Algorithm Engineer (Python, C, Algorithm)', 3, '$600', 1),
 	(17, 'Develop software applications', 'Software Developer', 23, '$1500', 1),
-	(18, 'Consulting technical solution/ system architect on Linux OS;\r\nPlan, design, install, configure, troubleshoot, and manage our VMWare / cloud-based Linux servers;\r\nEnsuring the system and server operating smoothly;\r\nBuilding and maintaining stable operation for server system;\r\nMonitoring and maintaining system hardware and networks;\r\nEnsuring safety and security for system and network;\r\nPerforming others technical assigned task.', 'Software Engineer', 23, 'Thỏa thuận', 1);
+	(18, 'Consulting technical solution/ system architect on Linux OS;\r\nPlan, design, install, configure, troubleshoot, and manage our VMWare / cloud-based Linux servers;\r\nEnsuring the system and server operating smoothly;\r\nBuilding and maintaining stable operation for server system;\r\nMonitoring and maintaining system hardware and networks;\r\nEnsuring safety and security for system and network;\r\nPerforming others technical assigned task.', 'Software Engineer', 23, 'Thỏa thuận', 1),
+	(19, 'Mô tả công việc\r\nTham gia phát triển các ứng dụng trên các nền tảng\r\nTham gia phân tích nghiệp vụ, yêu cầu từ khách hàng\r\nKiểm tra, fix bug sản phẩm\r\nNghiên cứu các công nghệ, giải pháp mới.', 'Thực Tập Sinh Lập Trình (C#, Java, .NET, ABAP,...)', 1, 'Thỏa thuận', 1),
+	(21, '- Lập trình mã nguồn nghiệp vụ theo yêu cầu người dùng, yêu cầu hệ thống, thiết kế chi tiết ở mức tính năng.\r\n\r\n- Lập trình giao diện theo thiết kế giao diện có sẵn.\r\n\r\n- Phối hợp các thành viên khác trong nhóm tích hợp các tính năng hệ thống.\r\n\r\n- Phối hợp với bộ phận quản lý chất lượng đảm bảo chất lượng hệ thống.', 'Kỹ Sư Phát Triển Phần Mềm (C/C++/Java/Golang/Android/IOS)', 27, 'Thỏa thuận', 1);
 
 -- Dumping structure for table works.job_application
 CREATE TABLE IF NOT EXISTS `job_application` (
@@ -263,14 +264,15 @@ CREATE TABLE IF NOT EXISTS `job_application` (
   CONSTRAINT `FKgq7rbq1q2388owxysfur67tfh` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.job_application: ~6 rows (approximately)
+-- Dumping data for table works.job_application: ~7 rows (approximately)
 INSERT INTO `job_application` (`id`, `apply_at`, `match_percentage`, `status`, `candidate_id`, `job_id`) VALUES
-	(17, '2024-12-02', 16.666666666666664, -1, 1020, 18),
+	(17, '2024-12-14', 16.666666666666664, 0, 1020, 18),
 	(18, '2024-12-06', 33.33333333333333, 0, 1021, 18),
 	(19, '2024-12-06', 50, 1, 1021, 17),
-	(20, '2024-12-14', 0, 0, 1020, 2),
-	(21, '2024-12-14', 0, 0, 1020, 1),
-	(22, '2024-12-14', 0, 0, 1020, 3);
+	(23, '2024-12-14', 25, 0, 1023, 2),
+	(27, '2024-12-14', 0, 0, 1070, 2),
+	(29, '2024-12-14', 50, 1, 1070, 21),
+	(30, '2024-12-14', 0, 0, 1020, 21);
 
 -- Dumping structure for table works.job_skill
 CREATE TABLE IF NOT EXISTS `job_skill` (
@@ -290,7 +292,10 @@ INSERT INTO `job_skill` (`more_infos`, `skill_level`, `job_id`, `skill_id`) VALU
 	('Experience leading project teams', 'INTERMEDIATE', 17, 2),
 	('3 năm kinh nghiệm', 'ADVANCED', 18, 1),
 	('', 'BEGINNER', 18, 3),
-	('', 'ADVANCED', 18, 4);
+	('', 'ADVANCED', 18, 4),
+	('3 năm kinh nghiệm', 'ADVANCED', 21, 28),
+	('Tốt', 'INTERMEDIATE', 21, 30),
+	('Tốt', 'ADVANCED', 21, 31);
 
 -- Dumping structure for table works.role
 CREATE TABLE IF NOT EXISTS `role` (
@@ -299,12 +304,13 @@ CREATE TABLE IF NOT EXISTS `role` (
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.role: ~4 rows (approximately)
+-- Dumping data for table works.role: ~5 rows (approximately)
 INSERT INTO `role` (`role_id`, `role_name`) VALUES
 	(1, 'ADMIN'),
 	(2, 'USER'),
 	(3, 'COMPANY'),
-	(4, 'CANDIDATE');
+	(4, 'CANDIDATE'),
+	(9, 'COMPANY');
 
 -- Dumping structure for table works.skill
 CREATE TABLE IF NOT EXISTS `skill` (
@@ -315,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `skill` (
   PRIMARY KEY (`skill_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.skill: ~12 rows (approximately)
+-- Dumping data for table works.skill: ~18 rows (approximately)
 INSERT INTO `skill` (`skill_id`, `skill_description`, `skill_name`, `type`) VALUES
 	(1, 'Core programming language', 'Java', 'TECHNICAL_SKILL'),
 	(2, 'Manage projects from start to finish', 'Project Management', NULL),
@@ -328,7 +334,16 @@ INSERT INTO `skill` (`skill_id`, `skill_description`, `skill_name`, `type`) VALU
 	(18, NULL, 'SQL', 'TECHNICAL_SKILL'),
 	(20, NULL, 'Java', 'TECHNICAL_SKILL'),
 	(21, NULL, 'SQL', 'TECHNICAL_SKILL'),
-	(22, NULL, 'Python', 'TECHNICAL_SKILL');
+	(22, NULL, 'Python', 'TECHNICAL_SKILL'),
+	(24, NULL, 'JavaScript', 'TECHNICAL_SKILL'),
+	(25, NULL, 'Java', 'TECHNICAL_SKILL'),
+	(26, NULL, 'Java', 'TECHNICAL_SKILL'),
+	(27, NULL, 'Javascript', 'TECHNICAL_SKILL'),
+	(28, NULL, 'Java', 'TECHNICAL_SKILL'),
+	(29, NULL, 'SQL', 'TECHNICAL_SKILL'),
+	(30, '', 'Golang', 'TECHNICAL_SKILL'),
+	(31, '', 'Python', 'TECHNICAL_SKILL'),
+	(32, NULL, 'Python', 'TECHNICAL_SKILL');
 
 -- Dumping structure for table works.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -339,17 +354,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `UKsb8bbouer5wak8vyiiy4pf2bx` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.user: ~4 rows (approximately)
+-- Dumping data for table works.user: ~38 rows (approximately)
 INSERT INTO `user` (`user_id`, `password`, `username`) VALUES
 	(1, '$2a$12$RjIAy5vZfXaSfMcW.6S7z.D6qjhUsp83ssn.BhkngIRIWpXxa0aCK', 'admin'),
 	(2, '$2a$12$pzHDzkAV/1Lrp/uRFMzlqe.Gjw8N/Ochcl0PWq5LE4c5suqb9RITC', 'demo'),
 	(4, '$2a$12$2m00/mLBd9fW4n5LDO3GB.GolG0Y.jiGGORT.dEFjIgNJc5xL.pxC', 'met'),
-	(5, '$2a$12$YqStu63.DesSxIsMVGLjmehge4rsVvB7tTT0nIUvR3k2ptgbSd7JC', 'nhut'),
+	(5, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'men'),
 	(10, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'nguyenvana1050'),
 	(11, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'tranthib1051'),
 	(12, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'phamvanh1052'),
 	(13, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'lethic1053'),
 	(14, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'dangvand1054'),
+	(15, '$2a$12$.iOaXZ53YN539KTFtwjzUOdj93F43wL8Wlz.7CQ4Dz9106zb7CZ0e', 'huynhtie1055'),
 	(16, '$2a$12$MWXTahKLQsCStOmCVNS/5O.x7', 'vuongminh1056'),
 	(17, '$2a$12$TMTahKLQsCStOmCVNS/5O.x8', 'ngothig1057'),
 	(18, '$2a$12$NMXTahKLQsCStOmCVNS/5O.x9', 'buituanh1058'),
@@ -374,7 +390,10 @@ INSERT INTO `user` (`user_id`, `password`, `username`) VALUES
 	(37, '$2a$12$UMXTahKLQsCStOmCVNS/5O.xR', 'dangngocthuy1077'),
 	(38, '$2a$12$VMXTahKLQsCStOmCVNS/5O.xS', 'nguyenthituyet1078'),
 	(39, '$2a$12$WMXTahKLQsCStOmCVNS/5O.xT', 'trankhanhly1079'),
-	(40, '$2a$12$XMXTahKLQsCStOmCVNS/5O.xU', 'phamthithuthao1080');
+	(40, '$2a$12$XMXTahKLQsCStOmCVNS/5O.xU', 'phamthithuthao1080'),
+	(41, '$2a$12$flyQkjXE19X4j7XtTmjNBubyD2XXCfIqV/iB/3WX0zsyUsVvLOv.q', 'nhut123'),
+	(42, '$2a$12$flyQkjXE19X4j7XtTmjNBubyD2XXCfIqV/iB/3WX0zsyUsVvLOv.q', 'nhut'),
+	(43, '$2a$12$XBqZeyTi8toPizDYOgJjcuYW8LkXa0348ijAdb/Gys9gkwcRIOlDG', 'company');
 
 -- Dumping structure for table works.users_roles
 CREATE TABLE IF NOT EXISTS `users_roles` (
@@ -386,10 +405,12 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
   CONSTRAINT `FKt4v0rrweyk393bdgt107vdx0x` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table works.users_roles: ~5 rows (approximately)
+-- Dumping data for table works.users_roles: ~40 rows (approximately)
 INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES
 	(1, 1),
+	(43, 2),
 	(1, 3),
+	(43, 3),
 	(2, 4),
 	(4, 4),
 	(5, 4),
@@ -423,11 +444,12 @@ INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES
 	(37, 4),
 	(38, 4),
 	(39, 4),
-	(40, 4);
+	(40, 4),
+	(41, 4),
+	(42, 4);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-
